@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/subjectsFragment">
+
+    <fragment
+        android:id="@+id/subjectsFragment"
+        android:name="com.tusur.teacherhelper.presentation.subjects.SubjectListFragment"
+        android:label="@string/subject_list_fragment_label"
+        tools:layout="@layout/fragment_subject_list">
+        <action
+            android:id="@+id/action_to_subjectDetailsFragment"
+            app:destination="@id/subjectDetailsFragment" />
+        <action
+            android:id="@+id/action_to_topicTypesBottomSheet"
+            app:destination="@id/topicTypesBottomSheet" />
+        <action
+            android:id="@+id/action_to_globalTopicsBottomSheet"
+            app:destination="@id/globalTopicsBottomSheet" />
+        <action
+            android:id="@+id/action_to_allGroupsFragment"
+            app:destination="@id/allGroupsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/subjectDetailsFragment"
+        android:name="com.tusur.teacherhelper.presentation.subjectdetails.SubjectDetailsFragment"
+        android:label="@string/subject_details_fragment_label"
+        tools:layout="@layout/fragment_subject_details">
+        <argument
+            android:name="subjectId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_to_addSubjectGroupDialog"
+            app:destination="@id/addSubjectGroupDialog" />
+        <action
+            android:id="@+id/action_to_topicNameFragment"
+            app:destination="@id/topicNameFragment" />
+        <action
+            android:id="@+id/action_to_topicFragment"
+            app:destination="@id/topicFragment" />
+        <action
+            android:id="@+id/action_to_performanceTableFragment"
+            app:destination="@id/performanceTableFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/addSubjectGroupDialog"
+        android:name="com.tusur.teacherhelper.presentation.subjectdetails.AddSubjectGroupDialog"
+        android:label="@string/add_subject_group_dialog_label"
+        tools:layout="@layout/dialog_add_subject_group">
+        <argument
+            android:name="subjectId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_to_groupStudentsFragment"
+            app:destination="@id/groupStudentsFragment" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/groupStudentsFragment"
+        android:name="com.tusur.teacherhelper.presentation.group.GroupStudentsFragment"
+        android:label="@string/group_students_fragment_label"
+        tools:layout="@layout/fragment_group_students">
+        <argument
+            android:name="groupId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_to_groupImportBottomSheet"
+            app:destination="@id/groupImportBottomSheet" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/topicNameFragment"
+        android:name="com.tusur.teacherhelper.presentation.topic.TopicNameFragment"
+        android:label="TopicNameFragment"
+        tools:layout="@layout/fragment_topic_name">
+        <argument
+            android:name="topicId"
+            app:argType="integer" />
+        <argument
+            android:name="subjectId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_to_topicFragment"
+            app:destination="@id/topicFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/topicFragment"
+        android:name="com.tusur.teacherhelper.presentation.topic.TopicFragment"
+        android:label="TopicFragment"
+        tools:layout="@layout/fragment_topic">
+        <argument
+            android:name="topicId"
+            app:argType="integer" />
+        <argument
+            android:name="isJustCreated"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="subjectId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_to_subjectGroupSelectFragment"
+            app:destination="@id/subjectGroupSelectFragment" />
+        <action
+            android:id="@+id/action_to_topicNameFragment"
+            app:destination="@id/topicNameFragment" />
+        <action
+            android:id="@+id/action_to_deadlineBottomSheet"
+            app:destination="@id/deadlineBottomSheet" />
+        <action
+            android:id="@+id/action_to_subjectClassDatesBottomSheet"
+            app:destination="@id/topicClassDatesBottomSheet" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/subjectGroupSelectFragment"
+        android:name="com.tusur.teacherhelper.presentation.subjectgroups.SubjectGroupSelectFragment"
+        android:label="SubjectGroupSelectFragment"
+        tools:layout="@layout/fragment_subject_group_select">
+        <argument
+            android:name="subjectId"
+            app:argType="integer" />
+        <argument
+            android:name="topicId"
+            app:argType="integer" />
+        <argument
+            android:name="shouldBeAllChecked"
+            app:argType="boolean" />
+        <argument
+            android:name="requiredPerformance"
+            app:argType="com.tusur.teacherhelper.presentation.topic.PerformanceType" />
+        <action
+            android:id="@+id/action_to_groupsPerformanceFragment"
+            app:destination="@id/groupsPerformanceFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/groupsPerformanceFragment"
+        android:name="com.tusur.teacherhelper.presentation.topicperformance.GroupsPerformanceFragment"
+        android:label="GroupsPerformanceFragment"
+        tools:layout="@layout/fragment_groups_performance">
+        <argument
+            android:name="topicId"
+            app:argType="integer" />
+        <argument
+            android:name="performanceType"
+            app:argType="com.tusur.teacherhelper.presentation.topic.PerformanceType" />
+        <argument
+            android:name="group_list_ids"
+            app:argType="integer[]" />
+        <argument
+            android:name="datetimeMillis"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_to_attendanceBottomSheet"
+            app:destination="@id/attendanceBottomSheet" />
+        <action
+            android:id="@+id/action_to_performanceBottomSheet"
+            app:destination="@id/performanceBottomSheet" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/attendanceBottomSheet"
+        android:name="com.tusur.teacherhelper.presentation.topicperformance.AttendanceBottomSheet"
+        android:label="AttendanceBottomSheet"
+        tools:layout="@layout/bottom_sheet_attendance">
+        <argument
+            android:name="topicId"
+            app:argType="integer" />
+        <argument
+            android:name="studentId"
+            app:argType="integer" />
+        <argument
+            android:name="datetimeMillis"
+            app:argType="long" />
+        <argument
+            android:name="allStudentIds"
+            app:argType="integer[]" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/performanceBottomSheet"
+        android:name="com.tusur.teacherhelper.presentation.topicperformance.PerformanceBottomSheet"
+        android:label="PerformanceBottomSheet"
+        tools:layout="@layout/bottom_sheet_performance">
+        <argument
+            android:name="topicId"
+            app:argType="integer" />
+        <argument
+            android:name="studentId"
+            app:argType="integer" />
+        <argument
+            android:name="datetimeMillis"
+            app:argType="long" />
+        <argument
+            android:name="allStudentIds"
+            app:argType="integer[]" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/deadlineBottomSheet"
+        android:name="com.tusur.teacherhelper.presentation.topic.DeadlineBottomSheet"
+        android:label="DeadlineBottomSheet"
+        tools:layout="@layout/bottom_sheet_deadline">
+        <argument
+            android:name="topicId"
+            app:argType="integer" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/topicClassDatesBottomSheet"
+        android:name="com.tusur.teacherhelper.presentation.topic.TopicClassDatesBottomSheet"
+        android:label="SubjectClassDatesBottomSheet"
+        tools:layout="@layout/bottom_sheet_subject_class_dates">
+        <argument
+            android:name="topicId"
+            app:argType="integer" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/topicTypesBottomSheet"
+        android:name="com.tusur.teacherhelper.presentation.topictype.TopicTypesBottomSheet"
+        android:label="TopicTypesBottomSheet"
+        tools:layout="@layout/bottom_sheet_topic_types">
+        <action
+            android:id="@+id/action_to_topicTypeFragment"
+            app:destination="@id/topicTypeFragment" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/topicTypeFragment"
+        android:name="com.tusur.teacherhelper.presentation.topictype.TopicTypeFragment"
+        android:label="TopicTypeFragment"
+        tools:layout="@layout/fragment_topic_type">
+        <argument
+            android:name="topicTypeId"
+            app:argType="integer" />
+        <argument
+            android:name="isCreating"
+            app:argType="boolean" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/globalTopicsBottomSheet"
+        android:name="com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicsBottomSheet"
+        android:label="GlobalTopicsBottomSheet"
+        tools:layout="@layout/bottom_sheet_global_topics">
+        <action
+            android:id="@+id/action_to_topicFragment"
+            app:destination="@id/topicFragment" />
+        <action
+            android:id="@+id/action_to_topicNameFragment"
+            app:destination="@id/topicNameFragment" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/performanceTableFragment"
+        android:name="com.tusur.teacherhelper.presentation.performance.PerformanceTableFragment"
+        android:label="PerformanceTableFragment"
+        tools:layout="@layout/fragment_performance_table">
+        <argument
+            android:name="groupId"
+            app:argType="integer" />
+        <argument
+            android:name="subjectId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_to_studentPerformanceFragment"
+            app:destination="@id/studentPerformanceFragment" />
+        <action
+            android:id="@+id/action_to_finalGradeBottomSheet"
+            app:destination="@id/singleStudentPerformanceBottomSheet" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/studentPerformanceFragment"
+        android:name="com.tusur.teacherhelper.presentation.performance.StudentSummaryPerformanceFragment"
+        android:label="StudentPerformanceFragment"
+        tools:layout="@layout/fragment_student_summary_performance">
+        <argument
+            android:name="studentId"
+            app:argType="integer" />
+        <argument
+            android:name="groupId"
+            app:argType="integer" />
+        <argument
+            android:name="subjectId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_to_studentOneTypeTopicsResultsBottomSheet"
+            app:destination="@id/studentOneTypeTopicsResultsBottomSheet" />
+        <action
+            android:id="@+id/action_to_globalTopicsToFinalGradeBottomSheet"
+            app:destination="@id/globalTopicsToFinalGradeBottomSheet" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/studentOneTypeTopicsResultsBottomSheet"
+        android:name="com.tusur.teacherhelper.presentation.performance.StudentOneTypeTopicsSummaryBottomSheet"
+        android:label="StudentOneTypeTopicsResultsBottomSheet"
+        tools:layout="@layout/bottom_sheet_student_one_type_topics_summary">
+        <argument
+            android:name="performanceType"
+            app:argType="com.tusur.teacherhelper.presentation.topic.PerformanceType" />
+        <argument
+            android:name="studentId"
+            app:argType="integer" />
+        <argument
+            android:name="topicTypeId"
+            app:argType="integer" />
+        <argument
+            android:name="subjectId"
+            app:argType="integer" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/globalTopicsToFinalGradeBottomSheet"
+        android:name="com.tusur.teacherhelper.presentation.performance.GlobalTopicsToFinalGradeBottomSheet"
+        android:label="GlobalTopicsToFinalGradeBottomSheet"
+        tools:layout="@layout/bottom_sheet_global_topics">
+        <argument
+            android:name="studentId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_to_finalGradeBottomSheet"
+            app:destination="@id/singleStudentPerformanceBottomSheet" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/singleStudentPerformanceBottomSheet"
+        android:name="com.tusur.teacherhelper.presentation.performance.SingleStudentPerformanceBottomSheet"
+        android:label="FinalGradeBottomSheet"
+        tools:layout="@layout/bottom_sheet_performance">
+        <argument
+            android:name="topicId"
+            app:argType="integer" />
+        <argument
+            android:name="studentId"
+            app:argType="integer" />
+        <argument
+            android:name="datetimeMillis"
+            app:argType="long" />
+    </dialog>
+    <fragment
+        android:id="@+id/allGroupsFragment"
+        android:name="com.tusur.teacherhelper.presentation.groups.AllGroupsFragment"
+        android:label="AllGroupsFragment"
+        tools:layout="@layout/fragment_all_group_list">
+        <action
+            android:id="@+id/action_to_groupStudentsFragment"
+            app:destination="@id/groupStudentsFragment" />
+        <action
+            android:id="@+id/action_to_newGroupNumberInputBottomSheet"
+            app:destination="@id/newGroupNumberInputBottomSheet" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/newGroupNumberInputBottomSheet"
+        android:name="com.tusur.teacherhelper.presentation.groups.NewGroupNumberInputBottomSheet"
+        android:label="NewGroupNumberInputBottomSheet"
+        tools:layout="@layout/bottom_sheet_input">
+        <action
+            android:id="@+id/action_to_groupStudentsFragment"
+            app:destination="@id/groupStudentsFragment" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/groupImportBottomSheet"
+        android:name="com.tusur.teacherhelper.presentation.group.GroupImportBottomSheet"
+        android:label="GroupImportBottomSheet"
+        tools:layout="@layout/bottom_sheet_group_import">
+        <argument
+            android:name="groupId"
+            app:argType="integer" />
+        <argument
+            android:name="excelFile"
+            app:argType="java.io.File" />
+    </dialog>
+
+</navigation>

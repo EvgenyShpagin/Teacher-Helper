@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/default_list_item_height"
+    android:background="@drawable/default_list_item_ripple"
+    android:clickable="true"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/default_list_item_height"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/default_list_item_horizontal_padding"
+        android:paddingEnd="@dimen/default_list_item_horizontal_padding"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="?attr/colorOnSurface"
+        tools:text="1. Шпагин Евгений Дмитриевич" />
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/default_content_margin"
+        android:textAppearance="?attr/textAppearanceLabelMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:visibility="gone"
+        tools:text="соотв. КТ1" />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/default_content_margin"
+        android:importantForAccessibility="no"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners
+        android:bottomLeftRadius="@dimen/group_list_item_top_corner_size"
+        android:bottomRightRadius="@dimen/group_list_item_top_corner_size"
+        android:topLeftRadius="@dimen/default_list_item_corner_size"
+        android:topRightRadius="@dimen/default_list_item_corner_size" />
+    <solid android:color="?attr/colorSurfaceContainerLowest" />
+</shape>

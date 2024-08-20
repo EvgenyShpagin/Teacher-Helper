@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.tusur.teacherhelper.presentation.view.ListItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/default_list_item_height"
+    android:background="@drawable/group_list_middle_item_ripple"
+    app:leadingComponent="nothing"
+    app:trailingComponent="icon"
+    app:position="middle"
+    tools:title="Текст" />

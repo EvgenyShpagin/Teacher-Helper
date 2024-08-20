@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back_24" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:transitionName="@string/transition_topic_details"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/fragment_horizontal_margin"
+            android:paddingEnd="@dimen/fragment_horizontal_margin">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_content_margin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/topic_name_hint"
+                    android:inputType="none"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.tusur.teacherhelper.presentation.view.ListLayout
+                android:id="@+id/performance_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/group_list_vertical_margin"
+                app:label="@string/topic_student_performance_label">
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/performance_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_list_item_height"
+                    app:leadingComponent="icon"
+                    app:leadingDrawable="@drawable/ic_star_24"
+                    app:title="@string/topic_performance"
+                    app:trailingComponent="icon"
+                    app:trailingDrawable="@drawable/ic_arrow_right_24" />
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/attendance_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_list_item_height"
+                    app:leadingComponent="icon"
+                    app:leadingDrawable="@drawable/ic_person_check_24"
+                    app:title="@string/topic_attendance"
+                    app:trailingComponent="icon"
+                    app:trailingDrawable="@drawable/ic_arrow_right_24" />
+
+            </com.tusur.teacherhelper.presentation.view.ListLayout>
+
+            <com.tusur.teacherhelper.presentation.view.ListLayout
+                android:id="@+id/date_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/group_list_vertical_margin"
+                app:label="@string/topic_date_label">
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/deadline_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_list_item_height"
+                    app:leadingComponent="icon"
+                    app:leadingDrawable="@drawable/ic_calendar_check_24"
+                    app:title="@string/topic_deadline" />
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/class_days_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_list_item_height"
+                    app:leadingComponent="icon"
+                    app:leadingDrawable="@drawable/ic_calendar_24"
+                    app:title="@string/topic_class_days"
+                    app:trailingComponent="icon"
+                    app:trailingDrawable="@drawable/ic_arrow_right_24" />
+
+            </com.tusur.teacherhelper.presentation.view.ListLayout>
+
+            <com.tusur.teacherhelper.presentation.view.ListLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/group_list_vertical_margin">
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/cancel_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_list_item_height"
+                    app:isErrorColor="true"
+                    app:leadingComponent="icon"
+                    app:leadingDrawable="@drawable/ic_close_24"
+                    app:title="@string/topic_cancel" />
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/delete_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_list_item_height"
+                    app:isErrorColor="true"
+                    app:leadingComponent="icon"
+                    app:leadingDrawable="@drawable/ic_delete_24"
+                    app:title="@string/topic_delete" />
+
+            </com.tusur.teacherhelper.presentation.view.ListLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

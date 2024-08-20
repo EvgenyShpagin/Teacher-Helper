@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/fragment_horizontal_margin"
+    android:paddingTop="@dimen/bottom_sheet_top_margin"
+    android:paddingRight="@dimen/fragment_horizontal_margin"
+    android:paddingBottom="@dimen/bottom_sheet_bottom_margin">
+
+    <TextView
+        android:id="@+id/title"
+        style="?attr/textAppearanceTitleMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorOnSurface"
+        tools:text="Заголовок" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_content_margin">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text_input_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            tools:hint="Подсказка" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

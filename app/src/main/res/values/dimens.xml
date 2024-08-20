@@ -1,0 +1,32 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fragment_horizontal_margin">16dp</dimen>
+    <dimen name="fragment_bottom_margin">16dp</dimen>
+    <dimen name="bottom_sheet_top_margin">24dp</dimen>
+    <dimen name="bottom_sheet_bottom_margin">16dp</dimen>
+    <dimen name="default_list_item_vertical_margin">12dp</dimen>
+    <dimen name="list_item_small_content_padding">48dp</dimen>
+    <dimen name="group_list_item_vertical_margin">4dp</dimen>
+    <dimen name="group_list_label_horizontal_margin">8dp</dimen>
+    <dimen name="group_list_label_vertical_margin">8dp</dimen>
+    <dimen name="group_list_vertical_margin">32dp</dimen>
+    <dimen name="small_content_margin">8dp</dimen>
+    <dimen name="default_content_margin">16dp</dimen>
+    <dimen name="large_content_margin">32dp</dimen>
+    <dimen name="default_list_item_horizontal_padding">16dp</dimen>
+    <dimen name="default_list_item_height">56dp</dimen>
+    <dimen name="dialog_list_item_height">48dp</dimen>
+    <dimen name="two_line_list_item_height">72dp</dimen>
+    <dimen name="default_list_item_corner_size">8dp</dimen>
+    <dimen name="group_list_item_top_corner_size">16dp</dimen>
+    <dimen name="default_list_label_height">32dp</dimen>
+    <dimen name="dialog_padding">24dp</dimen>
+    <dimen name="table_row_height">48dp</dimen>
+    <dimen name="table_label_height">40dp</dimen>
+    <dimen name="table_cell_horizontal_padding">32dp</dimen>
+    <dimen name="table_shadow_radius">4dp</dimen>
+    <dimen name="table_cell_text_size">16sp</dimen>
+    <dimen name="table_label_text_size">12sp</dimen>
+    <dimen name="table_divider_width">1dp</dimen>
+    <dimen name="empty_content_height">128dp</dimen>
+</resources>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/fragment_horizontal_margin"
+    android:paddingTop="@dimen/bottom_sheet_top_margin"
+    android:paddingRight="@dimen/fragment_horizontal_margin">
+
+    <TextView
+        android:id="@+id/title"
+        style="?attr/textAppearanceTitleMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_group_import_title"
+        android:textColor="?attr/colorOnSurface" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/sheet_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_content_margin">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sheet_input_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/import_excel_first_sheet_hint"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="2"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/row_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_content_margin">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/row_input_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/import_excel_first_row_hint"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="2"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/column_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_content_margin">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/column_input_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/import_excel_column_hint"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="2"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/default_content_margin"
+        android:text="@string/confirm_button" />
+
+</LinearLayout>

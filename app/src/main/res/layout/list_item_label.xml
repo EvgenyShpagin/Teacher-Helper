@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/label"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/default_list_label_height"
+    android:gravity="center_vertical"
+    android:paddingStart="@dimen/default_list_item_horizontal_padding"
+    android:paddingEnd="@dimen/default_list_item_horizontal_padding"
+    android:text="@string/global_topics_label"
+    android:textAppearance="?attr/textAppearanceLabelLarge"
+    android:textColor="?attr/colorOnSurfaceVariant" />

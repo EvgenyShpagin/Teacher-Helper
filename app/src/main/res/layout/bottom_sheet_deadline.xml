@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/fragment_horizontal_margin"
+    android:paddingTop="@dimen/bottom_sheet_top_margin"
+    android:paddingRight="@dimen/fragment_horizontal_margin"
+    android:paddingBottom="@dimen/bottom_sheet_bottom_margin">
+
+    <TextView
+        android:id="@+id/title"
+        style="?attr/textAppearanceTitleMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_topics_deadline_title"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.tusur.teacherhelper.presentation.view.ListLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_content_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title">
+
+        <com.tusur.teacherhelper.presentation.view.ListItemView
+            android:id="@+id/exist_deadline_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_list_item_height"
+            app:leadingComponent="icon"
+            app:leadingDrawable="@drawable/ic_update_24"
+            app:title="@string/deadline_from_existing" />
+
+        <com.tusur.teacherhelper.presentation.view.ListItemView
+            android:id="@+id/new_deadline_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_list_item_height"
+            app:leadingComponent="icon"
+            app:leadingDrawable="@drawable/ic_add_24"
+            app:title="@string/deadline_new_date" />
+
+        <com.tusur.teacherhelper.presentation.view.ListItemView
+            android:id="@+id/no_deadline_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_list_item_height"
+            app:leadingComponent="icon"
+            app:leadingDrawable="@drawable/ic_block_24"
+            app:title="@string/deadline_remove" />
+
+    </com.tusur.teacherhelper.presentation.view.ListLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

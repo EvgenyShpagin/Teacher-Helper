@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/default_list_item_height"
+    android:background="@drawable/default_list_item_ripple"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingStart="@dimen/default_list_item_horizontal_padding"
+    android:paddingEnd="@dimen/default_list_item_horizontal_padding">
+
+    <TextView
+        android:id="@+id/headline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="40dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="?attr/colorOnSurface"
+        tools:text="Лекция 1" />
+
+    <ImageView
+        android:id="@+id/trailing_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="end|center_vertical"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_check_small_24"
+        app:tint="?attr/colorOnSurface" />
+
+</FrameLayout>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:liftOnScroll="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back_24"
+            tools:title="@string/topic_type_creating_title" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/fragment_horizontal_margin"
+            android:paddingEnd="@dimen/fragment_horizontal_margin"
+            tools:context=".presentation.topic.TopicNameFragment">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/name_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_content_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/topic_name_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/short_name_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_content_margin"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name_text_input_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/short_name_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/short_topic_name_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.tusur.teacherhelper.presentation.view.ListLayout
+                android:id="@+id/acceptable_performance_items"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/group_list_vertical_margin"
+                app:label="@string/allowed_performance_items_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/short_name_text_input_layout">
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/assessment_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:leadingComponent="checkbox"
+                    app:title="@string/acceptable_assessment_item" />
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/grade_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:leadingComponent="checkbox"
+                    app:title="@string/acceptable_grade_item" />
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/progress_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:leadingComponent="checkbox"
+                    app:title="@string/acceptable_progress_item" />
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/attendance_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:leadingComponent="checkbox"
+                    app:title="@string/acceptable_attendance_item"
+                    app:trailingComponent="icon"
+                    app:trailingDrawable="@drawable/ic_arrow_drop_down_24" />
+
+            </com.tusur.teacherhelper.presentation.view.ListLayout>
+
+            <com.tusur.teacherhelper.presentation.view.ListLayout
+                android:id="@+id/attendance_variants"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/large_content_margin"
+                android:layout_marginTop="@dimen/group_list_item_vertical_margin"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acceptable_performance_items">
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/attendance_one_day"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_list_item_height"
+                    android:layout_marginTop="@dimen/group_list_vertical_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/topic_type_group"
+                    app:leadingComponent="radioButton"
+                    app:title="@string/acceptable_attendance_one_day_item" />
+
+                <com.tusur.teacherhelper.presentation.view.ListItemView
+                    android:id="@+id/attendance_multiple_days"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_list_item_height"
+                    android:layout_marginTop="@dimen/group_list_vertical_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/topic_type_group"
+                    app:leadingComponent="radioButton"
+                    app:title="@string/acceptable_attendance_multiple_days_item" />
+
+            </com.tusur.teacherhelper.presentation.view.ListLayout>
+
+            <com.tusur.teacherhelper.presentation.view.ListItemView
+                android:id="@+id/deadline"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/default_list_item_height"
+                android:layout_marginTop="@dimen/group_list_vertical_margin"
+                android:background="@drawable/group_list_single_item_ripple"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/attendance_variants"
+                app:leadingComponent="nothing"
+                app:position="single"
+                app:title="@string/topic_type_deadline_allowed"
+                app:trailingComponent="switch1" />
+
+            <com.tusur.teacherhelper.presentation.view.InfoView
+                android:id="@+id/infoView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_content_margin"
+                android:text="@string/allow_deadline_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/deadline" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/confirm_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/group_list_vertical_margin"
+                android:layout_marginBottom="@dimen/fragment_bottom_margin"
+                android:text="@string/confirm_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/infoView"
+                app:layout_constraintVertical_bias="1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

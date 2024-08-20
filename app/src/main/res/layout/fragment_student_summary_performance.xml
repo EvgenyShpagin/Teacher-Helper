@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:liftOnScroll="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back_24"
+            app:title="@string/student_performance_title" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/default_content_margin">
+
+            <TextView
+                android:id="@+id/headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Шарифов Евгений Богданович" />
+
+            <TextView
+                android:id="@+id/chip_group_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_content_margin"
+                android:text="@string/topics_taken_into_account_label"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/headline" />
+
+            <HorizontalScrollView
+                android:id="@+id/chip_group_scroll_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/chip_group_label"
+                app:layout_constraintStart_toStartOf="@+id/chip_group_label"
+                app:layout_constraintTop_toBottomOf="@+id/chip_group_label">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group"
+                    app:selectionRequired="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true" />
+
+            </HorizontalScrollView>
+
+            <com.tusur.teacherhelper.presentation.view.ListLayout
+                android:id="@+id/topics_progress_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_content_margin"
+                app:label="@string/passed_topics_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chip_group_scroll_view" />
+
+            <com.tusur.teacherhelper.presentation.view.ListLayout
+                android:id="@+id/topics_attendance_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_content_margin"
+                app:label="@string/attendance_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topics_progress_list_layout" />
+
+            <Button
+                android:id="@+id/set_result_grade_button"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_content_margin"
+                android:text="@string/set_result_grade"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topics_attendance_list_layout" />
+
+            <include
+                android:id="@+id/switch_buttons"
+                layout="@layout/student_switch_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_content_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/set_result_grade_button"
+                app:layout_constraintVertical_bias="1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

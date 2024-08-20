@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/default_list_item_height"
+    android:background="@drawable/default_list_item_ripple"
+    android:clickable="true"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/group_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_list_item_height"
+        android:layout_marginEnd="@dimen/list_item_small_content_padding"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/default_list_item_horizontal_padding"
+        android:paddingEnd="@dimen/default_list_item_horizontal_padding"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="?attr/colorOnSurface"
+        tools:text="430-3" />
+
+    <CheckBox
+        android:id="@+id/group_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:clickable="false" />
+
+</FrameLayout>

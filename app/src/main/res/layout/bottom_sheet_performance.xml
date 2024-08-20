@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/fragment_horizontal_margin"
+    android:paddingTop="@dimen/bottom_sheet_top_margin"
+    android:paddingRight="@dimen/fragment_horizontal_margin">
+
+    <TextView
+        android:id="@+id/title"
+        style="?attr/textAppearanceTitleMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_performance_title"
+        android:textColor="?attr/colorOnSurface" />
+
+    <TextView
+        android:id="@+id/headline"
+        style="?attr/textAppearanceTitleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_content_margin"
+        android:textColor="?attr/colorOnSurface"
+        tools:text="Ершов Михаил Владимирович" />
+
+    <com.tusur.teacherhelper.presentation.view.ListLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_content_margin">
+
+        <com.tusur.teacherhelper.presentation.view.ListItemView
+            android:id="@+id/grade_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_list_item_height"
+            app:leadingComponent="nothing"
+            app:title="@string/performance_grade"
+            app:trailingComponent="supportText" />
+
+        <com.tusur.teacherhelper.presentation.view.ListItemView
+            android:id="@+id/assessment_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_list_item_height"
+            app:leadingComponent="nothing"
+            app:title="@string/performance_assessment"
+            app:trailingComponent="icon" />
+
+        <com.tusur.teacherhelper.presentation.view.ListItemView
+            android:id="@+id/progress_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_list_item_height"
+            app:leadingComponent="nothing"
+            app:title="@string/performance_progress"
+            app:trailingComponent="supportText" />
+
+    </com.tusur.teacherhelper.presentation.view.ListLayout>
+
+    <include
+        android:id="@+id/switch_buttons"
+        layout="@layout/student_switch_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_content_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</LinearLayout>

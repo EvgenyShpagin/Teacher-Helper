@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/default_list_item_height">
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/default_list_item_height"
+        android:layout_marginEnd="@dimen/group_list_item_vertical_margin"
+        android:layout_weight="1"
+        android:background="@drawable/default_list_item_ripple"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/default_list_item_horizontal_padding"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="?attr/colorOnSurface"
+        tools:ignore="RtlSymmetry"
+        tools:text="22.10.2023" />
+
+    <ImageButton
+        android:id="@+id/edit_button"
+        android:layout_width="@dimen/default_list_item_height"
+        android:layout_height="@dimen/default_list_item_height"
+        android:background="@drawable/default_list_item_ripple"
+        android:contentDescription="@string/cd_remove"
+        android:scaleType="center"
+        android:src="@drawable/ic_edit_24" />
+
+</LinearLayout>
