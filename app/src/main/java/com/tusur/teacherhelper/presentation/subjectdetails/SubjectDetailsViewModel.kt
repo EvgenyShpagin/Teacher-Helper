@@ -140,9 +140,15 @@ class SubjectDetailsViewModel(
         subjectTopics: List<Topic>,
         globalTopics: List<Topic>
     ): List<TopicItemUiState> {
-        return subjectTopics.map { it.toItemUiState(primaryLocale) } +
-                listOf(TopicItemUiState.Label(UiText.Resource(R.string.global_topics_label))) +
-                globalTopics.map { it.toItemUiState(primaryLocale) }
+        val uiSubjectTopics = subjectTopics.map { it.toItemUiState(primaryLocale) }
+        val uiGlobalTopicsLabel =
+            TopicItemUiState.Label(UiText.Resource(R.string.global_topics_label))
+        val uiGlobalTopics = globalTopics.map { it.toItemUiState(primaryLocale) }
+        return if (uiGlobalTopics.isEmpty()) {
+            uiSubjectTopics
+        } else {
+            uiSubjectTopics + uiGlobalTopicsLabel + uiGlobalTopics
+        }
     }
 
     data class UiState(
