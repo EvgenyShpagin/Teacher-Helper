@@ -11,6 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetClassTimeBinding
+import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.presentation.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.util.getGroupListItemDecoration
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 class ClassTimeBottomSheet(
     private var topicId: Int,
     private var groupListIds: List<Int>? = null,
+    private val classDate: Date,
     private val doOnTimeConfirm: (initTimeMs: Long) -> Unit
 ) : BottomSheetDialogFragment() {
 
@@ -29,7 +31,7 @@ class ClassTimeBottomSheet(
     private val binding get() = _binding!!
 
     private val viewModel: ClassTimeViewModel by viewModels {
-        ClassTimeViewModel.factory(topicId, groupListIds)
+        ClassTimeViewModel.factory(topicId, groupListIds, classDate)
     }
 
     private val adapter = ClassTimeAdapter()

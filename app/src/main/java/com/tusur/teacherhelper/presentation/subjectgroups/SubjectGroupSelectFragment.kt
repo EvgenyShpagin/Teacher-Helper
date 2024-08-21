@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.databinding.FragmentSubjectGroupSelectBinding
+import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.presentation.basedialog.EmptyGroupDialog
 import com.tusur.teacherhelper.presentation.topic.ClassTimeBottomSheet
 import com.tusur.teacherhelper.presentation.topicperformance.SharedClassDatesBottomSheet
@@ -115,7 +116,8 @@ class SubjectGroupSelectFragment : Fragment(), OnQueryTextListener {
         ) { dateMillis ->
             ClassTimeBottomSheet(
                 topicId = args.topicId,
-                groupListIds = viewModel.getCheckedItemIds()
+                groupListIds = viewModel.getCheckedItemIds(),
+                classDate = Date.fromMillis(dateMillis)
             ) { initTimeMs ->
                 doOnSelectDatetime.invoke(dateMillis + initTimeMs)
             }.show(childFragmentManager, null)

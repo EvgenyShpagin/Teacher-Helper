@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.ClassTime
+import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.usecase.GetAllClassTimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSharedClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSharedClassTimeUseCase
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 class ClassTimeViewModel(
     private val topicId: Int,
     private val groupIds: List<Int>?,
+    private val classDate: Date,
     private val getAllClassTime: GetAllClassTimeUseCase,
     private val getSharedClassTime: GetSharedClassTimeUseCase,
     private val getSubjectNotEmptyGroups: GetSubjectNotEmptyGroupsUseCase,
@@ -38,7 +40,7 @@ class ClassTimeViewModel(
             val groupsIds = groupIds ?: getSubjectNotEmptyGroups(
                 subjectId = getSubjectByTopicId(topicId).id
             ).map { it.id }
-            val sharedClassTimeList = getSharedClassTime(topicId, groupsIds)
+            val sharedClassTimeList = getSharedClassTime(topicId, groupsIds, classDate)
             _uiState.update {
                 UiState(
                     chosenTimeMillis = null,
@@ -68,11 +70,12 @@ class ClassTimeViewModel(
     )
 
     companion object {
-        fun factory(topicId: Int, groupIds: List<Int>?) = viewModelFactory {
+        fun factory(topicId: Int, groupIds: List<Int>?, classDate: Date) = viewModelFactory {
             initializer {
                 ClassTimeViewModel(
                     topicId = topicId,
                     groupIds = groupIds,
+                    classDate = classDate,
                     getAllClassTime = GetAllClassTimeUseCase(App.module.classTimeRepository),
                     getSharedClassTime = GetSharedClassTimeUseCase(
                         GetSharedClassDatetimeUseCase(App.module.classDateRepository),

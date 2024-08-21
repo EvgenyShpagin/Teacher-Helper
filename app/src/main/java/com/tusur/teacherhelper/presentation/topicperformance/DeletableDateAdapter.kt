@@ -19,6 +19,6 @@ class DeletableDateAdapter(
     override fun onBindViewHolder(holder: DefaultViewHolder, position: Int) {
         val textView = holder.itemView.findViewById<TextView>(R.id.text_view)
         val date = getItem(position)
-        textView.text = date.dateText
+        textView.text = date.dateText.toString(context = holder.itemView.context)
     }
 }

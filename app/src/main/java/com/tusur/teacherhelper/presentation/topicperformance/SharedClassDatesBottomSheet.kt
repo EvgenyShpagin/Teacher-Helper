@@ -15,10 +15,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetSharedClassDatesBinding
 import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.presentation.topicperformance.SharedClassDatesViewModel.OnetimeEvent
+import com.tusur.teacherhelper.presentation.util.SingleChoiceAlertAdapter
 import com.tusur.teacherhelper.presentation.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.util.primaryLocale
+import com.tusur.teacherhelper.presentation.util.setSingleChoiceItems
 import com.tusur.teacherhelper.presentation.view.recycler.BaseDeletableAdapter
 import com.tusur.teacherhelper.presentation.view.recycler.decorations.MarginItemDecoration
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
@@ -53,9 +57,8 @@ class SharedClassDatesBottomSheet(
             }
 
             override fun onDelete(item: DateItemUiState) {
-                showDeleteGroupDialog {
-                    viewModel.deleteAttendance(item)
-                    viewModel.stopDelete()
+                showDeleteDateDialog(item) { timeItemUiState ->
+                    timeItemUiState.onDelete()
                 }
             }
         })
@@ -79,14 +82,14 @@ class SharedClassDatesBottomSheet(
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.uiState.distinctUntilChangedBy { it.isFetched }.collect {
-                        if (it.isFetched && it.sharedClassDays.isEmpty()) {
+                        if (it.isFetched && it.sharedClassDates.isEmpty()) {
                             showDateSelectDialogAndNavigate()
                         }
                     }
                 }
                 launch {
-                    viewModel.uiState.distinctUntilChangedBy { it.sharedClassDays }.collect {
-                        adapter.submitList(it.sharedClassDays)
+                    viewModel.uiState.distinctUntilChangedBy { it.sharedClassDates }.collect {
+                        adapter.submitList(it.sharedClassDates)
                     }
                 }
                 launch {
@@ -96,16 +99,37 @@ class SharedClassDatesBottomSheet(
                         binding.cancelDeleteButton.isVisible = it.isDeleting
                     }
                 }
+                launch(Dispatchers.Main.immediate) {
+                    viewModel.onetimeEvent.collect {
+                        if (it is OnetimeEvent.ClassDateDeleted) {
+                            dismiss()
+                        }
+                    }
+                }
             }
         }
     }
 
-    private fun showDeleteGroupDialog(onConfirm: () -> Unit) {
+    private fun showDeleteDateDialog(
+        dateItem: DateItemUiState,
+        onConfirm: (timeItemUiState: TimeItemUiState) -> Unit
+    ) {
+        val classTimeItemsUiState = viewModel.uiState.value.classDateTimeOfEach[dateItem]!!
+        val adapter = SingleChoiceAlertAdapter(
+            items = classTimeItemsUiState.map {
+                SingleChoiceAlertAdapter.Item(
+                    isChecked = false,
+                    text = it.timeText.toString(requireContext()),
+                    isEnabled = true
+                )
+            }
+        )
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_delete_attendance_title)
+            .setSingleChoiceItems(adapter)
             .setNegativeButton(R.string.cancel_button, null)
             .setPositiveButton(R.string.confirm_button) { _, _ ->
-                onConfirm.invoke()
+                onConfirm.invoke(classTimeItemsUiState[adapter.checkedPosition])
             }.show()
     }
 

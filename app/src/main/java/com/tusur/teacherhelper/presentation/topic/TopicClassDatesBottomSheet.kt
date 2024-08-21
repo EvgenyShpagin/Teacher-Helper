@@ -15,6 +15,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetSubjectClassDatesBinding
+import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.presentation.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.util.primaryLocale
 import com.tusur.teacherhelper.presentation.view.recycler.decorations.MarginItemDecoration
@@ -48,7 +49,9 @@ class TopicClassDatesBottomSheet : BottomSheetDialogFragment() {
         }
         adapter = EditableDateAdapter { datetimeUiState ->
             showDatePickerDialog(datetimeUiState.datetimeMillis) { newDateMillis ->
-                showClassTimeSelectDialog { newTimeMillis ->
+                showClassTimeSelectDialog(
+                    newClassDate = Date.fromMillis(newDateMillis)
+                ) { newTimeMillis ->
                     viewModel.editClassDay(
                         oldDatetimeMs = datetimeUiState.datetimeMillis,
                         newDatetimeMs = newDateMillis + newTimeMillis
@@ -112,8 +115,14 @@ class TopicClassDatesBottomSheet : BottomSheetDialogFragment() {
         _binding = null
     }
 
-    private fun showClassTimeSelectDialog(onConfirm: (timeMillis: Long) -> Unit) {
-        ClassTimeBottomSheet(topicId = args.topicId) { startTimeMillis ->
+    private fun showClassTimeSelectDialog(
+        newClassDate: Date,
+        onConfirm: (timeMillis: Long) -> Unit
+    ) {
+        ClassTimeBottomSheet(
+            topicId = args.topicId,
+            classDate = newClassDate
+        ) { startTimeMillis ->
             onConfirm(startTimeMillis)
         }.show(childFragmentManager, null)
     }
