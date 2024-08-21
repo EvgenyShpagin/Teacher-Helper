@@ -23,6 +23,8 @@ interface ClassDateDao {
             JOIN student
                 ON student.id = stp.student_id
                 AND student.group_id in (:groupsIds)
+        ORDER BY 
+            date.datetime_millis
         """
     )
     suspend fun getShared(topicId: Int, groupsIds: List<Int>): List<ClassDate>
