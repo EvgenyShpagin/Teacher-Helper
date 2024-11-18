@@ -89,7 +89,11 @@ class TopicNameViewModel(
 
     private fun addOrdinal() = viewModelScope.launch {
         val topicTypeId = savedStateHandle.get<Int>(KEY_CHECKED_TYPE_ID)!!
-        val newOrdinal = getAvailableTopicOrdinal(subjectId, topicId, topicTypeId)
+        val newOrdinal = getAvailableTopicOrdinal(
+            subjectId = subjectId,
+            topicId = topicId,
+            topicTypeId = topicTypeId
+        )
         savedStateHandle[KEY_ORDINAL] = newOrdinal
         _uiState.update { it.copy(ordinal = UiText.Dynamic(newOrdinal.toString())) }
     }
@@ -129,7 +133,9 @@ class TopicNameViewModel(
                             createdTopicId = createSubjectTopic(subjectId, topicType, topicName)
                         )
                     } else {
-                        updateSubjectTopic.invoke(topic!!.copy(name = topicName))
+                        updateSubjectTopic(
+                            topic = topic!!.copy(name = topicName, type = topicType)
+                        )
                         OnetimeEvent.SaveSuccess(isJustCreated = false)
                     }
                 }
@@ -204,7 +210,7 @@ class TopicNameViewModel(
             val currentType = getTopicType(topic.type.id)!!
             val primaryUiItems = getPrimaryTopicTypes().map {
                 it.toUiItem(
-                    isEnabled = (isCreatingTopic || canTopicTypeBeReplaced(currentType, it)),
+                    isEnabled = isCreatingTopic || canTopicTypeBeReplaced(currentType, it),
                     isSelected = it.id == topic.type.id
                 )
             }
