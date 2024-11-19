@@ -26,7 +26,6 @@ import com.tusur.teacherhelper.presentation.model.UiText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -73,13 +72,13 @@ class SubjectDetailsViewModel(
                 }
             }
             launch {
-                _uiState.update { state ->
-                    state.copy(
-                        isFetching = false,
-                        groupsUiState = getSubjectGroups(subjectId).first().map { group ->
-                            group.toItemUiState()
-                        }
-                    )
+                getSubjectGroups(subjectId).collect { groups ->
+                    _uiState.update { state ->
+                        state.copy(
+                            isFetching = false,
+                            groupsUiState = groups.map { it.toItemUiState() }
+                        )
+                    }
                 }
             }
         }
