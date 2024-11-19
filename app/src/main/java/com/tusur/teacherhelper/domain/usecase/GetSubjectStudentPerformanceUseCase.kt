@@ -1,7 +1,9 @@
 package com.tusur.teacherhelper.domain.usecase
 
 import com.tusur.teacherhelper.domain.model.Performance
+import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.Topic
+import com.tusur.teacherhelper.domain.model.TopicType
 import com.tusur.teacherhelper.domain.repository.StudentPerformanceRepository
 import com.tusur.teacherhelper.domain.repository.TopicRepository
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +29,10 @@ class GetSubjectStudentPerformanceUseCase(
                     subjectTopicIds.forEachIndexed { index, topicId ->
                         if (!topicsFinalPerformance.any { (topic, _) -> topic.id == topicId }) {
                             val missedTopic = topicRepository.getById(topicId)!!
-                            resultList.add(index, missedTopic to NO_PERFORMANCE)
+                            resultList.add(
+                                index,
+                                missedTopic to missedTopic.type.createEmptyPerformance()
+                            )
                         }
                     }
                     return@map resultList
@@ -36,7 +41,12 @@ class GetSubjectStudentPerformanceUseCase(
             }
     }
 
-    private companion object {
-        val NO_PERFORMANCE = Performance(null, null, null, null)
+    private fun TopicType.createEmptyPerformance(): Performance {
+        return Performance(
+            grade = if (isGradeAcceptable) PerformanceItem.Grade(0) else null,
+            progress = if (isProgressAcceptable) PerformanceItem.Progress(0f) else null,
+            assessment = if (isAssessmentAcceptable) PerformanceItem.Assessment.FAIL else null,
+            attendance = if (isAttendanceAcceptable) emptyList() else null
+        )
     }
 }
