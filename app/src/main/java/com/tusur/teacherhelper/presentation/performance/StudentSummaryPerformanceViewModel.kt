@@ -188,7 +188,6 @@ class StudentPerformanceViewModel(
                                 App.module.studentPerformanceRepository,
                                 App.module.topicRepository
                             ),
-                            GetSubjectTopicsUseCase(App.module.topicRepository),
                             GetSuggestedProgressForGradeUseCase()
                         ),
                         GetSubjectStudentSummaryAttendanceUseCase(

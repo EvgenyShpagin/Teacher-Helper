@@ -6,49 +6,55 @@ import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.TopicType
 import kotlinx.coroutines.flow.first
 
+private typealias TypeToProgress = Pair<TopicType, SumProgress<Float>>
+
 class GetSubjectStudentSummaryPerformanceUseCase(
     private val getTotalStudentPerformance: GetSubjectStudentPerformanceUseCase,
-    private val getSubjectTopics: GetSubjectTopicsUseCase,
     private val getSuggestedProgressForGrade: GetSuggestedProgressForGradeUseCase
 ) {
     suspend operator fun invoke(
         studentId: Int,
         subjectId: Int,
         takenInAccountTopicIds: List<Int>
-    ): List<Pair<TopicType, SumProgress<Float>>> {
-        val studentPerformance = getTotalStudentPerformance(studentId, subjectId)
-        val takenTopics = getSubjectTopics(
-            subjectId = subjectId,
-            withCancelled = false
-        ).first().filter { it.id in takenInAccountTopicIds }
-        val typesPerformance = ArrayList<Pair<TopicType, SumProgress<Float>>>(takenTopics.count())
+    ): List<TypeToProgress> {
+        val typesPerformance = ArrayList<TypeToProgress>(takenInAccountTopicIds.count())
 
-        studentPerformance.first().forEach { (topic, performance) ->
-            if (takenTopics.any { it.id == topic.id } && (topic.type.isProgressAcceptable || topic.type.isGradeAcceptable)) {
+        getTotalStudentPerformance(studentId, subjectId).first()
+            .filter { (topic, _) ->
+                topic.id in takenInAccountTopicIds
+                        && (topic.type.isProgressAcceptable || topic.type.isGradeAcceptable)
+            }
+            .forEach { (topic, performance) ->
                 val typeIsAlreadyAdded = typesPerformance.any { (type, _) -> type == topic.type }
                 if (typeIsAlreadyAdded) {
-                    val editableTypePerformance = typesPerformance.find { it.first == topic.type }!!
-                    val totalPerformance = editableTypePerformance.second
-                    val topicProgress = getTopicProgressValue(topic, performance)
-                    typesPerformance.add(
-                        editableTypePerformance.copy(
-                            second = totalPerformance.copy(
-                                reached = totalPerformance.reached + topicProgress,
-                                total = totalPerformance.total + 1
-                            )
-                        )
-                    )
+                    typesPerformance.updateExisting(topic, performance)
                 } else {
-                    typesPerformance.add(
-                        topic.type to SumProgress(
-                            reached = getTopicProgressValue(topic, performance),
-                            total = 1f
-                        )
-                    )
+                    typesPerformance.addNew(topic, performance)
                 }
             }
-        }
         return typesPerformance
+    }
+
+    private fun ArrayList<TypeToProgress>.updateExisting(topic: Topic, performance: Performance) {
+        val editableTypePerformanceIndex = indexOfFirst { it.first == topic.type }
+        val editableTypePerformance = this[editableTypePerformanceIndex]
+        val totalPerformance = editableTypePerformance.second
+        val topicProgress = getTopicProgressValue(topic, performance)
+        this[editableTypePerformanceIndex] = editableTypePerformance.copy(
+            second = totalPerformance.copy(
+                reached = totalPerformance.reached + topicProgress,
+                total = totalPerformance.total + 1
+            )
+        )
+    }
+
+    private fun ArrayList<TypeToProgress>.addNew(topic: Topic, performance: Performance) {
+        add(
+            topic.type to SumProgress(
+                reached = getTopicProgressValue(topic, performance),
+                total = 1f
+            )
+        )
     }
 
     private fun getTopicProgressValue(topic: Topic, performance: Performance): Float {
