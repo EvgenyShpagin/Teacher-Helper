@@ -6,5 +6,4 @@ interface DeadlineRepository {
     suspend fun getAll(): List<Deadline>
     suspend fun getOfTopic(topicId: Int): Deadline?
     suspend fun delete(deadline: Deadline)
-    suspend fun getOfOwningTopic(topicId: Int): Deadline?
 }

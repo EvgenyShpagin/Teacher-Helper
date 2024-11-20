@@ -8,14 +8,8 @@ class DeleteTopicDeadlineUseCase(
     private val deadlineRepository: DeadlineRepository
 ) {
     suspend operator fun invoke(topicId: Int) {
-        val topicDeadline = deadlineRepository.getOfTopic(topicId)
+        val topicDeadline = deadlineRepository.getOfTopic(topicId) ?: return
         topicRepository.setDeadline(topicId, null)
-
-        if (topicDeadline?.owningTopicId == topicId) {
-            deadlineRepository.delete(topicDeadline)
-        } else {
-            val deadlineOfTopicAsOwner = deadlineRepository.getOfOwningTopic(topicId) ?: return
-            deadlineRepository.delete(deadlineOfTopicAsOwner)
-        }
+        deadlineRepository.delete(topicDeadline)
     }
 }

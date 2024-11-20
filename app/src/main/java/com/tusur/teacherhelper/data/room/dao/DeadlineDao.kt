@@ -23,9 +23,6 @@ interface DeadlineDao {
     )
     suspend fun getOfTopic(topicId: Int): Deadline?
 
-    @Query("SELECT * FROM deadline WHERE deadline.creator_topic_id = :topicId")
-    suspend fun getOfOwningTopic(topicId: Int): Deadline?
-
     @Insert
     suspend fun insert(deadline: Deadline): Long
 
