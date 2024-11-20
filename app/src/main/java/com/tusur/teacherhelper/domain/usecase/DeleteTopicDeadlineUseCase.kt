@@ -14,8 +14,8 @@ class DeleteTopicDeadlineUseCase(
         if (topicDeadline?.owningTopicId == topicId) {
             deadlineRepository.delete(topicDeadline)
         } else {
-            val deadlineWithTopicAsOwner = deadlineRepository.getWithOwningTopic(topicId) ?: return
-            deadlineRepository.delete(deadlineWithTopicAsOwner)
+            val deadlineOfTopicAsOwner = deadlineRepository.getOfOwningTopic(topicId) ?: return
+            deadlineRepository.delete(deadlineOfTopicAsOwner)
         }
     }
 }

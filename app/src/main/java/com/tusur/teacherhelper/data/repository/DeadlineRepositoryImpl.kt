@@ -19,7 +19,7 @@ class DeadlineRepositoryImpl(private val deadlineDao: DeadlineDao) : DeadlineRep
         deadlineDao.delete(deadline.toData())
     }
 
-    override suspend fun getWithOwningTopic(topicId: Int): Deadline? {
+    override suspend fun getOfOwningTopic(topicId: Int): Deadline? {
         return deadlineDao.getOfOwningTopic(topicId)?.toDomain()
     }
 }
