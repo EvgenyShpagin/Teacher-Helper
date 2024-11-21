@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.constraints.InputConstraints
-import com.tusur.teacherhelper.domain.model.Result
+import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.Subject
 import com.tusur.teacherhelper.domain.model.error.SubjectNameError
 import com.tusur.teacherhelper.domain.usecase.AddSubjectUseCase

@@ -1,7 +1,7 @@
 package com.tusur.teacherhelper.domain.usecase
 
 import com.tusur.teacherhelper.domain.model.Group
-import com.tusur.teacherhelper.domain.model.Result
+import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.error.GroupNumberError
 import com.tusur.teacherhelper.domain.util.PROHIBITED_GROUP_CHARS_REGEX
 

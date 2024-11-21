@@ -8,7 +8,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Date
-import com.tusur.teacherhelper.domain.model.Result
+import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.TopicType
 import com.tusur.teacherhelper.domain.model.error.TopicNameError

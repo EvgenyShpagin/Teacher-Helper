@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.domain.model.Result
+import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.StudentsImportParameters
 import com.tusur.teacherhelper.domain.model.error.ExcelStudentImportError
 import com.tusur.teacherhelper.domain.usecase.AddStudentsUseCase

@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.domain.model
+package com.tusur.teacherhelper.domain.util
 
 import com.tusur.teacherhelper.domain.model.error.Error
 

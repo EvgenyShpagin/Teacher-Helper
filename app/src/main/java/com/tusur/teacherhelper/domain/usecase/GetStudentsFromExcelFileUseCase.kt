@@ -1,6 +1,6 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.model.Result
+import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.StudentsImportParameters
 import com.tusur.teacherhelper.domain.model.error.ExcelStudentImportError

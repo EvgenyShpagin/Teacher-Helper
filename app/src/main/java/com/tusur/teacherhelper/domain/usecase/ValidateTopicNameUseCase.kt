@@ -1,6 +1,6 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.model.Result
+import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.error.TopicNameError
 import com.tusur.teacherhelper.domain.usecase.CheckTopicNameAddTextUseCase.TopicAddTextInfo.Clear
