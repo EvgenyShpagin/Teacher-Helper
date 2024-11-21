@@ -77,10 +77,11 @@ interface TopicDao {
         SELECT 
             COUNT(*) 
         FROM 
-            deadline 
-            JOIN topic ON deadline.creator_topic_id = topic.id
-        WHERE deadline.creator_topic_id = :topicId
+            deadline
+            JOIN topic ON deadline.id = topic.deadline_id
+        WHERE 
+            topic.deadline_id = :deadlineId
         """
     )
-    suspend fun countUsingDeadlineOfTopic(topicId: Int): Int
+    suspend fun countSameDeadlineTopics(deadlineId: Int): Int
 }

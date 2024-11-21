@@ -5,5 +5,6 @@ import com.tusur.teacherhelper.domain.model.Deadline
 interface DeadlineRepository {
     suspend fun getAll(): List<Deadline>
     suspend fun getOfTopic(topicId: Int): Deadline?
+    suspend fun insert(deadline: Deadline): Int
     suspend fun delete(deadline: Deadline)
 }

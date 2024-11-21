@@ -8,13 +8,13 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.usecase.CancelTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.DeletePerformanceUseCase
-import com.tusur.teacherhelper.domain.usecase.DeleteTopicDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.DeleteTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.DoesTopicHaveClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicAsFlowUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicNameByIdUseCase
+import com.tusur.teacherhelper.domain.usecase.SetTopicDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.UpdateSubjectTopicUseCase
 import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.domain.util.formattedShort
@@ -127,7 +127,7 @@ class TopicViewModel(
                     deleteTopic = DeleteTopicUseCase(
                         App.module.topicRepository,
                         App.module.subjectGroupRepository,
-                        DeleteTopicDeadlineUseCase(
+                        SetTopicDeadlineUseCase(
                             App.module.topicRepository,
                             App.module.deadlineRepository
                         ),

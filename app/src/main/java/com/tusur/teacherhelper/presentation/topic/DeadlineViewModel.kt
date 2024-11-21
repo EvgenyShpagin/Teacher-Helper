@@ -7,10 +7,9 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Deadline
 import com.tusur.teacherhelper.domain.model.Topic
-import com.tusur.teacherhelper.domain.usecase.DeleteTopicDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.GetAllTopicsDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.GetDeadlineUseCase
-import com.tusur.teacherhelper.domain.usecase.SetNewDeadlineUseCase
+import com.tusur.teacherhelper.domain.usecase.SetTopicDeadlineUseCase
 import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.presentation.App
@@ -26,7 +25,7 @@ class DeadlineViewModel(
     private val locale: Locale,
     private val topicId: Int,
     private val getTopicDeadline: GetDeadlineUseCase,
-    private val setTopicDeadline: SetNewDeadlineUseCase,
+    private val setTopicDeadline: SetTopicDeadlineUseCase,
     private val getAllTopicsDeadline: GetAllTopicsDeadlineUseCase
 ) : ViewModel() {
     private var deadline: Deadline? = null
@@ -77,11 +76,11 @@ class DeadlineViewModel(
             isSelected = selectedIndex == 0,
             select = { deadline?.owningTopicId?.let { removeDeadline() } }
         )
-        return listOf(noDeadlineItem) + mapIndexed { index, item ->
+        return listOf(noDeadlineItem) + mapIndexed { index, (topic, deadline) ->
             DeadlineUiItem(
-                text = UiText.Dynamic(item.first.name.formatted(locale)),
+                text = UiText.Dynamic(topic.name.formatted(locale)),
                 isSelected = selectedIndex == index,
-                select = { setDeadline(item.second) }
+                select = { setDeadline(deadline) }
             )
         }
     }
@@ -93,13 +92,9 @@ class DeadlineViewModel(
     companion object {
         fun factory(locale: Locale, topicId: Int) = object : ViewModelProvider.Factory {
             private val getTopicDeadline = GetDeadlineUseCase(App.module.deadlineRepository)
-            private val deleteTopic = DeleteTopicDeadlineUseCase(
+            private val setTopicDeadline = SetTopicDeadlineUseCase(
                 App.module.topicRepository,
                 App.module.deadlineRepository
-            )
-            private val setTopicDeadline = SetNewDeadlineUseCase(
-                App.module.topicRepository,
-                deleteTopic
             )
             private val getAllTopicsDeadline = GetAllTopicsDeadlineUseCase(
                 App.module.deadlineRepository,

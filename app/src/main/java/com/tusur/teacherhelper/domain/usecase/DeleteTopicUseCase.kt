@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.first
 class DeleteTopicUseCase(
     private val topicRepository: TopicRepository,
     private val subjectGroupRepository: SubjectGroupRepository,
-    private val deleteTopicDeadline: DeleteTopicDeadlineUseCase,
+    private val setTopicDeadline: SetTopicDeadlineUseCase,
     private val deletePerformance: DeletePerformanceUseCase,
     private val getClassDatetime: GetClassDatetimeUseCase
 ) {
     suspend operator fun invoke(topicId: Int, subjectId: Int) {
-        deleteTopicDeadline(topicId)
+        setTopicDeadline(topicId, null)
         val classDays = getClassDatetime(topicId)
         val groups = subjectGroupRepository.getBySubject(subjectId).first()
         deletePerformance(topicId, groups.map { it.id }, classDays)

@@ -12,6 +12,7 @@ interface TopicRepository {
     fun getBySubject(subjectId: Int): Flow<List<Topic>>
     suspend fun getIdsBySubject(subjectId: Int, withCancelled: Boolean): List<Int>
     suspend fun getAllSameType(subjectId: Int, topicTypeId: Int): List<Topic>
+    suspend fun countSameDeadlineTopics(deadlineId: Int): Int
     suspend fun create(subjectId: Int, topic: Topic): Int
     suspend fun update(topic: Topic, deadlineId: Int?, subjectId: Int)
     suspend fun delete(topicId: Int)

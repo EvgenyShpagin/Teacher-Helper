@@ -6,10 +6,10 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.usecase.DeletePerformanceUseCase
-import com.tusur.teacherhelper.domain.usecase.DeleteTopicDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.DeleteTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.GetClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetGlobalTopicsUseCase
+import com.tusur.teacherhelper.domain.usecase.SetTopicDeadlineUseCase
 import com.tusur.teacherhelper.domain.util.GLOBAL_TOPICS_SUBJECT_ID
 import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.presentation.App
@@ -79,7 +79,7 @@ class GlobalTopicsViewModel(
                     deleteTopic = DeleteTopicUseCase(
                         App.module.topicRepository,
                         App.module.subjectGroupRepository,
-                        DeleteTopicDeadlineUseCase(
+                        SetTopicDeadlineUseCase(
                             App.module.topicRepository,
                             App.module.deadlineRepository
                         ),

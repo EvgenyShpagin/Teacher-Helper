@@ -10,6 +10,9 @@ interface DeadlineDao {
     @Query("SELECT * FROM deadline")
     suspend fun getAll(): List<Deadline>
 
+    @Query("SELECT * FROM deadline WHERE id = :id")
+    suspend fun get(id: Int): Deadline?
+
     @Query(
         """SELECT 
                 deadline.*

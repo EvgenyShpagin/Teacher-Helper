@@ -15,6 +15,10 @@ class DeadlineRepositoryImpl(private val deadlineDao: DeadlineDao) : DeadlineRep
         return deadlineDao.getOfTopic(topicId)?.toDomain()
     }
 
+    override suspend fun insert(deadline: Deadline): Int {
+        return deadlineDao.insert(deadline.toData()).toInt()
+    }
+
     override suspend fun delete(deadline: Deadline) {
         deadlineDao.delete(deadline.toData())
     }

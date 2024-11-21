@@ -51,6 +51,10 @@ class TopicRepositoryImpl(
         return topicDao.getWithType(subjectId, topicTypeId).map { it.toDomain() }
     }
 
+    override suspend fun countSameDeadlineTopics(deadlineId: Int): Int {
+        return topicDao.countSameDeadlineTopics(deadlineId)
+    }
+
     override suspend fun create(subjectId: Int, topic: Topic): Int {
         return topicDao.insert(topic.toData(subjectId, null)).toInt()
     }
@@ -73,19 +77,7 @@ class TopicRepositoryImpl(
 
     override suspend fun setDeadline(topicId: Int, deadline: Deadline?) {
         val currentTopic = topicDao.get(topicId) ?: return
-        if (deadline == null) {
-            val topicDeadlineId = currentTopic.deadlineId
-            if (topicDeadlineId != null) {
-                topicDao.update(currentTopic.copy(deadlineId = null))
-                val otherTopicsCountUsingThisDeadline = topicDao.countUsingDeadlineOfTopic(topicId)
-                if (otherTopicsCountUsingThisDeadline == 0) {
-                    deadlineDao.delete(topicDeadlineId)
-                }
-            }
-        } else {
-            val newDeadlineId = deadlineDao.insert(deadline.toData()).toInt()
-            topicDao.update(currentTopic.copy(deadlineId = newDeadlineId))
-        }
+        topicDao.update(currentTopic.copy(deadlineId = deadline?.id))
     }
 
     override suspend fun getOfTypes(topicTypes: List<TopicType>, subjectId: Int): List<Topic> {

@@ -19,3 +19,5 @@ data class Topic(
         val date: Date?
     )
 }
+
+val Topic.isDeadlineOwner get() = deadline?.owningTopicId == id
