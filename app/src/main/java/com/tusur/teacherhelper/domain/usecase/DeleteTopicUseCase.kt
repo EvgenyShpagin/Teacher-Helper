@@ -1,7 +1,11 @@
 package com.tusur.teacherhelper.domain.usecase
 
+import com.tusur.teacherhelper.domain.model.error.DeadlineUpdateError
+import com.tusur.teacherhelper.domain.model.error.DeleteTopicError
 import com.tusur.teacherhelper.domain.repository.SubjectGroupRepository
 import com.tusur.teacherhelper.domain.repository.TopicRepository
+import com.tusur.teacherhelper.domain.util.Result
+import com.tusur.teacherhelper.domain.util.Success
 import kotlinx.coroutines.flow.first
 
 class DeleteTopicUseCase(
@@ -11,11 +15,16 @@ class DeleteTopicUseCase(
     private val deletePerformance: DeletePerformanceUseCase,
     private val getClassDatetime: GetClassDatetimeUseCase
 ) {
-    suspend operator fun invoke(topicId: Int, subjectId: Int) {
-        setTopicDeadline(topicId, null)
+    suspend operator fun invoke(topicId: Int, subjectId: Int): Result<Unit, DeleteTopicError> {
+        setTopicDeadline(topicId, null).onFailure { error ->
+            if (error == DeadlineUpdateError.OtherTopicsDependOn) {
+                return Result.Error(DeleteTopicError.OthersDependOnTopicDeadline)
+            }
+        }
         val classDays = getClassDatetime(topicId)
         val groups = subjectGroupRepository.getBySubject(subjectId).first()
         deletePerformance(topicId, groups.map { it.id }, classDays)
         topicRepository.delete(topicId)
+        return Result.Success()
     }
 }

@@ -14,23 +14,30 @@ class SetTopicDeadlineUseCase(
     private val deadlineRepository: DeadlineRepository
 ) {
 
-    suspend operator fun invoke(topicId: Int, deadline: Deadline?) {
+    suspend operator fun invoke(
+        topicId: Int,
+        deadline: Deadline?
+    ): Result<Unit, DeadlineUpdateError> {
         val currentDeadline = topicRepository.getById(topicId)!!.deadline
-        when {
-            currentDeadline == null && deadline != null -> setTopicDeadline(topicId, deadline)
+        return when {
             currentDeadline != null && deadline == null -> removeTopicDeadline(topicId)
             currentDeadline != null && deadline != null -> replaceTopicDeadline(topicId, deadline)
+            currentDeadline == null && deadline != null -> {
+                setTopicDeadline(topicId, deadline)
+                Result.Success()
+            }
+
+            else -> Result.Success() // currentDeadline == null && deadline == null
         }
     }
 
-    private suspend fun replaceTopicDeadline(topicId: Int, newDeadline: Deadline) {
-        removeTopicDeadline(topicId)
+    private suspend fun replaceTopicDeadline(
+        topicId: Int,
+        newDeadline: Deadline
+    ): Result<Unit, DeadlineUpdateError> {
+        return removeTopicDeadline(topicId)
             .onSuccess { data ->
                 topicRepository.setDeadline(topicId, insertDeadlineIfNeeded(newDeadline))
-            }.onFailure { error ->
-                if (error == DeadlineUpdateError.OtherTopicsDependOn) {
-                    // TODO: resolve problem
-                }
             }
     }
 
@@ -44,7 +51,6 @@ class SetTopicDeadlineUseCase(
                 topicRepository.setDeadline(topicId, null)
                 deadlineRepository.delete(topic.deadline)
             } else {
-                // TODO: resolve problem
                 return Result.Error(DeadlineUpdateError.OtherTopicsDependOn)
             }
         } else {
