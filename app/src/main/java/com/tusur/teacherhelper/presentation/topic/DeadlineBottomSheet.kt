@@ -16,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetDeadlineBinding
 import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.presentation.core.dialog.TopicDeleteErrorDialog
 import com.tusur.teacherhelper.presentation.util.SingleChoiceAlertAdapter
 import com.tusur.teacherhelper.presentation.util.primaryLocale
 import com.tusur.teacherhelper.presentation.util.setSingleChoiceItems
@@ -53,7 +54,14 @@ class DeadlineBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { setupVisibility(it) }
+                launch {
+                    viewModel.uiState.collect { setupVisibility(it) }
+                }
+                launch(Dispatchers.Main.immediate) {
+                    viewModel.onetimeEvent.collect { onetimeEvent ->
+                        handleOnetimeEvent(onetimeEvent)
+                    }
+                }
             }
         }
     }
@@ -122,6 +130,14 @@ class DeadlineBottomSheet : BottomSheetDialogFragment() {
         }
         if (!uiState.anyDeadlineExists) {
             binding.existDeadlineItem.isVisible = false
+        }
+    }
+
+    private fun handleOnetimeEvent(onetimeEvent: DeadlineViewModel.OnetimeEvent) {
+        when (onetimeEvent) {
+            DeadlineViewModel.OnetimeEvent.FailedToDeleteDeadline -> {
+                TopicDeleteErrorDialog.show(requireContext())
+            }
         }
     }
 }

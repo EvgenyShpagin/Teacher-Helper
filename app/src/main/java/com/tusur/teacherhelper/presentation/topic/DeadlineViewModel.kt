@@ -7,6 +7,7 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Deadline
 import com.tusur.teacherhelper.domain.model.Topic
+import com.tusur.teacherhelper.domain.model.error.DeadlineUpdateError
 import com.tusur.teacherhelper.domain.usecase.GetAllTopicsDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.GetDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.SetTopicDeadlineUseCase
@@ -14,8 +15,10 @@ import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.presentation.App
 import com.tusur.teacherhelper.presentation.model.UiText
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -33,6 +36,8 @@ class DeadlineViewModel(
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
+    private val _onetimeEvents = Channel<OnetimeEvent>()
+    val onetimeEvent = _onetimeEvents.receiveAsFlow()
 
     fun fetch() {
         viewModelScope.launch {
@@ -68,6 +73,10 @@ class DeadlineViewModel(
         val select: () -> Unit
     )
 
+    sealed interface OnetimeEvent {
+        data object FailedToDeleteDeadline : OnetimeEvent
+    }
+
     private fun List<Pair<Topic, Deadline>>.toUiItems(): List<DeadlineUiItem> {
         val selectedIndex = indexOfFirst { it.first.id == deadline?.owningTopicId }
             .coerceAtLeast(0)
@@ -86,7 +95,15 @@ class DeadlineViewModel(
     }
 
     private fun setDeadline(deadline: Deadline?) {
-        viewModelScope.launch { setTopicDeadline(topicId, deadline) }
+        viewModelScope.launch {
+            setTopicDeadline(topicId, deadline).onFailure { error ->
+                when (error) {
+                    DeadlineUpdateError.OtherTopicsDependOn -> {
+                        _onetimeEvents.send(OnetimeEvent.FailedToDeleteDeadline)
+                    }
+                }
+            }
+        }
     }
 
     companion object {
