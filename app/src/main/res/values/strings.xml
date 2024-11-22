@@ -146,6 +146,7 @@
     <string name="dialog_delete_base_error_topic_type_body">Нельзя удалить базовый тип темы</string>
     <string name="dialog_delete_used_error_topic_type_body">Тип темы используется некоторыми темами</string>
     <string name="class_day_edit_error_message">Невозможно отредактировать дату и время занятия, так как с такой датой и временем уже есть занятие</string>
+    <string name="dialog_topic_delete_error">Невозможно удалить тему, чей срок сдачи используется другими темами</string>
     <!-- Performance -->
     <string name="assessment_fail">Незачет</string>
     <string name="assessment_pass">Зачет</string>
