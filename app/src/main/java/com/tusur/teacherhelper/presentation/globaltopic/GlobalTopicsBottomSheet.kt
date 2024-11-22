@@ -17,9 +17,11 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetGlobalTopicsBinding
 import com.tusur.teacherhelper.domain.util.GLOBAL_TOPICS_SUBJECT_ID
 import com.tusur.teacherhelper.domain.util.NO_ID
+import com.tusur.teacherhelper.presentation.core.dialog.TopicDeleteErrorDialog
 import com.tusur.teacherhelper.presentation.util.primaryLocale
 import com.tusur.teacherhelper.presentation.view.recycler.BaseDeletableAdapter
 import com.tusur.teacherhelper.presentation.view.recycler.decorations.MarginItemDecoration
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
@@ -83,6 +85,11 @@ class GlobalTopicsBottomSheet : BottomSheetDialogFragment() {
                         binding.addButton.isInvisible = it.isDeleting
                     }
                 }
+                launch(Dispatchers.Main.immediate) {
+                    viewModel.onetimeEvent.collect { event ->
+                        handleOnetimeEvent(event)
+                    }
+                }
             }
         }
     }
@@ -135,5 +142,13 @@ class GlobalTopicsBottomSheet : BottomSheetDialogFragment() {
         val verticalMargin = resources.getDimension(R.dimen.group_list_item_vertical_margin)
         val itemDecorator = MarginItemDecoration(verticalSpace = verticalMargin)
         binding.topicList.addItemDecoration(itemDecorator)
+    }
+
+    private fun handleOnetimeEvent(event: GlobalTopicsViewModel.OnetimeEvent) {
+        when (event) {
+            GlobalTopicsViewModel.OnetimeEvent.FailedToDeleteDeadline -> {
+                TopicDeleteErrorDialog.show(requireContext())
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.domain.model.Topic
+import com.tusur.teacherhelper.domain.model.error.DeleteTopicError.OthersDependOnTopicDeadline
 import com.tusur.teacherhelper.domain.usecase.DeletePerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.DeleteTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.GetClassDatetimeUseCase
@@ -13,9 +14,12 @@ import com.tusur.teacherhelper.domain.usecase.SetTopicDeadlineUseCase
 import com.tusur.teacherhelper.domain.util.GLOBAL_TOPICS_SUBJECT_ID
 import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.presentation.App
+import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicsViewModel.OnetimeEvent.FailedToDeleteDeadline
 import com.tusur.teacherhelper.presentation.model.UiText
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -30,6 +34,9 @@ class GlobalTopicsViewModel(
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
+    private val _onetimeEvents = Channel<OnetimeEvent>()
+    val onetimeEvent = _onetimeEvents.receiveAsFlow()
+
 
     fun fetch() {
         viewModelScope.launch {
@@ -38,13 +45,19 @@ class GlobalTopicsViewModel(
                     state.copy(globalTopicItemsUiState = globalTopics.map { it.toUiItem() })
                 }
             }
-
         }
     }
 
     fun deleteTopic(topicId: Int) {
         viewModelScope.launch {
             deleteTopic(topicId, GLOBAL_TOPICS_SUBJECT_ID)
+                .onFailure { error ->
+                    when (error) {
+                        OthersDependOnTopicDeadline -> {
+                            _onetimeEvents.send(FailedToDeleteDeadline)
+                        }
+                    }
+                }
             stopDelete()
         }
     }
@@ -69,6 +82,10 @@ class GlobalTopicsViewModel(
         val globalTopicItemsUiState: List<GlobalTopicUiState> = emptyList(),
         val isDeleting: Boolean = false
     )
+
+    sealed interface OnetimeEvent {
+        data object FailedToDeleteDeadline : OnetimeEvent
+    }
 
     companion object {
         fun factory(locale: Locale) = viewModelFactory {
