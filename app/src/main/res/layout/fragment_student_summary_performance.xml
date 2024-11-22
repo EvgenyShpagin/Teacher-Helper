@@ -70,7 +70,7 @@
 
             </HorizontalScrollView>
 
-            <com.tusur.teacherhelper.presentation.view.ListLayout
+            <com.tusur.teacherhelper.presentation.core.view.ListLayout
                 android:id="@+id/topics_progress_list_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chip_group_scroll_view" />
 
-            <com.tusur.teacherhelper.presentation.view.ListLayout
+            <com.tusur.teacherhelper.presentation.core.view.ListLayout
                 android:id="@+id/topics_attendance_list_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

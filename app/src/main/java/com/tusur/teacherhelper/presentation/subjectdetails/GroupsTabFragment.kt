@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentGroupsTabBinding
-import com.tusur.teacherhelper.presentation.util.getDefaultListItemDecoration
+import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch

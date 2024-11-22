@@ -70,7 +70,7 @@
                 tools:layout_height="280dp"
                 tools:listitem="@layout/list_item_checkable_topic_type" />
 
-            <com.tusur.teacherhelper.presentation.view.ListLayout
+            <com.tusur.teacherhelper.presentation.core.view.ListLayout
                 android:id="@+id/topic_name_add"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -83,21 +83,21 @@
                 app:layout_constraintTop_toBottomOf="@id/topic_type_list"
                 app:layout_constraintVertical_bias="0">
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/name_addition_ordinal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:leadingComponent="checkbox"
                     app:title="@string/topic_name_addition_ordinal" />
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/name_addition_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:leadingComponent="checkbox"
                     app:title="@string/topic_name_addition_date" />
 
-            </com.tusur.teacherhelper.presentation.view.ListLayout>
+            </com.tusur.teacherhelper.presentation.core.view.ListLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/confirm_button"

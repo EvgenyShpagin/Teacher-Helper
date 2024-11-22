@@ -8,7 +8,7 @@ import com.tusur.teacherhelper.domain.model.Subject
 import com.tusur.teacherhelper.domain.usecase.GetSubjectByIdUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectNotEmptyGroupsUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchSubjectGroupUseCase
-import com.tusur.teacherhelper.presentation.App
+import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.subjectdetails.SimpleGroupItemUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

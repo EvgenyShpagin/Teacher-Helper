@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.domain.model.Subject
 import com.tusur.teacherhelper.domain.usecase.GetSubjectListUseCase
-import com.tusur.teacherhelper.presentation.App
+import com.tusur.teacherhelper.presentation.core.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

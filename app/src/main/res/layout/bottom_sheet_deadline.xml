@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.tusur.teacherhelper.presentation.view.ListLayout
+    <com.tusur.teacherhelper.presentation.core.view.ListLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_content_margin"
@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title">
 
-        <com.tusur.teacherhelper.presentation.view.ListItemView
+        <com.tusur.teacherhelper.presentation.core.view.ListItemView
             android:id="@+id/exist_deadline_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_list_item_height"
@@ -35,7 +35,7 @@
             app:leadingDrawable="@drawable/ic_update_24"
             app:title="@string/deadline_from_existing" />
 
-        <com.tusur.teacherhelper.presentation.view.ListItemView
+        <com.tusur.teacherhelper.presentation.core.view.ListItemView
             android:id="@+id/new_deadline_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_list_item_height"
@@ -43,7 +43,7 @@
             app:leadingDrawable="@drawable/ic_add_24"
             app:title="@string/deadline_new_date" />
 
-        <com.tusur.teacherhelper.presentation.view.ListItemView
+        <com.tusur.teacherhelper.presentation.core.view.ListItemView
             android:id="@+id/no_deadline_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_list_item_height"
@@ -51,6 +51,6 @@
             app:leadingDrawable="@drawable/ic_block_24"
             app:title="@string/deadline_remove" />
 
-    </com.tusur.teacherhelper.presentation.view.ListLayout>
+    </com.tusur.teacherhelper.presentation.core.view.ListLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation.view.recycler.decorations
+package com.tusur.teacherhelper.presentation.core.view.recycler.decorations
 
 import android.graphics.Rect
 import android.view.View

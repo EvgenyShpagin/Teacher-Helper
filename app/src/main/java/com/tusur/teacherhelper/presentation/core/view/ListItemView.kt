@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation.view
+package com.tusur.teacherhelper.presentation.core.view
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -25,7 +25,7 @@ import com.tusur.teacherhelper.R.styleable.ListItemView_title
 import com.tusur.teacherhelper.R.styleable.ListItemView_trailingComponent
 import com.tusur.teacherhelper.R.styleable.ListItemView_trailingDrawable
 import com.tusur.teacherhelper.R.styleable.ListItemView_trailingSupportText
-import com.tusur.teacherhelper.presentation.util.withOtherColor
+import com.tusur.teacherhelper.presentation.core.util.withOtherColor
 
 
 class ListItemView @JvmOverloads constructor(

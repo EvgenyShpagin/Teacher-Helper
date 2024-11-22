@@ -1,7 +1,7 @@
-package com.tusur.teacherhelper.presentation.basedialog
+package com.tusur.teacherhelper.presentation.core.dialog
 
 import androidx.lifecycle.ViewModel
-import com.tusur.teacherhelper.presentation.model.UiText
+import com.tusur.teacherhelper.presentation.core.model.UiText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 

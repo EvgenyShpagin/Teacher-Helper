@@ -8,7 +8,7 @@ import com.tusur.teacherhelper.domain.usecase.DeleteGroupUseCase
 import com.tusur.teacherhelper.domain.usecase.GetAllGroupsUseCase
 import com.tusur.teacherhelper.domain.usecase.IsGroupAssociatedToAnySubjectUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchGroupUseCase
-import com.tusur.teacherhelper.presentation.App
+import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.subjectdetails.GroupItemUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

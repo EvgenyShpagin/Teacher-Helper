@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation.view
+package com.tusur.teacherhelper.presentation.core.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.textview.MaterialTextView
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.presentation.util.withOtherColor
+import com.tusur.teacherhelper.presentation.core.util.withOtherColor
 
 
 class InfoView @JvmOverloads constructor(

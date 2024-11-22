@@ -17,9 +17,9 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetDeadlineBinding
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.presentation.core.dialog.TopicDeleteErrorDialog
-import com.tusur.teacherhelper.presentation.util.SingleChoiceAlertAdapter
-import com.tusur.teacherhelper.presentation.util.primaryLocale
-import com.tusur.teacherhelper.presentation.util.setSingleChoiceItems
+import com.tusur.teacherhelper.presentation.core.util.SingleChoiceAlertAdapter
+import com.tusur.teacherhelper.presentation.core.util.primaryLocale
+import com.tusur.teacherhelper.presentation.core.util.setSingleChoiceItems
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

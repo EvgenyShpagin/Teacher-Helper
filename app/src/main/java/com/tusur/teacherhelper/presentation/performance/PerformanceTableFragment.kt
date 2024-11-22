@@ -21,10 +21,10 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentPerformanceTableBinding
 import com.tusur.teacherhelper.domain.util.map
-import com.tusur.teacherhelper.presentation.basedialog.EmptyGroupDialog
-import com.tusur.teacherhelper.presentation.util.EXCEL_FILE_NEW_MIME_TYPE
-import com.tusur.teacherhelper.presentation.util.doOnBackPressed
-import com.tusur.teacherhelper.presentation.util.primaryLocale
+import com.tusur.teacherhelper.presentation.core.dialog.EmptyGroupDialog
+import com.tusur.teacherhelper.presentation.core.util.EXCEL_FILE_NEW_MIME_TYPE
+import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch

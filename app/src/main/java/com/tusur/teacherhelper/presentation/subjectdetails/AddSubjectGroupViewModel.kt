@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.constraints.InputConstraints
 import com.tusur.teacherhelper.domain.model.Group
-import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.error.GroupNumberError
 import com.tusur.teacherhelper.domain.usecase.AddGroupToSubjectUseCase
 import com.tusur.teacherhelper.domain.usecase.AddNewGroupUseCase
@@ -15,8 +14,9 @@ import com.tusur.teacherhelper.domain.usecase.DoesGroupNumberAlreadyExistUseCase
 import com.tusur.teacherhelper.domain.usecase.GetAvailableGroupsToAddUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchInListUseCase
 import com.tusur.teacherhelper.domain.usecase.ValidateGroupNumberUseCase
-import com.tusur.teacherhelper.presentation.App
-import com.tusur.teacherhelper.presentation.model.UiText
+import com.tusur.teacherhelper.domain.util.Result
+import com.tusur.teacherhelper.presentation.core.App
+import com.tusur.teacherhelper.presentation.core.model.UiText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

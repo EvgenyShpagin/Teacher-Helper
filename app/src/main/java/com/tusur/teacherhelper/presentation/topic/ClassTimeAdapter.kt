@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.presentation.view.ListItemView
-import com.tusur.teacherhelper.presentation.view.recycler.BaseAdapter
+import com.tusur.teacherhelper.presentation.core.view.ListItemView
+import com.tusur.teacherhelper.presentation.core.view.recycler.BaseAdapter
 
 
 class ClassTimeAdapter : BaseAdapter<ClassTimeItemUiState>(

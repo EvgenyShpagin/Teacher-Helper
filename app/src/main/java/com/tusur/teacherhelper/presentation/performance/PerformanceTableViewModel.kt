@@ -18,9 +18,9 @@ import com.tusur.teacherhelper.domain.usecase.IsGroupNotEmptyUseCase
 import com.tusur.teacherhelper.domain.usecase.SaveGroupPerformanceToExcelFileUseCase
 import com.tusur.teacherhelper.domain.util.formattedShort
 import com.tusur.teacherhelper.domain.util.shortName
-import com.tusur.teacherhelper.presentation.App
-import com.tusur.teacherhelper.presentation.model.UiText
-import com.tusur.teacherhelper.presentation.util.toUiText
+import com.tusur.teacherhelper.presentation.core.App
+import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.toUiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

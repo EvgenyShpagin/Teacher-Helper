@@ -18,8 +18,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.DialogAddSubjectGroupBinding
+import com.tusur.teacherhelper.presentation.core.util.hideKeyboard
 import com.tusur.teacherhelper.presentation.subjectdetails.AddSubjectGroupViewModel.Event
-import com.tusur.teacherhelper.presentation.util.hideKeyboard
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch

@@ -17,12 +17,12 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.databinding.FragmentSubjectGroupSelectBinding
 import com.tusur.teacherhelper.domain.model.Date
-import com.tusur.teacherhelper.presentation.basedialog.EmptyGroupDialog
+import com.tusur.teacherhelper.presentation.core.dialog.EmptyGroupDialog
+import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
+import com.tusur.teacherhelper.presentation.core.util.toNativeArray
 import com.tusur.teacherhelper.presentation.topic.ClassTimeBottomSheet
 import com.tusur.teacherhelper.presentation.topicperformance.SharedClassDatesBottomSheet
-import com.tusur.teacherhelper.presentation.util.doOnBackPressed
-import com.tusur.teacherhelper.presentation.util.getDefaultListItemDecoration
-import com.tusur.teacherhelper.presentation.util.toNativeArray
 import kotlinx.coroutines.launch
 
 

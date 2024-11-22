@@ -8,7 +8,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Date
-import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.TopicType
 import com.tusur.teacherhelper.domain.model.error.TopicNameError
@@ -24,9 +23,10 @@ import com.tusur.teacherhelper.domain.usecase.GetTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.UpdateSubjectTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.ValidateTopicNameUseCase
 import com.tusur.teacherhelper.domain.util.NO_ID
+import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.util.formatted
-import com.tusur.teacherhelper.presentation.App
-import com.tusur.teacherhelper.presentation.model.UiText
+import com.tusur.teacherhelper.presentation.core.App
+import com.tusur.teacherhelper.presentation.core.model.UiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -7,8 +7,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.presentation.basedialog.InputBottomSheet
-import com.tusur.teacherhelper.presentation.basedialog.InputViewModel
+import com.tusur.teacherhelper.presentation.core.dialog.InputBottomSheet
+import com.tusur.teacherhelper.presentation.core.dialog.InputViewModel
 import kotlinx.coroutines.launch
 
 class SubjectInputBottomSheet : InputBottomSheet() {

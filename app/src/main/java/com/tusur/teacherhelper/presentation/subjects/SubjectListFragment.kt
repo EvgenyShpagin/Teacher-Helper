@@ -18,9 +18,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentSubjectListBinding
+import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
+import com.tusur.teacherhelper.presentation.core.view.recycler.checkNestedScrollState
 import com.tusur.teacherhelper.presentation.subjects.SubjectListViewModel.Event
-import com.tusur.teacherhelper.presentation.util.getDefaultListItemDecoration
-import com.tusur.teacherhelper.presentation.view.recycler.checkNestedScrollState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation.view
+package com.tusur.teacherhelper.presentation.core.view
 
 import android.content.Context
 import android.util.AttributeSet

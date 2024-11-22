@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.presentation.basedialog.InputBottomSheet
+import com.tusur.teacherhelper.presentation.core.dialog.InputBottomSheet
 import kotlinx.coroutines.launch
 
 

@@ -11,7 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.databinding.BottomSheetStudentOneTypeTopicsSummaryBinding
-import com.tusur.teacherhelper.presentation.util.primaryLocale
+import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import kotlinx.coroutines.launch
 
 

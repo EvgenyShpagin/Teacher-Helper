@@ -14,7 +14,7 @@ import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.repository.StudentPerformanceRepository
 import com.tusur.teacherhelper.domain.util.applyOrderOf
-import com.tusur.teacherhelper.presentation.util.toNativeArray
+import com.tusur.teacherhelper.presentation.core.util.toNativeArray
 import com.tusur.teacherhelper.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

@@ -21,11 +21,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentAllGroupListBinding
+import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.fixCollapsing
+import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
+import com.tusur.teacherhelper.presentation.core.util.setTextColor
 import com.tusur.teacherhelper.presentation.subjectdetails.DeletableGroupAdapter
-import com.tusur.teacherhelper.presentation.util.doOnBackPressed
-import com.tusur.teacherhelper.presentation.util.fixCollapsing
-import com.tusur.teacherhelper.presentation.util.getDefaultListItemDecoration
-import com.tusur.teacherhelper.presentation.util.setTextColor
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch

@@ -18,8 +18,8 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.databinding.FragmentTopicTypeBinding
 import com.tusur.teacherhelper.domain.util.TOPIC_TYPE_SHORT_NAME_MAX_LENGTH
-import com.tusur.teacherhelper.presentation.util.clearFocusOnActionDone
-import com.tusur.teacherhelper.presentation.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.clearFocusOnActionDone
+import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import kotlinx.coroutines.launch
 
 

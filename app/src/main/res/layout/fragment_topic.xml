@@ -49,14 +49,14 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.tusur.teacherhelper.presentation.view.ListLayout
+            <com.tusur.teacherhelper.presentation.core.view.ListLayout
                 android:id="@+id/performance_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/group_list_vertical_margin"
                 app:label="@string/topic_student_performance_label">
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/performance_item"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_list_item_height"
@@ -66,7 +66,7 @@
                     app:trailingComponent="icon"
                     app:trailingDrawable="@drawable/ic_arrow_right_24" />
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/attendance_item"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_list_item_height"
@@ -76,16 +76,16 @@
                     app:trailingComponent="icon"
                     app:trailingDrawable="@drawable/ic_arrow_right_24" />
 
-            </com.tusur.teacherhelper.presentation.view.ListLayout>
+            </com.tusur.teacherhelper.presentation.core.view.ListLayout>
 
-            <com.tusur.teacherhelper.presentation.view.ListLayout
+            <com.tusur.teacherhelper.presentation.core.view.ListLayout
                 android:id="@+id/date_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/group_list_vertical_margin"
                 app:label="@string/topic_date_label">
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/deadline_item"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_list_item_height"
@@ -93,7 +93,7 @@
                     app:leadingDrawable="@drawable/ic_calendar_check_24"
                     app:title="@string/topic_deadline" />
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/class_days_item"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_list_item_height"
@@ -103,14 +103,14 @@
                     app:trailingComponent="icon"
                     app:trailingDrawable="@drawable/ic_arrow_right_24" />
 
-            </com.tusur.teacherhelper.presentation.view.ListLayout>
+            </com.tusur.teacherhelper.presentation.core.view.ListLayout>
 
-            <com.tusur.teacherhelper.presentation.view.ListLayout
+            <com.tusur.teacherhelper.presentation.core.view.ListLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/group_list_vertical_margin">
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/cancel_item"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_list_item_height"
@@ -119,7 +119,7 @@
                     app:leadingDrawable="@drawable/ic_close_24"
                     app:title="@string/topic_cancel" />
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/delete_item"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_list_item_height"
@@ -128,7 +128,7 @@
                     app:leadingDrawable="@drawable/ic_delete_24"
                     app:title="@string/topic_delete" />
 
-            </com.tusur.teacherhelper.presentation.view.ListLayout>
+            </com.tusur.teacherhelper.presentation.core.view.ListLayout>
 
         </LinearLayout>
 

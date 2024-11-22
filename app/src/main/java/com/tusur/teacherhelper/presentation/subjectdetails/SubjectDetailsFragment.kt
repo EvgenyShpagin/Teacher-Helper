@@ -27,11 +27,11 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentSubjectDetailsBinding
 import com.tusur.teacherhelper.domain.util.NO_ID
+import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.primaryLocale
+import com.tusur.teacherhelper.presentation.core.util.setTextColor
 import com.tusur.teacherhelper.presentation.subjectdetails.SubjectDetailsViewModel.Companion.GROUPS_FRAGMENT_POSITION
 import com.tusur.teacherhelper.presentation.subjectdetails.SubjectDetailsViewModel.Companion.TOPICS_FRAGMENT_POSITION
-import com.tusur.teacherhelper.presentation.util.doOnBackPressed
-import com.tusur.teacherhelper.presentation.util.primaryLocale
-import com.tusur.teacherhelper.presentation.util.setTextColor
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch

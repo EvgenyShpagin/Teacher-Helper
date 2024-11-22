@@ -26,11 +26,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentGroupStudentsBinding
-import com.tusur.teacherhelper.presentation.util.EXCEL_FILE_MIME_TYPES
-import com.tusur.teacherhelper.presentation.util.doOnBackPressed
-import com.tusur.teacherhelper.presentation.util.getDefaultListItemDecoration
-import com.tusur.teacherhelper.presentation.util.getExcelFileFromUri
-import com.tusur.teacherhelper.presentation.view.recycler.checkNestedScrollState
+import com.tusur.teacherhelper.presentation.core.util.EXCEL_FILE_MIME_TYPES
+import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
+import com.tusur.teacherhelper.presentation.core.util.getExcelFileFromUri
+import com.tusur.teacherhelper.presentation.core.view.recycler.checkNestedScrollState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch

@@ -19,8 +19,8 @@ import com.tusur.teacherhelper.domain.usecase.SetTopicDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.UpdateSubjectTopicUseCase
 import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.domain.util.formattedShort
-import com.tusur.teacherhelper.presentation.App
-import com.tusur.teacherhelper.presentation.model.UiText
+import com.tusur.teacherhelper.presentation.core.App
+import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.topic.TopicViewModel.OnetimeEvent.FailedToDeleteDeadline
 import com.tusur.teacherhelper.presentation.topic.TopicViewModel.OnetimeEvent.NavigateBack
 import kotlinx.coroutines.channels.Channel

@@ -10,11 +10,11 @@ import com.tusur.teacherhelper.domain.usecase.GetStudentOneTypeTopicsPerformance
 import com.tusur.teacherhelper.domain.usecase.GetSubjectStudentPerformanceUseCase
 import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.domain.util.getTotalAttendance
-import com.tusur.teacherhelper.presentation.App
-import com.tusur.teacherhelper.presentation.model.UiText
+import com.tusur.teacherhelper.presentation.core.App
+import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.formatted
+import com.tusur.teacherhelper.presentation.core.util.toUiText
 import com.tusur.teacherhelper.presentation.topic.PerformanceType
-import com.tusur.teacherhelper.presentation.util.formatted
-import com.tusur.teacherhelper.presentation.util.toUiText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

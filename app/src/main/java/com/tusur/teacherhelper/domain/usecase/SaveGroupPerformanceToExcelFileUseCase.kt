@@ -2,7 +2,7 @@ package com.tusur.teacherhelper.domain.usecase
 
 import com.tusur.teacherhelper.domain.model.TableContent
 import com.tusur.teacherhelper.domain.util.map
-import com.tusur.teacherhelper.presentation.util.EXCEL_FILE_NEW_MIME_TYPE
+import com.tusur.teacherhelper.presentation.core.util.EXCEL_FILE_NEW_MIME_TYPE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.withContext

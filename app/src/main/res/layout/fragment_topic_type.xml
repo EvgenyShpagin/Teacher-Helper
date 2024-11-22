@@ -76,7 +76,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.tusur.teacherhelper.presentation.view.ListLayout
+            <com.tusur.teacherhelper.presentation.core.view.ListLayout
                 android:id="@+id/acceptable_performance_items"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -86,28 +86,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/short_name_text_input_layout">
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/assessment_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:leadingComponent="checkbox"
                     app:title="@string/acceptable_assessment_item" />
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/grade_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:leadingComponent="checkbox"
                     app:title="@string/acceptable_grade_item" />
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/progress_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:leadingComponent="checkbox"
                     app:title="@string/acceptable_progress_item" />
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/attendance_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -116,9 +116,9 @@
                     app:trailingComponent="icon"
                     app:trailingDrawable="@drawable/ic_arrow_drop_down_24" />
 
-            </com.tusur.teacherhelper.presentation.view.ListLayout>
+            </com.tusur.teacherhelper.presentation.core.view.ListLayout>
 
-            <com.tusur.teacherhelper.presentation.view.ListLayout
+            <com.tusur.teacherhelper.presentation.core.view.ListLayout
                 android:id="@+id/attendance_variants"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/acceptable_performance_items">
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/attendance_one_day"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_list_item_height"
@@ -140,7 +140,7 @@
                     app:leadingComponent="radioButton"
                     app:title="@string/acceptable_attendance_one_day_item" />
 
-                <com.tusur.teacherhelper.presentation.view.ListItemView
+                <com.tusur.teacherhelper.presentation.core.view.ListItemView
                     android:id="@+id/attendance_multiple_days"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_list_item_height"
@@ -151,9 +151,9 @@
                     app:leadingComponent="radioButton"
                     app:title="@string/acceptable_attendance_multiple_days_item" />
 
-            </com.tusur.teacherhelper.presentation.view.ListLayout>
+            </com.tusur.teacherhelper.presentation.core.view.ListLayout>
 
-            <com.tusur.teacherhelper.presentation.view.ListItemView
+            <com.tusur.teacherhelper.presentation.core.view.ListItemView
                 android:id="@+id/deadline"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/default_list_item_height"
@@ -167,7 +167,7 @@
                 app:title="@string/topic_type_deadline_allowed"
                 app:trailingComponent="switch1" />
 
-            <com.tusur.teacherhelper.presentation.view.InfoView
+            <com.tusur.teacherhelper.presentation.core.view.InfoView
                 android:id="@+id/infoView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

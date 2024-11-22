@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation
+package com.tusur.teacherhelper.presentation.core
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

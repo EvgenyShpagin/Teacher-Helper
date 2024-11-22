@@ -17,12 +17,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetPerformanceBinding
-import com.tusur.teacherhelper.presentation.model.UiText
+import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.SingleChoiceAlertAdapter
+import com.tusur.teacherhelper.presentation.core.util.formatProgress
+import com.tusur.teacherhelper.presentation.core.util.setSingleChoiceItems
+import com.tusur.teacherhelper.presentation.core.view.ListItemView
 import com.tusur.teacherhelper.presentation.topicperformance.PerformanceViewModel.Event
-import com.tusur.teacherhelper.presentation.util.SingleChoiceAlertAdapter
-import com.tusur.teacherhelper.presentation.util.formatProgress
-import com.tusur.teacherhelper.presentation.util.setSingleChoiceItems
-import com.tusur.teacherhelper.presentation.view.ListItemView
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch

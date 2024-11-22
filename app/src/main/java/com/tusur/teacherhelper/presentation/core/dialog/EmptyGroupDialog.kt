@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation.basedialog
+package com.tusur.teacherhelper.presentation.core.dialog
 
 import android.content.Context
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

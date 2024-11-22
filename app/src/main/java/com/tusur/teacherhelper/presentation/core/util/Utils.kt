@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation.util
+package com.tusur.teacherhelper.presentation.core.util
 
 import android.content.Context
 import android.content.DialogInterface
@@ -29,11 +29,11 @@ import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.SumProgress
 import com.tusur.teacherhelper.domain.util.formatted
-import com.tusur.teacherhelper.presentation.model.UiText
-import com.tusur.teacherhelper.presentation.view.ListItemView
-import com.tusur.teacherhelper.presentation.view.ListLayout
-import com.tusur.teacherhelper.presentation.view.recycler.checkNestedScrollState
-import com.tusur.teacherhelper.presentation.view.recycler.decorations.MarginItemDecoration
+import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.view.ListItemView
+import com.tusur.teacherhelper.presentation.core.view.ListLayout
+import com.tusur.teacherhelper.presentation.core.view.recycler.checkNestedScrollState
+import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
 import java.util.Locale
 
 

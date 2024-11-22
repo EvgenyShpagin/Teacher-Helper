@@ -18,9 +18,9 @@ import com.tusur.teacherhelper.databinding.BottomSheetGlobalTopicsBinding
 import com.tusur.teacherhelper.domain.util.GLOBAL_TOPICS_SUBJECT_ID
 import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.presentation.core.dialog.TopicDeleteErrorDialog
-import com.tusur.teacherhelper.presentation.util.primaryLocale
-import com.tusur.teacherhelper.presentation.view.recycler.BaseDeletableAdapter
-import com.tusur.teacherhelper.presentation.view.recycler.decorations.MarginItemDecoration
+import com.tusur.teacherhelper.presentation.core.util.primaryLocale
+import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
+import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch

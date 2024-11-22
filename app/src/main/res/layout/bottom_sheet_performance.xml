@@ -26,12 +26,12 @@
         android:textColor="?attr/colorOnSurface"
         tools:text="Ершов Михаил Владимирович" />
 
-    <com.tusur.teacherhelper.presentation.view.ListLayout
+    <com.tusur.teacherhelper.presentation.core.view.ListLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_content_margin">
 
-        <com.tusur.teacherhelper.presentation.view.ListItemView
+        <com.tusur.teacherhelper.presentation.core.view.ListItemView
             android:id="@+id/grade_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_list_item_height"
@@ -39,7 +39,7 @@
             app:title="@string/performance_grade"
             app:trailingComponent="supportText" />
 
-        <com.tusur.teacherhelper.presentation.view.ListItemView
+        <com.tusur.teacherhelper.presentation.core.view.ListItemView
             android:id="@+id/assessment_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_list_item_height"
@@ -47,7 +47,7 @@
             app:title="@string/performance_assessment"
             app:trailingComponent="icon" />
 
-        <com.tusur.teacherhelper.presentation.view.ListItemView
+        <com.tusur.teacherhelper.presentation.core.view.ListItemView
             android:id="@+id/progress_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_list_item_height"
@@ -55,7 +55,7 @@
             app:title="@string/performance_progress"
             app:trailingComponent="supportText" />
 
-    </com.tusur.teacherhelper.presentation.view.ListLayout>
+    </com.tusur.teacherhelper.presentation.core.view.ListLayout>
 
     <include
         android:id="@+id/switch_buttons"

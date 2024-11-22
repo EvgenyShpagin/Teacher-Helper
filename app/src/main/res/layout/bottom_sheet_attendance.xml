@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@id/title"
         tools:text="Ершов Михаил Владимирович" />
 
-    <com.tusur.teacherhelper.presentation.view.ListLayout
+    <com.tusur.teacherhelper.presentation.core.view.ListLayout
         android:id="@+id/list_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headline">
 
-        <com.tusur.teacherhelper.presentation.view.ListItemView
+        <com.tusur.teacherhelper.presentation.core.view.ListItemView
             android:id="@+id/present_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_list_item_height"
@@ -49,7 +49,7 @@
             app:trailingComponent="icon"
             app:trailingDrawable="@drawable/ic_add_24" />
 
-        <com.tusur.teacherhelper.presentation.view.ListItemView
+        <com.tusur.teacherhelper.presentation.core.view.ListItemView
             android:id="@+id/excused_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_list_item_height"
@@ -58,7 +58,7 @@
             app:trailingComponent="icon"
             app:trailingDrawable="@drawable/ic_minus_24" />
 
-        <com.tusur.teacherhelper.presentation.view.ListItemView
+        <com.tusur.teacherhelper.presentation.core.view.ListItemView
             android:id="@+id/absent_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_list_item_height"
@@ -68,7 +68,7 @@
             app:trailingComponent="icon"
             app:trailingDrawable="@drawable/ic_absent_24" />
 
-    </com.tusur.teacherhelper.presentation.view.ListLayout>
+    </com.tusur.teacherhelper.presentation.core.view.ListLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/prev_button"

@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation.model
+package com.tusur.teacherhelper.presentation.core.model
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -8,7 +8,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.color.MaterialColors
-import com.tusur.teacherhelper.presentation.util.withOtherColor
+import com.tusur.teacherhelper.presentation.core.util.withOtherColor
 
 data class Icon(
     @DrawableRes val iconRes: Int,

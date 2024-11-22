@@ -2,7 +2,7 @@ package com.tusur.teacherhelper.presentation.topicperformance
 
 import android.widget.TextView
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.presentation.view.recycler.BaseDeletableAdapter
+import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
 
 
 class DeletableDateAdapter(

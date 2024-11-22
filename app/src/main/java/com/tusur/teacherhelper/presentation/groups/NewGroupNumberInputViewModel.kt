@@ -6,15 +6,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.constraints.InputConstraints
-import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.error.GroupNumberError
 import com.tusur.teacherhelper.domain.usecase.AddGroupToSubjectUseCase
 import com.tusur.teacherhelper.domain.usecase.AddNewGroupUseCase
 import com.tusur.teacherhelper.domain.usecase.DoesGroupNumberAlreadyExistUseCase
 import com.tusur.teacherhelper.domain.usecase.ValidateGroupNumberUseCase
-import com.tusur.teacherhelper.presentation.App
-import com.tusur.teacherhelper.presentation.basedialog.InputViewModel
-import com.tusur.teacherhelper.presentation.model.UiText
+import com.tusur.teacherhelper.domain.util.Result
+import com.tusur.teacherhelper.presentation.core.App
+import com.tusur.teacherhelper.presentation.core.dialog.InputViewModel
+import com.tusur.teacherhelper.presentation.core.model.UiText
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 

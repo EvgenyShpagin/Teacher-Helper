@@ -16,9 +16,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetTopicTypesBinding
 import com.tusur.teacherhelper.domain.util.NO_ID
-import com.tusur.teacherhelper.presentation.model.UiText
-import com.tusur.teacherhelper.presentation.view.recycler.BaseDeletableAdapter
-import com.tusur.teacherhelper.presentation.view.recycler.decorations.MarginItemDecoration
+import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
+import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 

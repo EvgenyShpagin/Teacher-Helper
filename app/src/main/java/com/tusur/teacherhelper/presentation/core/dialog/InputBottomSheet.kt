@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation.basedialog
+package com.tusur.teacherhelper.presentation.core.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.annotation.CallSuper
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.databinding.BottomSheetInputBinding
-import com.tusur.teacherhelper.presentation.util.doOnActionDone
+import com.tusur.teacherhelper.presentation.core.util.doOnActionDone
 
 abstract class InputBottomSheet : BottomSheetDialogFragment() {
 

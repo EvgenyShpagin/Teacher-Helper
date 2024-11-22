@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.tusur.teacherhelper.R
+import com.tusur.teacherhelper.presentation.core.util.hideKeyboard
 import com.tusur.teacherhelper.presentation.group.GroupStudentsViewModel.StudentItemUiState
-import com.tusur.teacherhelper.presentation.util.hideKeyboard
 
 
 class GroupStudentAdapter(

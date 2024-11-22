@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation.util
+package com.tusur.teacherhelper.presentation.core.util
 
 import android.app.Activity
 import android.net.Uri

@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation.model
+package com.tusur.teacherhelper.presentation.core.model
 
 import android.content.Context
 import androidx.annotation.StringRes

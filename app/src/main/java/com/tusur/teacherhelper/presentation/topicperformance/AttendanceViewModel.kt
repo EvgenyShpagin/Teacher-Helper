@@ -11,7 +11,7 @@ import com.tusur.teacherhelper.domain.usecase.GetPrevStudentUseCase
 import com.tusur.teacherhelper.domain.usecase.GetStudentPerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetStudentUseCase
 import com.tusur.teacherhelper.domain.usecase.SetStudentPerformanceUseCase
-import com.tusur.teacherhelper.presentation.App
+import com.tusur.teacherhelper.presentation.core.App
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

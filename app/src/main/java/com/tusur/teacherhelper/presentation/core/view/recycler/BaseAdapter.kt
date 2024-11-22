@@ -1,4 +1,4 @@
-package com.tusur.teacherhelper.presentation.view.recycler
+package com.tusur.teacherhelper.presentation.core.view.recycler
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

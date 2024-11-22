@@ -10,8 +10,8 @@ import com.tusur.teacherhelper.domain.model.Time
 import com.tusur.teacherhelper.domain.usecase.DeletePerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSharedClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.util.formatted
-import com.tusur.teacherhelper.presentation.App
-import com.tusur.teacherhelper.presentation.model.UiText
+import com.tusur.teacherhelper.presentation.core.App
+import com.tusur.teacherhelper.presentation.core.model.UiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -3,9 +3,9 @@ package com.tusur.teacherhelper.presentation.topic
 import android.widget.TextView
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.util.NO_ID
-import com.tusur.teacherhelper.presentation.view.ListItemView
-import com.tusur.teacherhelper.presentation.view.recycler.BaseAdapter
-import com.tusur.teacherhelper.presentation.view.recycler.BaseLabelledAdapter
+import com.tusur.teacherhelper.presentation.core.view.ListItemView
+import com.tusur.teacherhelper.presentation.core.view.recycler.BaseAdapter
+import com.tusur.teacherhelper.presentation.core.view.recycler.BaseLabelledAdapter
 
 class TopicTypeAdapter : BaseLabelledAdapter<TopicTypeItemUiState>(
     listener = object : BaseAdapter.OnClickListener<TopicTypeItemUiState> {

@@ -16,9 +16,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetSubjectClassDatesBinding
 import com.tusur.teacherhelper.domain.model.Date
-import com.tusur.teacherhelper.presentation.util.doOnBackPressed
-import com.tusur.teacherhelper.presentation.util.primaryLocale
-import com.tusur.teacherhelper.presentation.view.recycler.decorations.MarginItemDecoration
+import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.primaryLocale
+import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy

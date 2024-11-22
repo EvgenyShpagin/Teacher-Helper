@@ -20,12 +20,12 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentStudentSummaryPerformanceBinding
+import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.getListItemAt
+import com.tusur.teacherhelper.presentation.core.util.primaryLocale
+import com.tusur.teacherhelper.presentation.core.view.ListItemView
 import com.tusur.teacherhelper.presentation.performance.StudentPerformanceViewModel.Event
 import com.tusur.teacherhelper.presentation.topic.PerformanceType
-import com.tusur.teacherhelper.presentation.util.doOnBackPressed
-import com.tusur.teacherhelper.presentation.util.getListItemAt
-import com.tusur.teacherhelper.presentation.util.primaryLocale
-import com.tusur.teacherhelper.presentation.view.ListItemView
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 

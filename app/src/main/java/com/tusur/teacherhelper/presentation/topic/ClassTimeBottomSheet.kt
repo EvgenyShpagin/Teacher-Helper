@@ -12,8 +12,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetClassTimeBinding
 import com.tusur.teacherhelper.domain.model.Date
-import com.tusur.teacherhelper.presentation.util.doOnBackPressed
-import com.tusur.teacherhelper.presentation.util.getGroupListItemDecoration
+import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.getGroupListItemDecoration
 import kotlinx.coroutines.launch
 
 /**

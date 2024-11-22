@@ -14,8 +14,8 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentTopicsTabBinding
-import com.tusur.teacherhelper.presentation.util.getDefaultListItemDecoration
-import com.tusur.teacherhelper.presentation.util.primaryLocale
+import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
+import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch

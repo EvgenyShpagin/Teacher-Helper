@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.error.StudentNameError
 import com.tusur.teacherhelper.domain.usecase.AddStudentUseCase
@@ -14,8 +13,9 @@ import com.tusur.teacherhelper.domain.usecase.DeleteStudentUseCase
 import com.tusur.teacherhelper.domain.usecase.FormatStudentNameUseCase
 import com.tusur.teacherhelper.domain.usecase.GetGroupByIdUseCase
 import com.tusur.teacherhelper.domain.usecase.GetGroupStudentsUseCase
-import com.tusur.teacherhelper.presentation.App
-import com.tusur.teacherhelper.presentation.model.UiText
+import com.tusur.teacherhelper.domain.util.Result
+import com.tusur.teacherhelper.presentation.core.App
+import com.tusur.teacherhelper.presentation.core.model.UiText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -111,14 +111,15 @@ class GroupStudentsViewModel(
                 is Result.Error -> {
                     if (checkResult.error == StudentNameError.NOT_CHANGED) {
                         _uiState.update { state ->
-                            state.copy(studentItemsUiState = state.studentItemsUiState
-                                .map {
-                                    if (it.id == student.id) {
-                                        it.copy(isEditing = false)
-                                    } else {
-                                        it
+                            state.copy(
+                                studentItemsUiState = state.studentItemsUiState
+                                    .map {
+                                        if (it.id == student.id) {
+                                            it.copy(isEditing = false)
+                                        } else {
+                                            it
+                                        }
                                     }
-                                }
                             )
                         }
                     } else {
