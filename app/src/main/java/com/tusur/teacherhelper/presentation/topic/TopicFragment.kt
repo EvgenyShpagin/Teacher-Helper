@@ -21,9 +21,12 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentTopicBinding
+import com.tusur.teacherhelper.presentation.core.dialog.TopicDeleteErrorDialog
 import com.tusur.teacherhelper.presentation.model.UiText
+import com.tusur.teacherhelper.presentation.topic.TopicViewModel.OnetimeEvent
 import com.tusur.teacherhelper.presentation.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.util.primaryLocale
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -87,9 +90,16 @@ class TopicFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collectLatest {
-                    display(it)
-                    view.doOnPreDraw { startPostponedEnterTransition() }
+                launch {
+                    viewModel.uiState.collectLatest {
+                        display(it)
+                        view.doOnPreDraw { startPostponedEnterTransition() }
+                    }
+                }
+                launch(Dispatchers.Main.immediate) {
+                    viewModel.onetimeEvent.collect { event ->
+                        handleOnetimeEvent(event)
+                    }
                 }
             }
         }
@@ -146,17 +156,11 @@ class TopicFragment : Fragment() {
         }
 
         binding.cancelItem.setOnClickListener {
-            showCancelDialog {
-                viewModel.cancelTopic()
-                navigateBack()
-            }
+            showCancelDialog { viewModel.cancelTopic() }
         }
 
         binding.deleteItem.setOnClickListener {
-            showDeleteDialog {
-                viewModel.deleteTopic()
-                navigateBack()
-            }
+            showDeleteDialog { viewModel.deleteTopic() }
         }
 
         doOnBackPressed(binding.topAppBar) {
@@ -232,5 +236,12 @@ class TopicFragment : Fragment() {
             .setPositiveButton(R.string.confirm_button) { _, _ ->
                 onConfirm.invoke()
             }.show()
+    }
+
+    private fun handleOnetimeEvent(event: OnetimeEvent) {
+        when (event) {
+            OnetimeEvent.FailedToDeleteDeadline -> TopicDeleteErrorDialog.show(requireContext())
+            OnetimeEvent.NavigateBack -> navigateBack()
+        }
     }
 }
