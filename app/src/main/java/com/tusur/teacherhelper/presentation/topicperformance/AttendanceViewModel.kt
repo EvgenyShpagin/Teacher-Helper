@@ -23,7 +23,7 @@ class AttendanceViewModel @AssistedInject constructor(
     @Assisted allStudentIds: List<Int>,
     @Assisted("topicId") private val topicId: Int,
     @Assisted private val datetimeMillis: Long,
-    private val getStudent: GetStudentUseCase,
+    getStudent: GetStudentUseCase,
     private val getStudentPerformance: GetStudentPerformanceUseCase,
     getNextStudent: GetNextStudentUseCase,
     getPrevStudent: GetPrevStudentUseCase,
