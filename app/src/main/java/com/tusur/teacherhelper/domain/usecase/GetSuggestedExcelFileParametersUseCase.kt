@@ -79,7 +79,7 @@ class GetSuggestedExcelFileParametersUseCase @Inject constructor(
         }
 
         return if (studentsImportParameters != null) {
-            Result.Success(studentsImportParameters!!)
+            Result.Success(studentsImportParameters)
         } else {
             Result.Error(ExcelStudentImportError.NO_FOUND)
         }
