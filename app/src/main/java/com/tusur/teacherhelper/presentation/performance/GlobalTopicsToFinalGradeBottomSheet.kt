@@ -15,23 +15,29 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetGlobalTopicsBinding
 import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
 import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicAdapter
 import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicUiState
 import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class GlobalTopicsToFinalGradeBottomSheet : BottomSheetDialogFragment() {
 
     private val binding get() = _binding!!
     private var _binding: BottomSheetGlobalTopicsBinding? = null
-    private val viewModel: GlobalTopicsViewModel by viewModels {
-        GlobalTopicsViewModel.factory(resources.primaryLocale)
-    }
+    private val viewModel: GlobalTopicsViewModel by viewModels(
+        extrasProducer = {
+            creationCallback<GlobalTopicsViewModel.Factory> { factory ->
+                factory.create(resources.primaryLocale)
+            }
+        }
+    )
 
     private val args: GlobalTopicsToFinalGradeBottomSheetArgs by navArgs()
 

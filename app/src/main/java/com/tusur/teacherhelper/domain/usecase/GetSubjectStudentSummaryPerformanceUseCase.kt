@@ -5,10 +5,11 @@ import com.tusur.teacherhelper.domain.model.SumProgress
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.TopicType
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 private typealias TypeToProgress = Pair<TopicType, SumProgress<Float>>
 
-class GetSubjectStudentSummaryPerformanceUseCase(
+class GetSubjectStudentSummaryPerformanceUseCase @Inject constructor(
     private val getTotalStudentPerformance: GetSubjectStudentPerformanceUseCase,
     private val getSuggestedProgressForGrade: GetSuggestedProgressForGradeUseCase
 ) {

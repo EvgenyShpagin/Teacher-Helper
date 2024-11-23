@@ -1,8 +1,9 @@
 package com.tusur.teacherhelper.domain.usecase
 
 import com.tusur.teacherhelper.domain.model.PerformanceItem
+import javax.inject.Inject
 
-class GetSuggestedProgressForGradeUseCase {
+class GetSuggestedProgressForGradeUseCase @Inject constructor() {
     operator fun invoke(grade: PerformanceItem.Grade?): PerformanceItem.Progress {
         return when (grade) {
             PerformanceItem.Grade(5) -> PerformanceItem.Progress(1.0f)

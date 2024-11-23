@@ -9,10 +9,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.presentation.core.dialog.InputBottomSheet
 import com.tusur.teacherhelper.presentation.core.dialog.InputViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class SubjectInputBottomSheet : InputBottomSheet() {
-    override val viewModel: SubjectInputViewModel by viewModels { SubjectInputViewModel.factory }
+    override val viewModel: SubjectInputViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -3,8 +3,6 @@ package com.tusur.teacherhelper.presentation.performance
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Performance
 import com.tusur.teacherhelper.domain.model.TableContent
@@ -12,15 +10,17 @@ import com.tusur.teacherhelper.domain.usecase.GetFinalPerformanceClassDayDatetim
 import com.tusur.teacherhelper.domain.usecase.GetGroupByIdUseCase
 import com.tusur.teacherhelper.domain.usecase.GetGroupStudentsUseCase
 import com.tusur.teacherhelper.domain.usecase.GetGroupSubjectPerformanceUseCase
-import com.tusur.teacherhelper.domain.usecase.GetSubjectStudentPerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectTopicsUseCase
 import com.tusur.teacherhelper.domain.usecase.IsGroupNotEmptyUseCase
 import com.tusur.teacherhelper.domain.usecase.SaveGroupPerformanceToExcelFileUseCase
 import com.tusur.teacherhelper.domain.util.formattedShort
 import com.tusur.teacherhelper.domain.util.shortName
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.toUiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,10 +33,11 @@ import java.io.OutputStream
 import java.util.Locale
 
 
-class PerformanceTableViewModel(
-    private val subjectId: Int,
-    private val groupId: Int,
-    private val locale: Locale,
+@HiltViewModel(assistedFactory = PerformanceTableViewModel.Factory::class)
+class PerformanceTableViewModel @AssistedInject constructor(
+    @Assisted("subjectId") private val subjectId: Int,
+    @Assisted("groupId") private val groupId: Int,
+    @Assisted private val locale: Locale,
     private val getGroup: GetGroupByIdUseCase,
     private val getSubjectTopics: GetSubjectTopicsUseCase,
     private val getGroupSubjectPerformance: GetGroupSubjectPerformanceUseCase,
@@ -188,31 +189,12 @@ class PerformanceTableViewModel(
         data class StudentClick(val studentId: Int) : OnetimeEvent
     }
 
-    companion object {
-        fun factory(subjectId: Int, groupId: Int, locale: Locale) =
-            viewModelFactory {
-                initializer {
-                    PerformanceTableViewModel(
-                        subjectId,
-                        groupId,
-                        locale,
-                        GetGroupByIdUseCase(App.module.groupRepository),
-                        GetSubjectTopicsUseCase(App.module.topicRepository),
-                        GetGroupSubjectPerformanceUseCase(
-                            GetSubjectStudentPerformanceUseCase(
-                                App.module.studentPerformanceRepository,
-                                App.module.topicRepository
-                            ),
-                            App.module.studentRepository
-                        ),
-                        SaveGroupPerformanceToExcelFileUseCase(),
-                        IsGroupNotEmptyUseCase(App.module.groupRepository),
-                        GetFinalPerformanceClassDayDatetimeMsUseCase(
-                            App.module.studentPerformanceRepository
-                        ),
-                        GetGroupStudentsUseCase(App.module.studentRepository)
-                    )
-                }
-            }
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            @Assisted("subjectId") subjectId: Int,
+            @Assisted("groupId") groupId: Int,
+            locale: Locale
+        ): PerformanceTableViewModel
     }
 }

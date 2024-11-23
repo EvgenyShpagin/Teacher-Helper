@@ -2,26 +2,23 @@ package com.tusur.teacherhelper.presentation.topicperformance
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Group
 import com.tusur.teacherhelper.domain.model.Performance
 import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.Student
-import com.tusur.teacherhelper.domain.usecase.AddClassDateUseCase
-import com.tusur.teacherhelper.domain.usecase.GetClassDateIdUseCase
-import com.tusur.teacherhelper.domain.usecase.GetGroupByIdUseCase
-import com.tusur.teacherhelper.domain.usecase.GetTopicGroupPerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicGroupsPerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicNameByIdUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchInListUseCase
 import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.domain.util.shortName
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.toUiText
 import com.tusur.teacherhelper.presentation.topic.PerformanceType
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,12 +26,13 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class GroupsPerformanceViewModel(
-    private val locale: Locale,
-    private val topicId: Int,
-    private val performanceType: PerformanceType,
-    private val groupIdList: List<Int>,
-    private val datetimeMillis: Long,
+@HiltViewModel(assistedFactory = GroupsPerformanceViewModel.Factory::class)
+class GroupsPerformanceViewModel @AssistedInject constructor(
+    @Assisted private val locale: Locale,
+    @Assisted private val topicId: Int,
+    @Assisted private val performanceType: PerformanceType,
+    @Assisted private val groupIdList: List<Int>,
+    @Assisted private val datetimeMillis: Long,
     private val getGroupsPerformance: GetTopicGroupsPerformanceUseCase,
     private val getTopicName: GetTopicNameByIdUseCase,
     private val searchInList: SearchInListUseCase
@@ -168,35 +166,15 @@ class GroupsPerformanceViewModel(
         val topicName: String = ""
     )
 
-    companion object {
-        fun factory(
+    @AssistedFactory
+    interface Factory {
+        fun create(
             locale: Locale,
             topicId: Int,
             performanceType: PerformanceType,
-            datetimeMillis: Long,
-            groupIdList: List<Int>
-        ) = viewModelFactory {
-            initializer {
-                GroupsPerformanceViewModel(
-                    locale,
-                    topicId,
-                    performanceType,
-                    groupIdList,
-                    datetimeMillis,
-                    GetTopicGroupsPerformanceUseCase(
-                        GetTopicGroupPerformanceUseCase(
-                            App.module.studentRepository,
-                            App.module.studentPerformanceRepository,
-                            GetClassDateIdUseCase(App.module.classDateRepository),
-                            AddClassDateUseCase(App.module.classDateRepository)
-                        ),
-                        GetGroupByIdUseCase(App.module.groupRepository)
-                    ),
-                    GetTopicNameByIdUseCase(App.module.topicRepository),
-                    SearchInListUseCase()
-                )
-            }
-        }
+            groupIdList: List<Int>,
+            datetimeMillis: Long
+        ): GroupsPerformanceViewModel
     }
 }
 

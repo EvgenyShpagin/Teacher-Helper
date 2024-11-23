@@ -18,12 +18,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.DialogAddSubjectGroupBinding
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.hideKeyboard
 import com.tusur.teacherhelper.presentation.subjectdetails.AddSubjectGroupViewModel.Event
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class AddSubjectGroupDialog : DialogFragment() {
 
     private var _binding: DialogAddSubjectGroupBinding? = null
@@ -31,9 +34,11 @@ class AddSubjectGroupDialog : DialogFragment() {
 
     private val args: AddSubjectGroupDialogArgs by navArgs()
 
-    private val viewModel: AddSubjectGroupViewModel by viewModels {
-        AddSubjectGroupViewModel.factory(subjectId = args.subjectId)
-    }
+    private val viewModel: AddSubjectGroupViewModel by viewModels(extrasProducer = {
+        creationCallback<AddSubjectGroupViewModel.Factory> { factory ->
+            factory.create(args.subjectId)
+        }
+    })
 
     private val adapter = SelectableGroupAdapter()
 

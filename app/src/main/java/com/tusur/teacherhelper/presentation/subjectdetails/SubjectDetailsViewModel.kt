@@ -2,8 +2,6 @@ package com.tusur.teacherhelper.presentation.subjectdetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Group
@@ -11,7 +9,6 @@ import com.tusur.teacherhelper.domain.model.Subject
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.usecase.DeleteSubjectGroupUseCase
 import com.tusur.teacherhelper.domain.usecase.DoesTopicHaveClassDatetimeUseCase
-import com.tusur.teacherhelper.domain.usecase.GetClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetGlobalTopicsUseCase
 import com.tusur.teacherhelper.domain.usecase.GetLastClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectByIdUseCase
@@ -21,8 +18,11 @@ import com.tusur.teacherhelper.domain.usecase.SearchGlobalTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchSubjectGroupUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchSubjectTopicUseCase
 import com.tusur.teacherhelper.domain.util.formatted
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -31,9 +31,10 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class SubjectDetailsViewModel(
-    val subjectId: Int,
-    private val primaryLocale: Locale,
+@HiltViewModel(assistedFactory = SubjectDetailsViewModel.Factory::class)
+class SubjectDetailsViewModel @AssistedInject constructor(
+    @Assisted val subjectId: Int,
+    @Assisted private val primaryLocale: Locale,
     private val getSubjectGroups: GetSubjectGroupsUseCase,
     private val getSubjectTopics: GetSubjectTopicsUseCase,
     private val getGlobalTopics: GetGlobalTopicsUseCase,
@@ -161,37 +162,15 @@ class SubjectDetailsViewModel(
 
     private fun Group.toItemUiState() = GroupItemUiState(id, number)
 
+    @AssistedFactory
+    interface Factory {
+        fun create(subjectId: Int, locale: Locale): SubjectDetailsViewModel
+    }
+
     companion object {
 
         const val GROUPS_FRAGMENT_POSITION = 0
         const val TOPICS_FRAGMENT_POSITION = 1
-
-        fun factory(subjectId: Int, locale: Locale) =
-            viewModelFactory {
-                initializer {
-                    SubjectDetailsViewModel(
-                        subjectId,
-                        locale,
-                        GetSubjectGroupsUseCase(
-                            App.module.subjectGroupRepository,
-                            App.module.groupRepository
-                        ),
-                        GetSubjectTopicsUseCase(App.module.topicRepository),
-                        GetGlobalTopicsUseCase(App.module.topicRepository),
-                        GetSubjectByIdUseCase(App.module.subjectRepository),
-                        DeleteSubjectGroupUseCase(App.module.subjectGroupRepository),
-                        SearchSubjectGroupUseCase(App.module.subjectGroupRepository),
-                        SearchSubjectTopicUseCase(App.module.topicRepository),
-                        SearchGlobalTopicUseCase(App.module.topicRepository),
-                        DoesTopicHaveClassDatetimeUseCase(
-                            GetClassDatetimeUseCase(App.module.classDateRepository)
-                        ),
-                        GetLastClassDatetimeUseCase(
-                            GetClassDatetimeUseCase(App.module.classDateRepository)
-                        ),
-                    )
-                }
-            }
     }
 
     private suspend fun Topic.toItemUiState(locale: Locale): TopicItemUiState =

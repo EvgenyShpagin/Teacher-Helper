@@ -1,8 +1,9 @@
 package com.tusur.teacherhelper.domain.usecase
 
 import com.tusur.teacherhelper.domain.model.TopicType
+import javax.inject.Inject
 
-class CanTopicTypeBeReplacedUseCase() {
+class CanTopicTypeBeReplacedUseCase @Inject constructor() {
     operator fun invoke(fromType: TopicType, toType: TopicType): Boolean {
         if (fromType == toType) return true
         val assessmentRefused = fromType.isAssessmentAcceptable && !toType.isAssessmentAcceptable

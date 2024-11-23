@@ -4,9 +4,10 @@ import com.tusur.teacherhelper.domain.model.StudentSubjectPerformance
 import com.tusur.teacherhelper.domain.repository.StudentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import javax.inject.Inject
 
 
-class GetGroupSubjectPerformanceUseCase(
+class GetGroupSubjectPerformanceUseCase @Inject constructor(
     private val getSubjectStudentPerformance: GetSubjectStudentPerformanceUseCase,
     private val studentRepository: StudentRepository
 ) {

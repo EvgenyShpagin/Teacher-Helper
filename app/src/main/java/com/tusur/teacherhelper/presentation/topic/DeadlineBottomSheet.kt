@@ -18,20 +18,29 @@ import com.tusur.teacherhelper.databinding.BottomSheetDeadlineBinding
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.presentation.core.dialog.TopicDeleteErrorDialog
 import com.tusur.teacherhelper.presentation.core.util.SingleChoiceAlertAdapter
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.util.setSingleChoiceItems
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
+@AndroidEntryPoint
 class DeadlineBottomSheet : BottomSheetDialogFragment() {
 
     private val binding get() = _binding!!
     private var _binding: BottomSheetDeadlineBinding? = null
     private val args: DeadlineBottomSheetArgs by navArgs()
-    private val viewModel: DeadlineViewModel by viewModels {
-        DeadlineViewModel.factory(locale = resources.primaryLocale, topicId = args.topicId)
-    }
+    private val viewModel: DeadlineViewModel by viewModels(extrasProducer = {
+        creationCallback<DeadlineViewModel.Factory> { factory ->
+            factory.create(
+                locale = resources.primaryLocale,
+                topicId = args.topicId
+            )
+        }
+    })
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -27,25 +27,32 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentGroupStudentsBinding
 import com.tusur.teacherhelper.presentation.core.util.EXCEL_FILE_MIME_TYPES
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.getExcelFileFromUri
 import com.tusur.teacherhelper.presentation.core.view.recycler.checkNestedScrollState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 import java.io.File
 
 
+@AndroidEntryPoint
 class GroupStudentsFragment : Fragment() {
 
     private val binding get() = _binding!!
     private var _binding: FragmentGroupStudentsBinding? = null
 
     private val args: GroupStudentsFragmentArgs by navArgs()
-    private val viewModel: GroupStudentsViewModel by viewModels {
-        GroupStudentsViewModel.factory(args.groupId)
-    }
+    private val viewModel: GroupStudentsViewModel by viewModels(
+        extrasProducer = {
+            creationCallback<GroupStudentsViewModel.Factory> { factory ->
+                factory.create(args.groupId)
+            }
+        }
+    )
 
     private val adapter = GroupStudentAdapter { studentId ->
         showDeleteGroupDialog {

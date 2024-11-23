@@ -8,8 +8,9 @@ import com.tusur.teacherhelper.domain.repository.TopicRepository
 import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.util.Success
+import javax.inject.Inject
 
-class SetTopicDeadlineUseCase(
+class SetTopicDeadlineUseCase @Inject constructor(
     private val topicRepository: TopicRepository,
     private val deadlineRepository: DeadlineRepository
 ) {

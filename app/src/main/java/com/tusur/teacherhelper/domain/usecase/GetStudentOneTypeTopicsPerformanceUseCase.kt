@@ -3,8 +3,9 @@ package com.tusur.teacherhelper.domain.usecase
 import com.tusur.teacherhelper.domain.model.Performance
 import com.tusur.teacherhelper.domain.model.Topic
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
-class GetStudentOneTypeTopicsPerformanceUseCase(
+class GetStudentOneTypeTopicsPerformanceUseCase @Inject constructor(
     private val getTotalStudentPerformance: GetSubjectStudentPerformanceUseCase
 ) {
     suspend operator fun invoke(

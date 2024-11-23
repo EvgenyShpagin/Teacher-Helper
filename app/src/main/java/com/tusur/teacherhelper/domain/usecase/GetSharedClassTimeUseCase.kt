@@ -2,8 +2,9 @@ package com.tusur.teacherhelper.domain.usecase
 
 import com.tusur.teacherhelper.domain.model.ClassTime
 import com.tusur.teacherhelper.domain.model.Date
+import javax.inject.Inject
 
-class GetSharedClassTimeUseCase(
+class GetSharedClassTimeUseCase @Inject constructor(
     private val getSharedClassDatetime: GetSharedClassDatetimeUseCase,
     private val getAllClassTimeUseCase: GetAllClassTimeUseCase
 ) {

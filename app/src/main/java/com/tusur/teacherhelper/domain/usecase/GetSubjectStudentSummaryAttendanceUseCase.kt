@@ -6,8 +6,9 @@ import com.tusur.teacherhelper.domain.model.TopicType
 import com.tusur.teacherhelper.domain.repository.StudentPerformanceRepository
 import com.tusur.teacherhelper.domain.repository.TopicRepository
 import com.tusur.teacherhelper.domain.repository.TopicTypeRepository
+import javax.inject.Inject
 
-class GetSubjectStudentSummaryAttendanceUseCase(
+class GetSubjectStudentSummaryAttendanceUseCase @Inject constructor(
     private val studentPerformanceRepository: StudentPerformanceRepository,
     private val topicTypeRepository: TopicTypeRepository,
     private val topicRepository: TopicRepository,

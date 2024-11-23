@@ -8,9 +8,12 @@ import com.tusur.teacherhelper.toData
 import com.tusur.teacherhelper.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 
-class TopicTypeRepositoryImpl(private val topicTypeDao: TopicTypeDao) : TopicTypeRepository {
+class TopicTypeRepositoryImpl @Inject constructor(
+    private val topicTypeDao: TopicTypeDao
+) : TopicTypeRepository {
     override suspend fun get(typeId: Int): TopicType? {
         return topicTypeDao.get(typeId)?.toDomain()
     }

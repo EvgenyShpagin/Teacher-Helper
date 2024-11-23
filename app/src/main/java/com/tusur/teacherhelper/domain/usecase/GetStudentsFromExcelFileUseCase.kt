@@ -1,16 +1,19 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.StudentsImportParameters
 import com.tusur.teacherhelper.domain.model.error.ExcelStudentImportError
 import com.tusur.teacherhelper.domain.util.NO_ID
+import com.tusur.teacherhelper.domain.util.Result
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row
 import java.io.File
+import javax.inject.Inject
 
 
-class GetStudentsFromExcelFileUseCase(private val getWorkbookFromFile: GetWorkbookFromFileUseCase) {
+class GetStudentsFromExcelFileUseCase @Inject constructor(
+    private val getWorkbookFromFile: GetWorkbookFromFileUseCase
+) {
 
     private val tempNames = Array(3) { "" }
 
@@ -32,7 +35,7 @@ class GetStudentsFromExcelFileUseCase(private val getWorkbookFromFile: GetWorkbo
             student?.let { studentList.add(it) }
         }
 
-        return if (studentList.isEmpty()) {
+        return if (studentList.isEmpty) {
             Result.Error(ExcelStudentImportError.NO_FOUND)
         } else {
             Result.Success(studentList)

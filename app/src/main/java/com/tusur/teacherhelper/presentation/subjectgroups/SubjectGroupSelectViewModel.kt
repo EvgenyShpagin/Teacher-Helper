@@ -1,25 +1,28 @@
 package com.tusur.teacherhelper.presentation.subjectgroups
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.domain.model.Group
 import com.tusur.teacherhelper.domain.model.Subject
 import com.tusur.teacherhelper.domain.usecase.GetSubjectByIdUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectNotEmptyGroupsUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchSubjectGroupUseCase
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.subjectdetails.SimpleGroupItemUiState
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-class SubjectGroupSelectViewModel(
-    private val subjectId: Int,
+@HiltViewModel(assistedFactory = SubjectGroupSelectViewModel.Factory::class)
+class SubjectGroupSelectViewModel @AssistedInject constructor(
+    @Assisted private val subjectId: Int,
+    @Assisted private val shouldBeAllChecked: Boolean,
     private val getSubject: GetSubjectByIdUseCase,
-    private val shouldBeAllChecked: Boolean,
     private val getSubjectNotEmptyGroups: GetSubjectNotEmptyGroupsUseCase,
     private val searchGroup: SearchSubjectGroupUseCase,
 ) : ViewModel() {
@@ -105,25 +108,8 @@ class SubjectGroupSelectViewModel(
         val hasChecked get() = groupsUiState.find { it.isChecked } != null
     }
 
-    companion object {
-
-        fun factory(
-            subjectId: Int, shouldBeAllChecked: Boolean
-        ) = object : ViewModelProvider.Factory {
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return SubjectGroupSelectViewModel(
-                    subjectId,
-                    GetSubjectByIdUseCase(App.module.subjectRepository),
-                    shouldBeAllChecked,
-                    GetSubjectNotEmptyGroupsUseCase(
-                        App.module.subjectGroupRepository,
-                        App.module.groupRepository
-                    ),
-                    SearchSubjectGroupUseCase(App.module.subjectGroupRepository)
-                ) as T
-            }
-        }
+    @AssistedFactory
+    interface Factory {
+        fun create(subjectId: Int, shouldBeAllChecked: Boolean): SubjectGroupSelectViewModel
     }
 }

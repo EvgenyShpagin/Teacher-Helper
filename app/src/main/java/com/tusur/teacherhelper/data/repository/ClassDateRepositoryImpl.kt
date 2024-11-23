@@ -7,8 +7,11 @@ import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.repository.ClassDateRepository
 import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.toDomain
+import javax.inject.Inject
 
-class ClassDateRepositoryImpl(private val classDataDao: ClassDateDao) : ClassDateRepository {
+class ClassDateRepositoryImpl @Inject constructor(
+    private val classDataDao: ClassDateDao
+) : ClassDateRepository {
 
     override suspend fun update(topicId: Int, oldDatetimeMs: Long, newDatetimeMs: Long) {
         val updatedClassDate = classDataDao.getByDatetimeMillis(oldDatetimeMs)!!

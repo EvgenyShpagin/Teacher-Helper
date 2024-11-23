@@ -6,8 +6,9 @@ import com.tusur.teacherhelper.domain.model.Student
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class GetTopicGroupsPerformanceUseCase(
+class GetTopicGroupsPerformanceUseCase @Inject constructor(
     private val getTopicGroupPerformance: GetTopicGroupPerformanceUseCase,
     private val getGroupById: GetGroupByIdUseCase
 ) {

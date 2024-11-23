@@ -23,14 +23,17 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentTopicBinding
 import com.tusur.teacherhelper.presentation.core.dialog.TopicDeleteErrorDialog
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.topic.TopicViewModel.OnetimeEvent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class TopicFragment : Fragment() {
 
     private var _binding: FragmentTopicBinding? = null
@@ -38,14 +41,16 @@ class TopicFragment : Fragment() {
 
     private val args: TopicFragmentArgs by navArgs()
 
-    private val viewModel: TopicViewModel by viewModels {
-        TopicViewModel.factory(
-            subjectId = args.subjectId,
-            topicId = args.topicId,
-            isJustCreated = args.isJustCreated,
-            locale = resources.primaryLocale,
-        )
-    }
+    private val viewModel: TopicViewModel by viewModels(extrasProducer = {
+        creationCallback<TopicViewModel.Factory> { factory ->
+            factory.create(
+                subjectId = args.subjectId,
+                topicId = args.topicId,
+                isJustCreated = args.isJustCreated,
+                locale = resources.primaryLocale
+            )
+        }
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

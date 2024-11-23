@@ -20,30 +20,35 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentStudentSummaryPerformanceBinding
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.getListItemAt
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.view.ListItemView
 import com.tusur.teacherhelper.presentation.performance.StudentPerformanceViewModel.Event
 import com.tusur.teacherhelper.presentation.topic.PerformanceType
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class StudentSummaryPerformanceFragment : Fragment() {
 
     private var _binding: FragmentStudentSummaryPerformanceBinding? = null
     private val binding get() = _binding!!
 
     private val args: StudentSummaryPerformanceFragmentArgs by navArgs()
-    private val viewModel: StudentPerformanceViewModel by viewModels {
-        StudentPerformanceViewModel.factory(
-            locale = resources.primaryLocale,
-            subjectId = args.subjectId,
-            studentId = args.studentId,
-            groupId = args.groupId
-        )
-    }
+    private val viewModel: StudentPerformanceViewModel by viewModels(extrasProducer = {
+        creationCallback<StudentPerformanceViewModel.Factory> { factory ->
+            factory.create(
+                locale = resources.primaryLocale,
+                subjectId = args.subjectId,
+                initStudentId = args.studentId,
+                groupId = args.groupId
+            )
+        }
+    })
 
     private var wasStudentPerformanceShown = false
     private lateinit var studentSwapEffectAnimation: Animation

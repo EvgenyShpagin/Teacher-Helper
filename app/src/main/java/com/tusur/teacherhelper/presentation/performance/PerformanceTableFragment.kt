@@ -23,25 +23,31 @@ import com.tusur.teacherhelper.databinding.FragmentPerformanceTableBinding
 import com.tusur.teacherhelper.domain.util.map
 import com.tusur.teacherhelper.presentation.core.dialog.EmptyGroupDialog
 import com.tusur.teacherhelper.presentation.core.util.EXCEL_FILE_NEW_MIME_TYPE
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class PerformanceTableFragment : Fragment() {
 
     private val binding get() = _binding!!
     private var _binding: FragmentPerformanceTableBinding? = null
     private val args: PerformanceTableFragmentArgs by navArgs()
-    private val viewModel: PerformanceTableViewModel by viewModels {
-        PerformanceTableViewModel.factory(
-            subjectId = args.subjectId,
-            groupId = args.groupId,
-            locale = resources.primaryLocale
-        )
-    }
+    private val viewModel: PerformanceTableViewModel by viewModels(
+        extrasProducer = {
+            creationCallback<PerformanceTableViewModel.Factory> { factory ->
+                factory.create(
+                    subjectId = args.subjectId,
+                    groupId = args.groupId,
+                    locale = resources.primaryLocale
+                )
+            }
+        })
 
     private val createExcelFileLauncher = registerForActivityResult(
         ActivityResultContracts.CreateDocument(EXCEL_FILE_NEW_MIME_TYPE)

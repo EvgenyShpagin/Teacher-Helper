@@ -9,7 +9,10 @@ import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.databinding.BottomSheetInputBinding
 import com.tusur.teacherhelper.presentation.core.util.doOnActionDone
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 abstract class InputBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetInputBinding? = null

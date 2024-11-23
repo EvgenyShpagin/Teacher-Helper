@@ -19,18 +19,26 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.databinding.FragmentTopicTypeBinding
 import com.tusur.teacherhelper.domain.util.TOPIC_TYPE_SHORT_NAME_MAX_LENGTH
 import com.tusur.teacherhelper.presentation.core.util.clearFocusOnActionDone
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class TopicTypeFragment : Fragment() {
 
     private val binding get() = _binding!!
     private var _binding: FragmentTopicTypeBinding? = null
     private val args: TopicTypeFragmentArgs by navArgs()
-    private val viewModel: TopicTypeViewModel by viewModels {
-        TopicTypeViewModel.factory(args.isCreating, args.topicTypeId)
-    }
+    private val viewModel: TopicTypeViewModel by viewModels(extrasProducer = {
+        creationCallback<TopicTypeViewModel.Factory> { factory ->
+            factory.create(
+                isCreating = args.isCreating,
+                typeId = args.topicTypeId
+            )
+        }
+    })
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

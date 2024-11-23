@@ -2,20 +2,18 @@ package com.tusur.teacherhelper.presentation.globaltopic
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.error.DeleteTopicError.OthersDependOnTopicDeadline
-import com.tusur.teacherhelper.domain.usecase.DeletePerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.DeleteTopicUseCase
-import com.tusur.teacherhelper.domain.usecase.GetClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetGlobalTopicsUseCase
-import com.tusur.teacherhelper.domain.usecase.SetTopicDeadlineUseCase
 import com.tusur.teacherhelper.domain.util.GLOBAL_TOPICS_SUBJECT_ID
 import com.tusur.teacherhelper.domain.util.formatted
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicsViewModel.OnetimeEvent.FailedToDeleteDeadline
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,8 +23,9 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class GlobalTopicsViewModel(
-    private val locale: Locale,
+@HiltViewModel(assistedFactory = GlobalTopicsViewModel.Factory::class)
+class GlobalTopicsViewModel @AssistedInject constructor(
+    @Assisted private val locale: Locale,
     private val getGlobalTopics: GetGlobalTopicsUseCase,
     private val deleteTopic: DeleteTopicUseCase
 ) : ViewModel() {
@@ -87,25 +86,9 @@ class GlobalTopicsViewModel(
         data object FailedToDeleteDeadline : OnetimeEvent
     }
 
-    companion object {
-        fun factory(locale: Locale) = viewModelFactory {
-            initializer {
-                GlobalTopicsViewModel(
-                    locale = locale,
-                    getGlobalTopics = GetGlobalTopicsUseCase(App.module.topicRepository),
-                    deleteTopic = DeleteTopicUseCase(
-                        App.module.topicRepository,
-                        App.module.subjectGroupRepository,
-                        SetTopicDeadlineUseCase(
-                            App.module.topicRepository,
-                            App.module.deadlineRepository
-                        ),
-                        DeletePerformanceUseCase(App.module.studentPerformanceRepository),
-                        GetClassDatetimeUseCase(App.module.classDateRepository)
-                    )
-                )
-            }
-        }
+    @AssistedFactory
+    interface Factory {
+        fun create(locale: Locale): GlobalTopicsViewModel
     }
 }
 

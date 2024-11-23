@@ -19,15 +19,17 @@ import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class TopicTypesBottomSheet : BottomSheetDialogFragment() {
 
     private val binding get() = _binding!!
     private var _binding: BottomSheetTopicTypesBinding? = null
-    private val viewModel: TopicTypesViewModel by viewModels { TopicTypesViewModel.factory }
+    private val viewModel: TopicTypesViewModel by viewModels()
 
     private val adapter: TopicTypeAdapter by lazy {
         TopicTypeAdapter(object : BaseDeletableAdapter.Listener<TopicTypeItemUiState> {

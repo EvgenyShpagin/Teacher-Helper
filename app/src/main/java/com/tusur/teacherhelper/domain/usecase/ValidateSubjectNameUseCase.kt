@@ -1,13 +1,16 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.Subject
 import com.tusur.teacherhelper.domain.model.error.SubjectNameError
 import com.tusur.teacherhelper.domain.repository.SubjectRepository
 import com.tusur.teacherhelper.domain.util.NO_ID
+import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.util.withoutUnwantedSpaces
+import javax.inject.Inject
 
-class ValidateSubjectNameUseCase(private val subjectRepository: SubjectRepository) {
+class ValidateSubjectNameUseCase @Inject constructor(
+    private val subjectRepository: SubjectRepository
+) {
     suspend operator fun invoke(name: String): Result<Subject, SubjectNameError> {
         val trimmedName = name.withoutUnwantedSpaces()
         val subjectWithItName = subjectRepository.getByName(trimmedName)

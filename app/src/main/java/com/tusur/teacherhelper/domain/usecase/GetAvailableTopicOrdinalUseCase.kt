@@ -1,8 +1,11 @@
 package com.tusur.teacherhelper.domain.usecase
 
 import com.tusur.teacherhelper.domain.repository.TopicRepository
+import javax.inject.Inject
 
-class GetAvailableTopicOrdinalUseCase(private val topicRepository: TopicRepository) {
+class GetAvailableTopicOrdinalUseCase @Inject constructor(
+    private val topicRepository: TopicRepository
+) {
     suspend operator fun invoke(subjectId: Int, topicId: Int?, topicTypeId: Int): Int {
         val savedTopic = topicId?.let { topicRepository.getById(it) }
         return if (savedTopic?.name?.ordinal != null) {

@@ -21,17 +21,19 @@ import com.tusur.teacherhelper.databinding.FragmentSubjectListBinding
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.view.recycler.checkNestedScrollState
 import com.tusur.teacherhelper.presentation.subjects.SubjectListViewModel.Event
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class SubjectListFragment : Fragment() {
 
     private var _binding: FragmentSubjectListBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: SubjectAdapter
 
-    private val viewModel: SubjectListViewModel by viewModels { SubjectListViewModel.factory }
+    private val viewModel: SubjectListViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

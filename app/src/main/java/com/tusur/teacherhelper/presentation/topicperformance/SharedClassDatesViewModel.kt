@@ -2,16 +2,17 @@ package com.tusur.teacherhelper.presentation.topicperformance
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.Time
 import com.tusur.teacherhelper.domain.usecase.DeletePerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSharedClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.util.formatted
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,10 +21,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-class SharedClassDatesViewModel(
-    private val topicId: Int,
-    private val locale: Locale,
-    private val groupListIds: List<Int>,
+@HiltViewModel(assistedFactory = SharedClassDatesViewModel.Factory::class)
+class SharedClassDatesViewModel @AssistedInject constructor(
+    @Assisted private val topicId: Int,
+    @Assisted private val locale: Locale,
+    @Assisted private val groupListIds: List<Int>,
     private val getSharedClassDays: GetSharedClassDatetimeUseCase,
     private val deletePerformance: DeletePerformanceUseCase
 ) : ViewModel() {
@@ -111,20 +113,9 @@ class SharedClassDatesViewModel(
         val isDeleting: Boolean = false
     )
 
-    companion object {
-
-        fun factory(topicId: Int, locale: Locale, groupListIds: List<Int>) =
-            viewModelFactory {
-                initializer {
-                    SharedClassDatesViewModel(
-                        topicId,
-                        locale,
-                        groupListIds,
-                        GetSharedClassDatetimeUseCase(App.module.classDateRepository),
-                        DeletePerformanceUseCase(App.module.studentPerformanceRepository)
-                    )
-                }
-            }
+    @AssistedFactory
+    interface Factory {
+        fun create(topicId: Int, locale: Locale, groupListIds: List<Int>): SharedClassDatesViewModel
     }
 }
 

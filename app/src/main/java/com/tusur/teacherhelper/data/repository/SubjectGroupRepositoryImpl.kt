@@ -10,8 +10,9 @@ import com.tusur.teacherhelper.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class SubjectGroupRepositoryImpl(
+class SubjectGroupRepositoryImpl @Inject constructor(
     private val subjectGroupDao: SubjectGroupDao,
     private val groupDao: GroupDao
 ) : SubjectGroupRepository {

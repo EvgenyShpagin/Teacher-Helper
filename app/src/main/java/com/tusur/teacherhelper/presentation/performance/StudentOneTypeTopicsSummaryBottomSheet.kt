@@ -11,25 +11,32 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.databinding.BottomSheetStudentOneTypeTopicsSummaryBinding
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class StudentOneTypeTopicsSummaryBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetStudentOneTypeTopicsSummaryBinding? = null
     private val binding get() = _binding!!
 
     private val args: StudentOneTypeTopicsSummaryBottomSheetArgs by navArgs()
 
-    private val viewModel: StudentOneTypeTopicsResultsViewModel by viewModels {
-        StudentOneTypeTopicsResultsViewModel.factory(
-            locale = resources.primaryLocale,
-            performanceType = args.performanceType,
-            subjectId = args.subjectId,
-            studentId = args.studentId,
-            topicTypeId = args.topicTypeId
-        )
-    }
+    private val viewModel: StudentOneTypeTopicsResultsViewModel by viewModels(
+        extrasProducer = {
+            creationCallback<StudentOneTypeTopicsResultsViewModel.Factory> { factory ->
+                factory.create(
+                    locale = resources.primaryLocale,
+                    performanceType = args.performanceType,
+                    subjectId = args.subjectId,
+                    studentId = args.studentId,
+                    topicTypeId = args.topicTypeId
+                )
+            }
+        }
+    )
 
     private val adapter = TopicSummaryAdapter()
 

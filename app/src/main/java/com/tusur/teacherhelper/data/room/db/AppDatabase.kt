@@ -1,8 +1,6 @@
 package com.tusur.teacherhelper.data.room.db
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.tusur.teacherhelper.data.model.ClassDate
@@ -24,8 +22,6 @@ import com.tusur.teacherhelper.data.room.dao.SubjectDao
 import com.tusur.teacherhelper.data.room.dao.SubjectGroupDao
 import com.tusur.teacherhelper.data.room.dao.TopicDao
 import com.tusur.teacherhelper.data.room.dao.TopicTypeDao
-
-private const val DATABASE_NAME = "teacher-helper"
 
 
 @Database(
@@ -56,23 +52,4 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getTopicTypeDao(): TopicTypeDao
     abstract fun getStudentPerformanceDao(): StudentTopicPerformanceDao
 
-    companion object {
-
-        @Volatile
-        private var INSTANCE: AppDatabase? = null
-
-        fun initialize(appContext: Context) {
-            synchronized(this) {
-                INSTANCE = Room.databaseBuilder(
-                    appContext.applicationContext,
-                    AppDatabase::class.java,
-                    DATABASE_NAME
-                ).createFromAsset("student_performance.db").build()
-            }
-        }
-
-        fun get(): AppDatabase {
-            return INSTANCE ?: throw IllegalStateException("AppDatabase must be initialized")
-        }
-    }
 }

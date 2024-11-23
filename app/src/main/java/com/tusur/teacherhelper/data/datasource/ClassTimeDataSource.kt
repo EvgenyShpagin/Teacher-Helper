@@ -2,8 +2,9 @@ package com.tusur.teacherhelper.data.datasource
 
 import com.tusur.teacherhelper.domain.model.ClassTime
 import com.tusur.teacherhelper.domain.model.Time
+import javax.inject.Inject
 
-class ClassTimeDataSource {
+class ClassTimeDataSource @Inject constructor() {
     fun getAll(): List<ClassTime> {
         return classTimeList
     }

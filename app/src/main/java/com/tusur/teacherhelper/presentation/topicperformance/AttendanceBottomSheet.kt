@@ -13,12 +13,15 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetAttendanceBinding
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.topicperformance.AttendanceViewModel.Event
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class AttendanceBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetAttendanceBinding? = null
@@ -26,14 +29,16 @@ class AttendanceBottomSheet : BottomSheetDialogFragment() {
 
     private val args: AttendanceBottomSheetArgs by navArgs()
 
-    private val viewModel: AttendanceViewModel by viewModels {
-        AttendanceViewModel.factory(
-            topicId = args.topicId,
-            currentStudentId = args.studentId,
-            datetimeMillis = args.datetimeMillis,
-            allStudentIds = args.allStudentIds.toList()
-        )
-    }
+    private val viewModel: AttendanceViewModel by viewModels(extrasProducer = {
+        creationCallback<AttendanceViewModel.Factory> { factory ->
+            factory.create(
+                topicId = args.topicId,
+                currentStudentId = args.studentId,
+                datetimeMillis = args.datetimeMillis,
+                allStudentIds = args.allStudentIds.toList()
+            )
+        }
+    })
 
     private var wasStudentPerformanceShown = false
 

@@ -1,11 +1,14 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.error.StudentNameError
 import com.tusur.teacherhelper.domain.repository.StudentRepository
+import com.tusur.teacherhelper.domain.util.Result
+import javax.inject.Inject
 
-class CheckStudentNameUseCase(private val studentRepository: StudentRepository) {
+class CheckStudentNameUseCase @Inject constructor(
+    private val studentRepository: StudentRepository
+) {
     suspend operator fun invoke(
         studentId: Int,
         name: Student.Name

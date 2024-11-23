@@ -7,8 +7,9 @@ import com.tusur.teacherhelper.domain.repository.TopicRepository
 import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.util.Success
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
-class DeleteTopicUseCase(
+class DeleteTopicUseCase @Inject constructor(
     private val topicRepository: TopicRepository,
     private val subjectGroupRepository: SubjectGroupRepository,
     private val setTopicDeadline: SetTopicDeadlineUseCase,

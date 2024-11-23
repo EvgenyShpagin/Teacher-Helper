@@ -4,8 +4,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
+import javax.inject.Inject
 
-class GetWorkbookFromFileUseCase {
+class GetWorkbookFromFileUseCase @Inject constructor() {
 
     private var lastWorkbookFilename: String? = null
     private var lastWorkbook: Workbook? = null

@@ -1,8 +1,6 @@
 package com.tusur.teacherhelper.presentation.subjects
 
 import android.text.InputFilter
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.constraints.InputConstraints
@@ -11,13 +9,15 @@ import com.tusur.teacherhelper.domain.model.error.SubjectNameError
 import com.tusur.teacherhelper.domain.usecase.AddSubjectUseCase
 import com.tusur.teacherhelper.domain.usecase.ValidateSubjectNameUseCase
 import com.tusur.teacherhelper.domain.util.Result
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.dialog.InputViewModel
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SubjectInputViewModel(
+@HiltViewModel
+class SubjectInputViewModel @Inject constructor(
     private val validateSubjectName: ValidateSubjectNameUseCase,
     private val addSubject: AddSubjectUseCase
 ) : InputViewModel() {
@@ -57,17 +57,5 @@ class SubjectInputViewModel(
     private suspend fun handleSuccess(subject: Subject) {
         addSubject(subject)
         mutableUiState.update { it.copy(isSavedSuccessfully = true) }
-    }
-
-    companion object {
-        val factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return SubjectInputViewModel(
-                    ValidateSubjectNameUseCase(App.module.subjectRepository),
-                    AddSubjectUseCase(App.module.subjectRepository)
-                ) as T
-            }
-        }
     }
 }

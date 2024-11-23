@@ -1,10 +1,11 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.error.TopicTypeDeleteError
 import com.tusur.teacherhelper.domain.repository.TopicTypeRepository
+import com.tusur.teacherhelper.domain.util.Result
+import javax.inject.Inject
 
-class DeleteTopicTypeUseCase(
+class DeleteTopicTypeUseCase @Inject constructor(
     private val topicTypeRepository: TopicTypeRepository,
     private val isTopicTypeBase: IsTopicTypeBaseUseCase,
     private val isTopicTypeUsedByAnyTopic: IsTopicTypeUsedByAnyTopicUseCase

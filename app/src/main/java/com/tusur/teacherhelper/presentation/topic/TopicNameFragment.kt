@@ -25,6 +25,7 @@ import com.tusur.teacherhelper.databinding.FragmentTopicNameBinding
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.SingleChoiceAlertAdapter
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.getGroupListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
@@ -32,24 +33,28 @@ import com.tusur.teacherhelper.presentation.core.util.setDisabledItems
 import com.tusur.teacherhelper.presentation.core.util.setSingleChoiceItems
 import com.tusur.teacherhelper.presentation.topic.TopicNameViewModel.Event
 import com.tusur.teacherhelper.presentation.topic.TopicNameViewModel.OnetimeEvent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class TopicNameFragment : Fragment() {
 
     private var _binding: FragmentTopicNameBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: TopicNameViewModel by viewModels {
-        TopicNameViewModel.factory(
-            locale = resources.primaryLocale,
-            subjectId = args.subjectId,
-            topicId = args.topicId
-        )
-    }
+    private val viewModel: TopicNameViewModel by viewModels(extrasProducer = {
+        creationCallback<TopicNameViewModel.Factory> { factory ->
+            factory.create(
+                locale = resources.primaryLocale,
+                subjectId = args.subjectId,
+                topicId = args.topicId
+            )
+        }
+    })
 
     private val args: TopicNameFragmentArgs by navArgs()
 

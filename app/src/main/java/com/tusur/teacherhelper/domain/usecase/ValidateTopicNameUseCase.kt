@@ -1,13 +1,14 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.error.TopicNameError
 import com.tusur.teacherhelper.domain.usecase.CheckTopicNameAddTextUseCase.TopicAddTextInfo.Clear
 import com.tusur.teacherhelper.domain.usecase.CheckTopicNameAddTextUseCase.TopicAddTextInfo.ContainsCorrectOrdinal
 import com.tusur.teacherhelper.domain.usecase.CheckTopicNameAddTextUseCase.TopicAddTextInfo.ContainsExistingOrdinal
+import com.tusur.teacherhelper.domain.util.Result
+import javax.inject.Inject
 
-class ValidateTopicNameUseCase(
+class ValidateTopicNameUseCase @Inject constructor(
     private val getTopicByName: GetTopicByNameUseCase,
     private val checkTopicNameAddText: CheckTopicNameAddTextUseCase
 ) {

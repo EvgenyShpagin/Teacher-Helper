@@ -16,15 +16,18 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetSubjectClassDatesBinding
 import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class TopicClassDatesBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetSubjectClassDatesBinding? = null
@@ -32,12 +35,14 @@ class TopicClassDatesBottomSheet : BottomSheetDialogFragment() {
 
     private val args: TopicClassDatesBottomSheetArgs by navArgs()
 
-    private val viewModel: TopicClassDatesViewModel by viewModels {
-        TopicClassDatesViewModel.factory(
-            locale = resources.primaryLocale,
-            topicId = args.topicId
-        )
-    }
+    private val viewModel: TopicClassDatesViewModel by viewModels(extrasProducer = {
+        creationCallback<TopicClassDatesViewModel.Factory> { factory ->
+            factory.create(
+                locale = resources.primaryLocale,
+                topicId = args.topicId
+            )
+        }
+    })
 
     private lateinit var adapter: EditableDateAdapter
 

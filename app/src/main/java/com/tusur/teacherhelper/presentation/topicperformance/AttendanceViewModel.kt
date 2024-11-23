@@ -1,27 +1,28 @@
 package com.tusur.teacherhelper.presentation.topicperformance
 
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.usecase.GetNextStudentUseCase
-import com.tusur.teacherhelper.domain.usecase.GetOrAddClassDateIdUseCase
 import com.tusur.teacherhelper.domain.usecase.GetPrevStudentUseCase
 import com.tusur.teacherhelper.domain.usecase.GetStudentPerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetStudentUseCase
 import com.tusur.teacherhelper.domain.usecase.SetStudentPerformanceUseCase
-import com.tusur.teacherhelper.presentation.core.App
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class AttendanceViewModel(
-    currentStudentId: Int,
-    allStudentIds: List<Int>,
-    private val topicId: Int,
-    private val datetimeMillis: Long,
+@HiltViewModel(assistedFactory = AttendanceViewModel.Factory::class)
+class AttendanceViewModel @AssistedInject constructor(
+    @Assisted("currentStudentId") currentStudentId: Int,
+    @Assisted allStudentIds: List<Int>,
+    @Assisted("topicId") private val topicId: Int,
+    @Assisted private val datetimeMillis: Long,
     private val getStudent: GetStudentUseCase,
     private val getStudentPerformance: GetStudentPerformanceUseCase,
     getNextStudent: GetNextStudentUseCase,
@@ -112,34 +113,14 @@ class AttendanceViewModel(
         data object SetStudentPresent : Event
     }
 
-    companion object {
-
-        fun factory(
-            currentStudentId: Int,
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            @Assisted("currentStudentId") currentStudentId: Int,
             allStudentIds: List<Int>,
-            topicId: Int,
+            @Assisted("topicId") topicId: Int,
             datetimeMillis: Long
-        ) = viewModelFactory {
-            initializer {
-                AttendanceViewModel(
-                    currentStudentId = currentStudentId,
-                    allStudentIds = allStudentIds,
-                    topicId = topicId,
-                    datetimeMillis = datetimeMillis,
-                    getStudent = GetStudentUseCase(App.module.studentRepository),
-                    getStudentPerformance = GetStudentPerformanceUseCase(
-                        App.module.studentPerformanceRepository,
-                        App.module.classDateRepository
-                    ),
-                    getNextStudent = GetNextStudentUseCase(App.module.studentRepository),
-                    getPrevStudent = GetPrevStudentUseCase(App.module.studentRepository),
-                    setStudentPerformance = SetStudentPerformanceUseCase(
-                        App.module.studentPerformanceRepository,
-                        GetOrAddClassDateIdUseCase(App.module.classDateRepository)
-                    )
-                )
-            }
-        }
-
+        ): AttendanceViewModel
     }
+
 }

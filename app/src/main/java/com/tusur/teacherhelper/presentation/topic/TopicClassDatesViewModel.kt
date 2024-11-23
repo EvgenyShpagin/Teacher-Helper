@@ -2,15 +2,16 @@ package com.tusur.teacherhelper.presentation.topic
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.usecase.EditTopicClassDayUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicClassDaysUseCase
 import com.tusur.teacherhelper.domain.util.formatted
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,9 +21,10 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class TopicClassDatesViewModel(
-    private val locale: Locale,
-    private val topicId: Int,
+@HiltViewModel(assistedFactory = TopicClassDatesViewModel.Factory::class)
+class TopicClassDatesViewModel @AssistedInject constructor(
+    @Assisted private val locale: Locale,
+    @Assisted private val topicId: Int,
     private val getTopicClassDays: GetTopicClassDaysUseCase,
     private val editTopicClassDay: EditTopicClassDayUseCase
 ) : ViewModel() {
@@ -66,17 +68,9 @@ class TopicClassDatesViewModel(
         data class UpdateError(val reason: UiText) : Event
     }
 
-    companion object {
-        fun factory(locale: Locale, topicId: Int) = viewModelFactory {
-            initializer {
-                TopicClassDatesViewModel(
-                    locale,
-                    topicId,
-                    GetTopicClassDaysUseCase(App.module.classDateRepository),
-                    EditTopicClassDayUseCase(App.module.classDateRepository)
-                )
-            }
-        }
+    @AssistedFactory
+    interface Factory {
+        fun create(locale: Locale, topicId: Int): TopicClassDatesViewModel
     }
 }
 

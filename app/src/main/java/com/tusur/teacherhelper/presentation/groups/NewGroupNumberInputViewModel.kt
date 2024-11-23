@@ -1,25 +1,23 @@
 package com.tusur.teacherhelper.presentation.groups
 
 import android.text.InputFilter
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.constraints.InputConstraints
 import com.tusur.teacherhelper.domain.model.error.GroupNumberError
-import com.tusur.teacherhelper.domain.usecase.AddGroupToSubjectUseCase
 import com.tusur.teacherhelper.domain.usecase.AddNewGroupUseCase
-import com.tusur.teacherhelper.domain.usecase.DoesGroupNumberAlreadyExistUseCase
 import com.tusur.teacherhelper.domain.usecase.ValidateGroupNumberUseCase
 import com.tusur.teacherhelper.domain.util.Result
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.dialog.InputViewModel
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class NewGroupNumberInputViewModel(
+@HiltViewModel
+class NewGroupNumberInputViewModel @Inject constructor(
     private val addNewGroup: AddNewGroupUseCase,
     private val validateGroupNumber: ValidateGroupNumberUseCase
 ) : InputViewModel() {
@@ -65,24 +63,6 @@ class NewGroupNumberInputViewModel(
                         GroupNumberError.EMPTY -> null
                     }
                 )
-            }
-        }
-    }
-
-    companion object {
-        val factory = object : ViewModelProvider.Factory {
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return NewGroupNumberInputViewModel(
-                    addNewGroup = AddNewGroupUseCase(
-                        AddGroupToSubjectUseCase(App.module.subjectGroupRepository),
-                        App.module.groupRepository
-                    ),
-                    validateGroupNumber = ValidateGroupNumberUseCase(
-                        DoesGroupNumberAlreadyExistUseCase(App.module.groupRepository)
-                    )
-                ) as T
             }
         }
     }

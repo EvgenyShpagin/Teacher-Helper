@@ -8,8 +8,9 @@ import com.tusur.teacherhelper.domain.repository.StudentPerformanceRepository
 import com.tusur.teacherhelper.domain.repository.TopicRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class GetSubjectStudentPerformanceUseCase(
+class GetSubjectStudentPerformanceUseCase @Inject constructor(
     private val studentPerformanceRepository: StudentPerformanceRepository,
     private val topicRepository: TopicRepository
 ) {

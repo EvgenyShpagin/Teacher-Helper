@@ -7,8 +7,11 @@ import com.tusur.teacherhelper.toData
 import com.tusur.teacherhelper.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class StudentRepositoryImpl(private val studentDao: StudentDao) : StudentRepository {
+class StudentRepositoryImpl @Inject constructor(
+    private val studentDao: StudentDao
+) : StudentRepository {
     override suspend fun getAll(groupId: Int): List<Student> {
         return studentDao.getAll(groupId).map { it.toDomain() }
     }

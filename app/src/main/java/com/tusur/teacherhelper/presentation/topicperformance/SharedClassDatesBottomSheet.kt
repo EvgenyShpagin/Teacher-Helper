@@ -16,16 +16,19 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetSharedClassDatesBinding
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.presentation.core.util.SingleChoiceAlertAdapter
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.util.setSingleChoiceItems
 import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
 import com.tusur.teacherhelper.presentation.topicperformance.SharedClassDatesViewModel.OnetimeEvent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class SharedClassDatesBottomSheet(
     private val topicId: Int,
     private val groupListIds: List<Int>,
@@ -35,13 +38,15 @@ class SharedClassDatesBottomSheet(
     private var _binding: BottomSheetSharedClassDatesBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: SharedClassDatesViewModel by viewModels {
-        SharedClassDatesViewModel.factory(
-            topicId = topicId,
-            locale = resources.primaryLocale,
-            groupListIds = groupListIds
-        )
-    }
+    private val viewModel: SharedClassDatesViewModel by viewModels(extrasProducer = {
+        creationCallback<SharedClassDatesViewModel.Factory> { factory ->
+            factory.create(
+                topicId = topicId,
+                locale = resources.primaryLocale,
+                groupListIds = groupListIds
+            )
+        }
+    })
 
     private lateinit var adapter: DeletableDateAdapter
 

@@ -2,22 +2,17 @@ package com.tusur.teacherhelper.presentation.topic
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.TopicType
 import com.tusur.teacherhelper.domain.model.error.TopicNameError
 import com.tusur.teacherhelper.domain.usecase.CanTopicTypeBeReplacedUseCase
-import com.tusur.teacherhelper.domain.usecase.CheckTopicNameAddTextUseCase
 import com.tusur.teacherhelper.domain.usecase.CreateSubjectTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.GetAvailableTopicOrdinalUseCase
 import com.tusur.teacherhelper.domain.usecase.GetPrimaryTopicTypesUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSecondaryTopicTypesUseCase
-import com.tusur.teacherhelper.domain.usecase.GetTopicByNameUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicTypeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.UpdateSubjectTopicUseCase
@@ -25,8 +20,11 @@ import com.tusur.teacherhelper.domain.usecase.ValidateTopicNameUseCase
 import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.util.formatted
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,11 +34,12 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class TopicNameViewModel(
+@HiltViewModel(assistedFactory = TopicNameViewModel.Factory::class)
+class TopicNameViewModel @AssistedInject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val locale: Locale,
-    private val topicId: Int,
-    private val subjectId: Int,
+    @Assisted private val locale: Locale,
+    @Assisted("topicId") private val topicId: Int,
+    @Assisted("subjectId") private val subjectId: Int,
     private val createSubjectTopic: CreateSubjectTopicUseCase,
     private val getAvailableTopicOrdinal: GetAvailableTopicOrdinalUseCase,
     private val getPrimaryTopicTypes: GetPrimaryTopicTypesUseCase,
@@ -385,6 +384,15 @@ class TopicNameViewModel(
         data object OtherTypesClick : OnetimeEvent
     }
 
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            locale: Locale,
+            @Assisted("topicId") subjectId: Int,
+            @Assisted("subjectId") topicId: Int
+        ): TopicNameViewModel
+    }
+
     companion object {
 
         private const val KEY_CHECKED_TYPE_ID = "topic-type-id"
@@ -394,38 +402,6 @@ class TopicNameViewModel(
         private const val KEY_SELECTED_TYPE_ID = "type-id"
         private const val KEY_WAS_MODIFIED = "was-modified"
 
-        fun factory(locale: Locale, subjectId: Int, topicId: Int) = viewModelFactory {
-            initializer {
-                TopicNameViewModel(
-                    createSavedStateHandle(),
-                    locale,
-                    topicId,
-                    subjectId,
-                    CreateSubjectTopicUseCase(
-                        App.module.topicRepository, CheckTopicNameAddTextUseCase(
-                            GetAvailableTopicOrdinalUseCase(App.module.topicRepository)
-                        )
-                    ),
-                    GetAvailableTopicOrdinalUseCase(App.module.topicRepository),
-                    GetPrimaryTopicTypesUseCase(App.module.topicTypeRepository),
-                    GetSecondaryTopicTypesUseCase(App.module.topicTypeRepository),
-                    UpdateSubjectTopicUseCase(
-                        App.module.topicRepository,
-                        App.module.subjectRepository,
-                        App.module.deadlineRepository
-                    ),
-                    GetTopicUseCase(App.module.topicRepository),
-                    GetTopicTypeUseCase(App.module.topicTypeRepository),
-                    ValidateTopicNameUseCase(
-                        GetTopicByNameUseCase(App.module.topicRepository),
-                        CheckTopicNameAddTextUseCase(
-                            GetAvailableTopicOrdinalUseCase(App.module.topicRepository)
-                        )
-                    ),
-                    CanTopicTypeBeReplacedUseCase()
-                )
-            }
-        }
     }
 }
 

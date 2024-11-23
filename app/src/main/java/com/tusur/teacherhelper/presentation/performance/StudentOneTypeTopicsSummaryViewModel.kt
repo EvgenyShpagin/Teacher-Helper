@@ -1,20 +1,21 @@
 package com.tusur.teacherhelper.presentation.performance
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Performance
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.usecase.GetStudentOneTypeTopicsPerformanceUseCase
-import com.tusur.teacherhelper.domain.usecase.GetSubjectStudentPerformanceUseCase
 import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.domain.util.getTotalAttendance
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.formatted
 import com.tusur.teacherhelper.presentation.core.util.toUiText
 import com.tusur.teacherhelper.presentation.topic.PerformanceType
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -22,12 +23,13 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class StudentOneTypeTopicsResultsViewModel(
-    private val locale: Locale,
-    private val performanceType: PerformanceType,
-    private val subjectId: Int,
-    private val studentId: Int,
-    private val topicTypeId: Int,
+@HiltViewModel(assistedFactory = StudentOneTypeTopicsResultsViewModel.Factory::class)
+class StudentOneTypeTopicsResultsViewModel @AssistedInject constructor(
+    @Assisted private val locale: Locale,
+    @Assisted private val performanceType: PerformanceType,
+    @Assisted("subjectId") private val subjectId: Int,
+    @Assisted("studentId") private val studentId: Int,
+    @Assisted("topicTypeId") private val topicTypeId: Int,
     private val getStudentOneTypeTopicsPerformance: GetStudentOneTypeTopicsPerformanceUseCase
 ) : ViewModel() {
 
@@ -73,33 +75,15 @@ class StudentOneTypeTopicsResultsViewModel(
         val topicUiItems: List<TopicResultUiItem> = emptyList()
     )
 
-    companion object {
-        fun factory(
+    @AssistedFactory
+    interface Factory {
+        fun create(
             locale: Locale,
             performanceType: PerformanceType,
-            subjectId: Int,
-            studentId: Int,
-            topicTypeId: Int
-        ) = object : ViewModelProvider.Factory {
-            private val getTotalStudentPerformance = GetSubjectStudentPerformanceUseCase(
-                App.module.studentPerformanceRepository,
-                App.module.topicRepository
-            )
-            private val getStudentOneTypeTopicsProgress =
-                GetStudentOneTypeTopicsPerformanceUseCase(getTotalStudentPerformance)
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return StudentOneTypeTopicsResultsViewModel(
-                    locale = locale,
-                    performanceType = performanceType,
-                    studentId = studentId,
-                    subjectId = subjectId,
-                    topicTypeId = topicTypeId,
-                    getStudentOneTypeTopicsPerformance = getStudentOneTypeTopicsProgress
-                ) as T
-            }
-        }
+            @Assisted("subjectId") subjectId: Int,
+            @Assisted("studentId") studentId: Int,
+            @Assisted("topicTypeId") topicTypeId: Int
+        ): StudentOneTypeTopicsResultsViewModel
     }
 }
 

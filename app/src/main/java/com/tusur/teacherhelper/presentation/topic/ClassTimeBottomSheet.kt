@@ -12,14 +12,17 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetClassTimeBinding
 import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.getGroupListItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 /**
  * Dialog with select of time range class.
  * @constructor is used to determine which class time list items are containing set performance.
  */
+@AndroidEntryPoint
 class ClassTimeBottomSheet(
     private var topicId: Int,
     private var groupListIds: List<Int>? = null,
@@ -30,9 +33,11 @@ class ClassTimeBottomSheet(
     private var _binding: BottomSheetClassTimeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ClassTimeViewModel by viewModels {
-        ClassTimeViewModel.factory(topicId, groupListIds, classDate)
-    }
+    private val viewModel: ClassTimeViewModel by viewModels(extrasProducer = {
+        creationCallback<ClassTimeViewModel.Factory> { factory ->
+            factory.create(topicId, groupListIds, classDate)
+        }
+    })
 
     private val adapter = ClassTimeAdapter()
 

@@ -3,8 +3,9 @@ package com.tusur.teacherhelper.domain.usecase
 import com.tusur.teacherhelper.domain.model.Group
 import com.tusur.teacherhelper.domain.repository.GroupRepository
 import com.tusur.teacherhelper.domain.util.NO_ID
+import javax.inject.Inject
 
-class AddNewGroupUseCase(
+class AddNewGroupUseCase @Inject constructor(
     private val addGroupToSubject: AddGroupToSubjectUseCase,
     private val groupRepository: GroupRepository
 ) {

@@ -12,9 +12,10 @@ import com.tusur.teacherhelper.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 import com.tusur.teacherhelper.data.model.Topic as DataTopic
 
-class TopicRepositoryImpl(
+class TopicRepositoryImpl @Inject constructor(
     private val topicDao: TopicDao,
     private val deadlineDao: DeadlineDao,
     private val topicTypeDao: TopicTypeDao

@@ -1,19 +1,22 @@
 package com.tusur.teacherhelper.presentation.subjects
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.domain.model.Subject
 import com.tusur.teacherhelper.domain.usecase.GetSubjectListUseCase
-import com.tusur.teacherhelper.presentation.core.App
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SubjectListViewModel(private val getSubjectList: GetSubjectListUseCase) : ViewModel() {
+@HiltViewModel
+class SubjectListViewModel @Inject constructor(
+    private val getSubjectList: GetSubjectListUseCase
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
@@ -42,17 +45,6 @@ class SubjectListViewModel(private val getSubjectList: GetSubjectListUseCase) : 
 
     sealed interface Event {
         data object Fetch : Event
-    }
-
-    companion object {
-        val factory = object : ViewModelProvider.Factory {
-            private val getSubjectListUseCase = GetSubjectListUseCase(App.module.subjectRepository)
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return SubjectListViewModel(getSubjectListUseCase) as T
-            }
-        }
     }
 }
 

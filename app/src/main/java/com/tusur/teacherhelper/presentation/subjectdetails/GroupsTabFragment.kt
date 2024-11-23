@@ -15,11 +15,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentGroupsTabBinding
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class GroupsTabFragment : Fragment() {
 
     private var _binding: FragmentGroupsTabBinding? = null

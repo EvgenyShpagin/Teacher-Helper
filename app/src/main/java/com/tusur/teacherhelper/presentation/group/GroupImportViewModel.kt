@@ -1,7 +1,6 @@
 package com.tusur.teacherhelper.presentation.group
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.StudentsImportParameters
@@ -9,10 +8,12 @@ import com.tusur.teacherhelper.domain.model.error.ExcelStudentImportError
 import com.tusur.teacherhelper.domain.usecase.AddStudentsUseCase
 import com.tusur.teacherhelper.domain.usecase.GetStudentsFromExcelFileUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSuggestedExcelFileParametersUseCase
-import com.tusur.teacherhelper.domain.usecase.GetWorkbookFromFileUseCase
 import com.tusur.teacherhelper.domain.util.Result
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,9 +21,10 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 
-class GroupImportViewModel(
-    private val groupId: Int,
-    private val excelFile: File,
+@HiltViewModel(assistedFactory = GroupImportViewModel.Factory::class)
+class GroupImportViewModel @AssistedInject constructor(
+    @Assisted private val groupId: Int,
+    @Assisted private val excelFile: File,
     private val getSuggestedExcelFileParameters: GetSuggestedExcelFileParametersUseCase,
     private val getStudentsFromExcelFile: GetStudentsFromExcelFileUseCase,
     private val addStudents: AddStudentsUseCase
@@ -136,25 +138,8 @@ class GroupImportViewModel(
         val errorMessage: UiText? = null
     )
 
-    companion object {
-        fun factory(groupId: Int, excelFile: File) = object : ViewModelProvider.Factory {
-            private val getWorkbookFromFile = GetWorkbookFromFileUseCase()
-            private val getSuggestedExcelFileParameters =
-                GetSuggestedExcelFileParametersUseCase(getWorkbookFromFile)
-            private val getStudentsFromExcelFile =
-                GetStudentsFromExcelFileUseCase(getWorkbookFromFile)
-            private val addStudents = AddStudentsUseCase(App.module.studentRepository)
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return GroupImportViewModel(
-                    groupId,
-                    excelFile,
-                    getSuggestedExcelFileParameters,
-                    getStudentsFromExcelFile,
-                    addStudents
-                ) as T
-            }
-        }
+    @AssistedFactory
+    interface Factory {
+        fun create(groupId: Int, excelFile: File): GroupImportViewModel
     }
 }

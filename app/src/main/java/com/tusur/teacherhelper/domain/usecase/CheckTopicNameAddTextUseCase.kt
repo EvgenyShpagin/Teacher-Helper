@@ -2,11 +2,11 @@ package com.tusur.teacherhelper.domain.usecase
 
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.util.withoutUnwantedSpaces
+import javax.inject.Inject
 
-class CheckTopicNameAddTextUseCase(
-    private val getAvailableTopicOrdinal: GetAvailableTopicOrdinalUseCase,
-
-    ) {
+class CheckTopicNameAddTextUseCase @Inject constructor(
+    private val getAvailableTopicOrdinal: GetAvailableTopicOrdinalUseCase
+) {
     /**
      * Check if additional text tries to replace ordinal.
      * It is possible if User want to do it with ordinal >= available

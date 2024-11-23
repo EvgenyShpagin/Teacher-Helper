@@ -26,17 +26,19 @@ import com.tusur.teacherhelper.presentation.core.util.fixCollapsing
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.setTextColor
 import com.tusur.teacherhelper.presentation.subjectdetails.DeletableGroupAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class AllGroupsFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private var _binding: FragmentAllGroupListBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: AllGroupsViewModel by viewModels { AllGroupsViewModel.factory }
+    private val viewModel: AllGroupsViewModel by viewModels()
     private lateinit var adapter: DeletableGroupAdapter
 
 

@@ -5,8 +5,9 @@ import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.repository.TopicRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class GetSubjectTopicsUseCase(private val topicRepository: TopicRepository) {
+class GetSubjectTopicsUseCase @Inject constructor(private val topicRepository: TopicRepository) {
 
     operator fun invoke(subject: Subject, withCancelled: Boolean): Flow<List<Topic>> {
         return invoke(subject.id, withCancelled)

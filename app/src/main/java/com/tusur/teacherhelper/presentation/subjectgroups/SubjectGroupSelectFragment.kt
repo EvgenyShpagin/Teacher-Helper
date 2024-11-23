@@ -18,26 +18,31 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.databinding.FragmentSubjectGroupSelectBinding
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.presentation.core.dialog.EmptyGroupDialog
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.toNativeArray
 import com.tusur.teacherhelper.presentation.topic.ClassTimeBottomSheet
 import com.tusur.teacherhelper.presentation.topicperformance.SharedClassDatesBottomSheet
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class SubjectGroupSelectFragment : Fragment(), OnQueryTextListener {
 
     private val binding get() = _binding!!
     private var _binding: FragmentSubjectGroupSelectBinding? = null
     private val args: SubjectGroupSelectFragmentArgs by navArgs()
 
-    private val viewModel: SubjectGroupSelectViewModel by viewModels {
-        SubjectGroupSelectViewModel.factory(
-            subjectId = args.subjectId,
-            shouldBeAllChecked = args.shouldBeAllChecked
-        )
-    }
+    private val viewModel: SubjectGroupSelectViewModel by viewModels(extrasProducer = {
+        creationCallback<SubjectGroupSelectViewModel.Factory> { factory ->
+            factory.create(
+                subjectId = args.subjectId,
+                shouldBeAllChecked = args.shouldBeAllChecked
+            )
+        }
+    })
 
     private val adapter = CheckableGroupAdapter()
 

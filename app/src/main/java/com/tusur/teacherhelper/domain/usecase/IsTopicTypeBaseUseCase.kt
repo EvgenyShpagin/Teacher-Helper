@@ -1,6 +1,8 @@
 package com.tusur.teacherhelper.domain.usecase
 
-class IsTopicTypeBaseUseCase {
+import javax.inject.Inject
+
+class IsTopicTypeBaseUseCase @Inject constructor() {
     operator fun invoke(topicTypeId: Int): Boolean {
         return topicTypeId in BASE_TOPIC_TYPES_ID_RANGE
     }

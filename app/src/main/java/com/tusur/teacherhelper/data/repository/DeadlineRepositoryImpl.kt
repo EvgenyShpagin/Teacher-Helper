@@ -5,8 +5,11 @@ import com.tusur.teacherhelper.domain.model.Deadline
 import com.tusur.teacherhelper.domain.repository.DeadlineRepository
 import com.tusur.teacherhelper.toData
 import com.tusur.teacherhelper.toDomain
+import javax.inject.Inject
 
-class DeadlineRepositoryImpl(private val deadlineDao: DeadlineDao) : DeadlineRepository {
+class DeadlineRepositoryImpl @Inject constructor(
+    private val deadlineDao: DeadlineDao
+) : DeadlineRepository {
     override suspend fun getAll(): List<Deadline> {
         return deadlineDao.getAll().map { it.toDomain() }
     }

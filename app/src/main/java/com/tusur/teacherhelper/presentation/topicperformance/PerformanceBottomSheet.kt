@@ -19,15 +19,18 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetPerformanceBinding
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.SingleChoiceAlertAdapter
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.formatProgress
 import com.tusur.teacherhelper.presentation.core.util.setSingleChoiceItems
 import com.tusur.teacherhelper.presentation.core.view.ListItemView
 import com.tusur.teacherhelper.presentation.topicperformance.PerformanceViewModel.Event
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 open class PerformanceBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetPerformanceBinding? = null
@@ -35,14 +38,16 @@ open class PerformanceBottomSheet : BottomSheetDialogFragment() {
 
     private val args: PerformanceBottomSheetArgs by navArgs()
 
-    protected open val viewModel: PerformanceViewModel by viewModels {
-        PerformanceViewModel.factory(
-            topicId = args.topicId,
-            currentStudentId = args.studentId,
-            datetimeMillis = args.datetimeMillis,
-            allStudentIds = args.allStudentIds.toList()
-        )
-    }
+    protected open val viewModel: PerformanceViewModel by viewModels(extrasProducer = {
+        creationCallback<PerformanceViewModel.Factory> { factory ->
+            factory.create(
+                topicId = args.topicId,
+                currentStudentId = args.studentId,
+                datetimeMillis = args.datetimeMillis,
+                allStudentIds = args.allStudentIds.toList()
+            )
+        }
+    })
 
     private var wasStudentPerformanceShown = false
 

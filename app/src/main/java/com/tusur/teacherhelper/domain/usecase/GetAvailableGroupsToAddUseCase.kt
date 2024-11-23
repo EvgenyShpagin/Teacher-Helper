@@ -4,8 +4,9 @@ import com.tusur.teacherhelper.domain.model.Group
 import com.tusur.teacherhelper.domain.repository.GroupRepository
 import com.tusur.teacherhelper.domain.repository.SubjectGroupRepository
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
-class GetAvailableGroupsToAddUseCase(
+class GetAvailableGroupsToAddUseCase @Inject constructor(
     private val groupRepository: GroupRepository,
     private val subjectGroupRepository: SubjectGroupRepository
 ) {

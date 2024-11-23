@@ -1,24 +1,23 @@
 package com.tusur.teacherhelper.presentation.performance
 
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.usecase.GetGroupStudentsUseCase
 import com.tusur.teacherhelper.domain.usecase.GetNextStudentUseCase
 import com.tusur.teacherhelper.domain.usecase.GetPrevStudentUseCase
 import com.tusur.teacherhelper.domain.usecase.GetStudentUseCase
-import com.tusur.teacherhelper.domain.usecase.GetSubjectStudentPerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectStudentSummaryAttendanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectStudentSummaryPerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectTopicsUseCase
-import com.tusur.teacherhelper.domain.usecase.GetSuggestedProgressForGradeUseCase
 import com.tusur.teacherhelper.domain.util.formattedShort
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.formatted
 import com.tusur.teacherhelper.presentation.topicperformance.StudentPerformanceBaseViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -28,11 +27,12 @@ import java.util.Locale
 import kotlin.math.max
 
 
-class StudentPerformanceViewModel(
-    private val locale: Locale,
-    private val subjectId: Int,
-    initStudent: Int,
-    private val groupId: Int,
+@HiltViewModel(assistedFactory = StudentPerformanceViewModel.Factory::class)
+class StudentPerformanceViewModel @AssistedInject constructor(
+    @Assisted private val locale: Locale,
+    @Assisted("subjectId") private val subjectId: Int,
+    @Assisted("initStudentId") initStudentId: Int,
+    @Assisted("groupId") private val groupId: Int,
     private val getGroupStudents: GetGroupStudentsUseCase,
     private val getSubjectTopics: GetSubjectTopicsUseCase,
     getStudent: GetStudentUseCase,
@@ -41,7 +41,7 @@ class StudentPerformanceViewModel(
     getNextStudent: GetNextStudentUseCase,
     getPrevStudent: GetPrevStudentUseCase
 ) : StudentPerformanceBaseViewModel(
-    currentStudentId = initStudent,
+    currentStudentId = initStudentId,
     allStudentIds = emptyList(),
     getStudent = getStudent,
     getNextStudent = getNextStudent,
@@ -171,35 +171,14 @@ class StudentPerformanceViewModel(
         data object SetPrevStudent : Event
     }
 
-    companion object {
-        fun factory(locale: Locale, subjectId: Int, studentId: Int, groupId: Int) =
-            viewModelFactory {
-                initializer {
-                    StudentPerformanceViewModel(
-                        locale,
-                        subjectId,
-                        studentId,
-                        groupId,
-                        GetGroupStudentsUseCase(App.module.studentRepository),
-                        GetSubjectTopicsUseCase(App.module.topicRepository),
-                        GetStudentUseCase(App.module.studentRepository),
-                        GetSubjectStudentSummaryPerformanceUseCase(
-                            GetSubjectStudentPerformanceUseCase(
-                                App.module.studentPerformanceRepository,
-                                App.module.topicRepository
-                            ),
-                            GetSuggestedProgressForGradeUseCase()
-                        ),
-                        GetSubjectStudentSummaryAttendanceUseCase(
-                            App.module.studentPerformanceRepository,
-                            App.module.topicTypeRepository,
-                            App.module.topicRepository
-                        ),
-                        GetNextStudentUseCase(App.module.studentRepository),
-                        GetPrevStudentUseCase(App.module.studentRepository)
-                    )
-                }
-            }
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            locale: Locale,
+            @Assisted("subjectId") subjectId: Int,
+            @Assisted("initStudentId") initStudentId: Int,
+            @Assisted("groupId") groupId: Int
+        ): StudentPerformanceViewModel
     }
 }
 

@@ -14,10 +14,13 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetGroupImportBinding
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class GroupImportBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetGroupImportBinding? = null
@@ -25,9 +28,13 @@ class GroupImportBottomSheet : BottomSheetDialogFragment() {
 
     private val args: GroupImportBottomSheetArgs by navArgs()
 
-    private val viewModel: GroupImportViewModel by viewModels {
-        GroupImportViewModel.factory(args.groupId, args.excelFile)
-    }
+    private val viewModel: GroupImportViewModel by viewModels(
+        extrasProducer = {
+            creationCallback<GroupImportViewModel.Factory> { factory ->
+                factory.create(args.groupId, args.excelFile)
+            }
+        }
+    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

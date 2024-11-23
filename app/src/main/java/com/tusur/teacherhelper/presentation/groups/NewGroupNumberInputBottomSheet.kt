@@ -9,14 +9,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.presentation.core.dialog.InputBottomSheet
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class NewGroupNumberInputBottomSheet : InputBottomSheet() {
 
-    override val viewModel: NewGroupNumberInputViewModel by viewModels {
-        NewGroupNumberInputViewModel.factory
-    }
+    override val viewModel: NewGroupNumberInputViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -2,8 +2,9 @@ package com.tusur.teacherhelper.domain.usecase
 
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.util.withoutUnwantedSpaces
+import javax.inject.Inject
 
-class FormatStudentNameUseCase {
+class FormatStudentNameUseCase @Inject constructor() {
     operator fun invoke(name: String): Student.Name {
         val spaceFixedText = name.withoutUnwantedSpaces()
         return spaceFixedText.split(' ').map { word ->

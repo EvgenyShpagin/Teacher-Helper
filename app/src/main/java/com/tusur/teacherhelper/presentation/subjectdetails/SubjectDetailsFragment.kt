@@ -27,28 +27,33 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentSubjectDetailsBinding
 import com.tusur.teacherhelper.domain.util.NO_ID
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.util.setTextColor
 import com.tusur.teacherhelper.presentation.subjectdetails.SubjectDetailsViewModel.Companion.GROUPS_FRAGMENT_POSITION
 import com.tusur.teacherhelper.presentation.subjectdetails.SubjectDetailsViewModel.Companion.TOPICS_FRAGMENT_POSITION
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class SubjectDetailsFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private val binding get() = _binding!!
     private var _binding: FragmentSubjectDetailsBinding? = null
 
     private val args: SubjectDetailsFragmentArgs by navArgs()
-    private val viewModel: SubjectDetailsViewModel by viewModels {
-        SubjectDetailsViewModel.factory(
-            subjectId = args.subjectId,
-            locale = resources.primaryLocale
-        )
-    }
+    private val viewModel: SubjectDetailsViewModel by viewModels(extrasProducer = {
+        creationCallback<SubjectDetailsViewModel.Factory> { factory ->
+            factory.create(
+                subjectId = args.subjectId,
+                locale = resources.primaryLocale
+            )
+        }
+    })
 
     private val currentShownFragment get() = binding.pager.currentItem
 

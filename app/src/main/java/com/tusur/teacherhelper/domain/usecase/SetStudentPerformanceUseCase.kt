@@ -3,8 +3,9 @@ package com.tusur.teacherhelper.domain.usecase
 import com.tusur.teacherhelper.domain.model.Performance
 import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.repository.StudentPerformanceRepository
+import javax.inject.Inject
 
-class SetStudentPerformanceUseCase(
+class SetStudentPerformanceUseCase @Inject constructor(
     private val studentPerformanceRepository: StudentPerformanceRepository,
     private val getOrAddClassDateId: GetOrAddClassDateIdUseCase
 ) {

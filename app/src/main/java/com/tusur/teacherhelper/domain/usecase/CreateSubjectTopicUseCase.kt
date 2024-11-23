@@ -4,8 +4,9 @@ import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.TopicType
 import com.tusur.teacherhelper.domain.repository.TopicRepository
 import com.tusur.teacherhelper.domain.util.NO_ID
+import javax.inject.Inject
 
-class CreateSubjectTopicUseCase(
+class CreateSubjectTopicUseCase @Inject constructor(
     private val topicRepository: TopicRepository,
     private val checkTopicNameAddText: CheckTopicNameAddTextUseCase
 ) {

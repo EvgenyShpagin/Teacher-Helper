@@ -18,21 +18,26 @@ import com.tusur.teacherhelper.databinding.BottomSheetGlobalTopicsBinding
 import com.tusur.teacherhelper.domain.util.GLOBAL_TOPICS_SUBJECT_ID
 import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.presentation.core.dialog.TopicDeleteErrorDialog
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class GlobalTopicsBottomSheet : BottomSheetDialogFragment() {
 
     private val binding get() = _binding!!
     private var _binding: BottomSheetGlobalTopicsBinding? = null
-    private val viewModel: GlobalTopicsViewModel by viewModels {
-        GlobalTopicsViewModel.factory(resources.primaryLocale)
-    }
+    private val viewModel: GlobalTopicsViewModel by viewModels(extrasProducer = {
+        creationCallback<GlobalTopicsViewModel.Factory> { factory ->
+            factory.create(resources.primaryLocale)
+        }
+    })
 
     private val adapter: GlobalTopicAdapter by lazy {
         GlobalTopicAdapter(object : BaseDeletableAdapter.Listener<GlobalTopicUiState> {

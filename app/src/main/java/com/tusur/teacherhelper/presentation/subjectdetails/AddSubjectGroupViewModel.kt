@@ -2,7 +2,6 @@ package com.tusur.teacherhelper.presentation.subjectdetails
 
 import android.text.InputFilter
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.constraints.InputConstraints
@@ -10,20 +9,24 @@ import com.tusur.teacherhelper.domain.model.Group
 import com.tusur.teacherhelper.domain.model.error.GroupNumberError
 import com.tusur.teacherhelper.domain.usecase.AddGroupToSubjectUseCase
 import com.tusur.teacherhelper.domain.usecase.AddNewGroupUseCase
-import com.tusur.teacherhelper.domain.usecase.DoesGroupNumberAlreadyExistUseCase
 import com.tusur.teacherhelper.domain.usecase.GetAvailableGroupsToAddUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchInListUseCase
 import com.tusur.teacherhelper.domain.usecase.ValidateGroupNumberUseCase
 import com.tusur.teacherhelper.domain.util.Result
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class AddSubjectGroupViewModel(
-    private val subjectId: Int,
+
+@HiltViewModel(assistedFactory = AddSubjectGroupViewModel.Factory::class)
+class AddSubjectGroupViewModel @AssistedInject constructor(
+    @Assisted private val subjectId: Int,
     private val getAvailableGroupsToAdd: GetAvailableGroupsToAddUseCase,
     private val addGroup: AddGroupToSubjectUseCase,
     private val searchInList: SearchInListUseCase,
@@ -161,32 +164,9 @@ class AddSubjectGroupViewModel(
         val anyChecked: Boolean get() = availableGroups.any { it.isChecked }
     }
 
-    companion object {
-        fun factory(subjectId: Int) = object : ViewModelProvider.Factory {
-
-            private val getAvailableGroupsToAdd = GetAvailableGroupsToAddUseCase(
-                App.module.groupRepository,
-                App.module.subjectGroupRepository
-            )
-            private val addGroup = AddGroupToSubjectUseCase(App.module.subjectGroupRepository)
-            private val searchInList = SearchInListUseCase()
-            private val addNewGroup = AddNewGroupUseCase(addGroup, App.module.groupRepository)
-            private val getGroupIdByNumber =
-                DoesGroupNumberAlreadyExistUseCase(App.module.groupRepository)
-            private val validateGroupNumber = ValidateGroupNumberUseCase(getGroupIdByNumber)
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return AddSubjectGroupViewModel(
-                    subjectId,
-                    getAvailableGroupsToAdd,
-                    addGroup,
-                    searchInList,
-                    addNewGroup,
-                    validateGroupNumber
-                ) as T
-            }
-        }
+    @AssistedFactory
+    interface Factory {
+        fun create(subjectId: Int): AddSubjectGroupViewModel
     }
 }
 

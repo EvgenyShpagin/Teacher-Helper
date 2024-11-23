@@ -5,8 +5,9 @@ import com.tusur.teacherhelper.domain.repository.GroupRepository
 import com.tusur.teacherhelper.domain.repository.SubjectGroupRepository
 import com.tusur.teacherhelper.domain.util.GLOBAL_TOPICS_SUBJECT_ID
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class GetSubjectGroupsUseCase(
+class GetSubjectGroupsUseCase @Inject constructor(
     private val subjectGroupRepository: SubjectGroupRepository,
     private val groupRepository: GroupRepository
 ) {

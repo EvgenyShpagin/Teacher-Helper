@@ -1,7 +1,6 @@
 package com.tusur.teacherhelper.presentation.group
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Student
@@ -14,8 +13,11 @@ import com.tusur.teacherhelper.domain.usecase.FormatStudentNameUseCase
 import com.tusur.teacherhelper.domain.usecase.GetGroupByIdUseCase
 import com.tusur.teacherhelper.domain.usecase.GetGroupStudentsUseCase
 import com.tusur.teacherhelper.domain.util.Result
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,8 +27,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-class GroupStudentsViewModel(
-    private val groupId: Int,
+@HiltViewModel(assistedFactory = GroupStudentsViewModel.Factory::class)
+class GroupStudentsViewModel @AssistedInject constructor(
+    @Assisted private val groupId: Int,
     private val getGroupName: GetGroupByIdUseCase,
     private val getGroupStudents: GetGroupStudentsUseCase,
     private val checkStudentName: CheckStudentNameUseCase,
@@ -215,34 +218,12 @@ class GroupStudentsViewModel(
         onSave = { newName -> updateStudentName(this, newName) }
     )
 
+    @AssistedFactory
+    interface Factory {
+        fun create(groupId: Int): GroupStudentsViewModel
+    }
 
     companion object {
-
         private const val TEMP_STUDENT_ID = -1
-
-        fun factory(groupId: Int) = object : ViewModelProvider.Factory {
-
-            private val getGroupName = GetGroupByIdUseCase(App.module.groupRepository)
-            private val getGroupStudents = GetGroupStudentsUseCase(App.module.studentRepository)
-            private val checkStudentName = CheckStudentNameUseCase(App.module.studentRepository)
-            private val formatStudentName = FormatStudentNameUseCase()
-            private val addStudent = AddStudentUseCase(App.module.studentRepository)
-            private val deleteStudent = DeleteStudentUseCase(App.module.studentRepository)
-            private val changeStudentName = ChangeStudentNameUseCase(App.module.studentRepository)
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return GroupStudentsViewModel(
-                    groupId,
-                    getGroupName,
-                    getGroupStudents,
-                    checkStudentName,
-                    formatStudentName,
-                    addStudent,
-                    deleteStudent,
-                    changeStudentName
-                ) as T
-            }
-        }
     }
 }

@@ -1,15 +1,16 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.model.StudentsImportParameters
 import com.tusur.teacherhelper.domain.model.error.ExcelStudentImportError
+import com.tusur.teacherhelper.domain.util.Result
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.Workbook
 import java.io.File
+import javax.inject.Inject
 
 
-class GetSuggestedExcelFileParametersUseCase(
+class GetSuggestedExcelFileParametersUseCase @Inject constructor(
     private val getWorkbookFromFile: GetWorkbookFromFileUseCase
 ) {
     operator fun invoke(

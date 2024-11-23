@@ -13,11 +13,12 @@ import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.OutputStream
+import javax.inject.Inject
 
 
 typealias Mime = String
 
-class SaveGroupPerformanceToExcelFileUseCase {
+class SaveGroupPerformanceToExcelFileUseCase @Inject constructor() {
 
     suspend operator fun <T> invoke(
         fileOutputStream: OutputStream,

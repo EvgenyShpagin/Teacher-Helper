@@ -4,8 +4,9 @@ import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.repository.DeadlineRepository
 import com.tusur.teacherhelper.domain.repository.SubjectRepository
 import com.tusur.teacherhelper.domain.repository.TopicRepository
+import javax.inject.Inject
 
-class UpdateSubjectTopicUseCase(
+class UpdateSubjectTopicUseCase @Inject constructor(
     private val topicRepository: TopicRepository,
     private val subjectRepository: SubjectRepository,
     private val deadlineRepository: DeadlineRepository

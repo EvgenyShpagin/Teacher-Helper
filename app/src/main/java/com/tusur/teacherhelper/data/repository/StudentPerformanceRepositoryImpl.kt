@@ -19,8 +19,9 @@ import com.tusur.teacherhelper.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class StudentPerformanceRepositoryImpl(
+class StudentPerformanceRepositoryImpl @Inject constructor(
     private val studentTopicPerformanceDao: StudentTopicPerformanceDao,
     private val topicDao: TopicDao,
     private val topicTypeDao: TopicTypeDao,

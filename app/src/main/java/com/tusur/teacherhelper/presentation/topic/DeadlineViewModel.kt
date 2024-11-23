@@ -1,7 +1,6 @@
 package com.tusur.teacherhelper.presentation.topic
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Date
@@ -13,8 +12,11 @@ import com.tusur.teacherhelper.domain.usecase.GetDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.SetTopicDeadlineUseCase
 import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.domain.util.formatted
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,9 +26,10 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class DeadlineViewModel(
-    private val locale: Locale,
-    private val topicId: Int,
+@HiltViewModel(assistedFactory = DeadlineViewModel.Factory::class)
+class DeadlineViewModel @AssistedInject constructor(
+    @Assisted private val locale: Locale,
+    @Assisted private val topicId: Int,
     private val getTopicDeadline: GetDeadlineUseCase,
     private val setTopicDeadline: SetTopicDeadlineUseCase,
     private val getAllTopicsDeadline: GetAllTopicsDeadlineUseCase
@@ -106,28 +109,8 @@ class DeadlineViewModel(
         }
     }
 
-    companion object {
-        fun factory(locale: Locale, topicId: Int) = object : ViewModelProvider.Factory {
-            private val getTopicDeadline = GetDeadlineUseCase(App.module.deadlineRepository)
-            private val setTopicDeadline = SetTopicDeadlineUseCase(
-                App.module.topicRepository,
-                App.module.deadlineRepository
-            )
-            private val getAllTopicsDeadline = GetAllTopicsDeadlineUseCase(
-                App.module.deadlineRepository,
-                App.module.topicRepository
-            )
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return DeadlineViewModel(
-                    locale,
-                    topicId,
-                    getTopicDeadline,
-                    setTopicDeadline,
-                    getAllTopicsDeadline
-                ) as T
-            }
-        }
+    @AssistedFactory
+    interface Factory {
+        fun create(locale: Locale, topicId: Int): DeadlineViewModel
     }
 }

@@ -1,7 +1,6 @@
 package com.tusur.teacherhelper.presentation.topictype
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.TopicType
@@ -9,17 +8,21 @@ import com.tusur.teacherhelper.domain.usecase.CreateTopicTypeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicTypeUseCase
 import com.tusur.teacherhelper.domain.usecase.IsShortTypeNameRequiredUseCase
 import com.tusur.teacherhelper.domain.usecase.UpdateTopicTypeUseCase
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-class TopicTypeViewModel(
-    private val isCreating: Boolean,
-    private val typeId: Int,
+@HiltViewModel(assistedFactory = TopicTypeViewModel.Factory::class)
+class TopicTypeViewModel @AssistedInject constructor(
+    @Assisted private val isCreating: Boolean,
+    @Assisted private val typeId: Int,
     private val getTopicType: GetTopicTypeUseCase,
     private val isShortTypeNameRequired: IsShortTypeNameRequiredUseCase,
     private val createTopicType: CreateTopicTypeUseCase,
@@ -205,24 +208,8 @@ class TopicTypeViewModel(
         data class ShortNameUpdate(val text: String?) : Event
     }
 
-    companion object {
-        fun factory(isCreating: Boolean, typeId: Int) = object : ViewModelProvider.Factory {
-            private val getTopicType = GetTopicTypeUseCase(App.module.topicTypeRepository)
-            private val isShortTypeNameRequired = IsShortTypeNameRequiredUseCase()
-            private val createTopicType = CreateTopicTypeUseCase(App.module.topicTypeRepository)
-            private val updateTopicType = UpdateTopicTypeUseCase(App.module.topicTypeRepository)
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return TopicTypeViewModel(
-                    isCreating = isCreating,
-                    typeId = typeId,
-                    getTopicType = getTopicType,
-                    isShortTypeNameRequired = isShortTypeNameRequired,
-                    createTopicType = createTopicType,
-                    updateTopicType = updateTopicType
-                ) as T
-            }
-        }
+    @AssistedFactory
+    interface Factory {
+        fun create(isCreating: Boolean, typeId: Int): TopicTypeViewModel
     }
 }

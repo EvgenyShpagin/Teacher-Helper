@@ -2,28 +2,29 @@ package com.tusur.teacherhelper.presentation.topic
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.ClassTime
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.usecase.GetAllClassTimeUseCase
-import com.tusur.teacherhelper.domain.usecase.GetSharedClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSharedClassTimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectByTopicIdUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectNotEmptyGroupsUseCase
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-class ClassTimeViewModel(
-    private val topicId: Int,
-    private val groupIds: List<Int>?,
-    private val classDate: Date,
+@HiltViewModel(assistedFactory = ClassTimeViewModel.Factory::class)
+class ClassTimeViewModel @AssistedInject constructor(
+    @Assisted private val topicId: Int,
+    @Assisted private val groupIds: List<Int>?,
+    @Assisted private val classDate: Date,
     private val getAllClassTime: GetAllClassTimeUseCase,
     private val getSharedClassTime: GetSharedClassTimeUseCase,
     private val getSubjectNotEmptyGroups: GetSubjectNotEmptyGroupsUseCase,
@@ -69,28 +70,9 @@ class ClassTimeViewModel(
         val extraItemDescription: UiText = UiText.empty
     )
 
-    companion object {
-        fun factory(topicId: Int, groupIds: List<Int>?, classDate: Date) = viewModelFactory {
-            initializer {
-                ClassTimeViewModel(
-                    topicId = topicId,
-                    groupIds = groupIds,
-                    classDate = classDate,
-                    getAllClassTime = GetAllClassTimeUseCase(App.module.classTimeRepository),
-                    getSharedClassTime = GetSharedClassTimeUseCase(
-                        GetSharedClassDatetimeUseCase(App.module.classDateRepository),
-                        GetAllClassTimeUseCase(App.module.classTimeRepository)
-                    ),
-                    getSubjectNotEmptyGroups = GetSubjectNotEmptyGroupsUseCase(
-                        App.module.subjectGroupRepository,
-                        App.module.groupRepository
-                    ),
-                    getSubjectByTopicId = GetSubjectByTopicIdUseCase(
-                        App.module.subjectRepository
-                    )
-                )
-            }
-        }
+    @AssistedFactory
+    interface Factory {
+        fun create(topicId: Int, groupIds: List<Int>?, classDate: Date): ClassTimeViewModel
     }
 }
 

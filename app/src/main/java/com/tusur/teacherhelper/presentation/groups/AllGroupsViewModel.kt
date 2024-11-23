@@ -1,24 +1,24 @@
 package com.tusur.teacherhelper.presentation.groups
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.domain.model.Group
 import com.tusur.teacherhelper.domain.usecase.DeleteGroupUseCase
 import com.tusur.teacherhelper.domain.usecase.GetAllGroupsUseCase
 import com.tusur.teacherhelper.domain.usecase.IsGroupAssociatedToAnySubjectUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchGroupUseCase
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.subjectdetails.GroupItemUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class AllGroupsViewModel(
+@HiltViewModel
+class AllGroupsViewModel @Inject constructor(
     private val getAllGroups: GetAllGroupsUseCase,
     private val searchGroup: SearchGroupUseCase,
     private val deleteGroup: DeleteGroupUseCase,
@@ -78,26 +78,4 @@ class AllGroupsViewModel(
     )
 
     private fun Group.toItemUiState() = GroupItemUiState(id, number)
-
-    companion object {
-
-        val factory = object : ViewModelProvider.Factory {
-
-            private val getAllGroups = GetAllGroupsUseCase(App.module.groupRepository)
-            private val searchGroup = SearchGroupUseCase(App.module.groupRepository)
-            private val deleteGroup = DeleteGroupUseCase(App.module.groupRepository)
-            private val isGroupAssociatedToAnyTopic =
-                IsGroupAssociatedToAnySubjectUseCase(App.module.groupRepository)
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return AllGroupsViewModel(
-                    getAllGroups,
-                    searchGroup,
-                    deleteGroup,
-                    isGroupAssociatedToAnyTopic
-                ) as T
-            }
-        }
-    }
 }

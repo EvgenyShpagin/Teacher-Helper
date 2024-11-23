@@ -1,15 +1,12 @@
 package com.tusur.teacherhelper.presentation.topicperformance
 
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.google.android.material.R.attr
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.TopicType
 import com.tusur.teacherhelper.domain.usecase.GetNextStudentUseCase
-import com.tusur.teacherhelper.domain.usecase.GetOrAddClassDateIdUseCase
 import com.tusur.teacherhelper.domain.usecase.GetPossibleGradesUseCase
 import com.tusur.teacherhelper.domain.usecase.GetPrevStudentUseCase
 import com.tusur.teacherhelper.domain.usecase.GetStudentPerformanceUseCase
@@ -18,21 +15,25 @@ import com.tusur.teacherhelper.domain.usecase.GetSuggestedProgressForGradeUseCas
 import com.tusur.teacherhelper.domain.usecase.GetTopicTypeByTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.SetStudentPerformanceUseCase
 import com.tusur.teacherhelper.domain.util.inPercentage
-import com.tusur.teacherhelper.presentation.core.App
 import com.tusur.teacherhelper.presentation.core.model.Icon
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.formatProgress
 import com.tusur.teacherhelper.presentation.core.util.toUiText
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class PerformanceViewModel(
-    currentStudentId: Int,
-    allStudentIds: List<Int>,
-    private val topicId: Int,
-    private val datetimeMillis: Long,
+@HiltViewModel(assistedFactory = PerformanceViewModel.Factory::class)
+class PerformanceViewModel @AssistedInject constructor(
+    @Assisted("currentStudentId") currentStudentId: Int,
+    @Assisted allStudentIds: List<Int>,
+    @Assisted("topicId") private val topicId: Int,
+    @Assisted private val datetimeMillis: Long,
     private val getStudent: GetStudentUseCase,
     private val getStudentPerformance: GetStudentPerformanceUseCase,
     private val getNextStudent: GetNextStudentUseCase,
@@ -246,36 +247,13 @@ class PerformanceViewModel(
         data object SetNextStudent : Event
     }
 
-    companion object {
-        fun factory(
-            currentStudentId: Int,
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            @Assisted("currentStudentId") currentStudentId: Int,
             allStudentIds: List<Int>,
-            topicId: Int,
+            @Assisted("topicId") topicId: Int,
             datetimeMillis: Long
-        ) = viewModelFactory {
-            initializer {
-                PerformanceViewModel(
-                    currentStudentId = currentStudentId,
-                    allStudentIds = allStudentIds,
-                    topicId = topicId,
-                    datetimeMillis = datetimeMillis,
-                    getStudent = GetStudentUseCase(App.module.studentRepository),
-                    getStudentPerformance = GetStudentPerformanceUseCase(
-                        App.module.studentPerformanceRepository,
-                        App.module.classDateRepository
-                    ),
-                    getNextStudent = GetNextStudentUseCase(App.module.studentRepository),
-                    getPrevStudent = GetPrevStudentUseCase(App.module.studentRepository),
-                    getTopicType = GetTopicTypeByTopicUseCase(App.module.topicRepository),
-                    getPossibleGrades = GetPossibleGradesUseCase(),
-                    setStudentPerformance = SetStudentPerformanceUseCase(
-                        App.module.studentPerformanceRepository,
-                        GetOrAddClassDateIdUseCase(App.module.classDateRepository)
-                    ),
-                    getSuggestedProgressForGrade = GetSuggestedProgressForGradeUseCase()
-                )
-            }
-        }
-
+        ): PerformanceViewModel
     }
 }

@@ -18,30 +18,35 @@ import androidx.transition.Slide
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentGroupsPerformanceBinding
+import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.util.toNativeArray
 import com.tusur.teacherhelper.presentation.topic.PerformanceType
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class GroupsPerformanceFragment : Fragment(), OnQueryTextListener {
 
     private var _binding: FragmentGroupsPerformanceBinding? = null
     private val binding get() = _binding!!
     private val args: GroupsPerformanceFragmentArgs by navArgs()
 
-    private val viewModel: GroupsPerformanceViewModel by viewModels {
-        GroupsPerformanceViewModel.factory(
-            locale = resources.primaryLocale,
-            topicId = args.topicId,
-            performanceType = args.performanceType,
-            datetimeMillis = args.datetimeMillis,
-            groupIdList = args.groupListIds.toList()
-        )
-    }
+    private val viewModel: GroupsPerformanceViewModel by viewModels(extrasProducer = {
+        creationCallback<GroupsPerformanceViewModel.Factory> { factory ->
+            factory.create(
+                locale = resources.primaryLocale,
+                topicId = args.topicId,
+                performanceType = args.performanceType,
+                datetimeMillis = args.datetimeMillis,
+                groupIdList = args.groupListIds.toList()
+            )
+        }
+    })
 
     private val adapter = StudentPerformanceAdapter { studentId ->
         showPerformanceDialog(studentId)
