@@ -120,7 +120,7 @@ class StudentPerformanceViewModel @AssistedInject constructor(
             ArrayList<TopicTypeUiItem>(allTypesAttendance.size + allTypesProgress.size)
         for (i in 0 until max(allTypesAttendance.size, allTypesProgress.size)) {
             val attendance = allTypesAttendance.getOrNull(i)
-            val progress = if (attendance == null) {
+            val typeProgress = if (attendance == null) {
                 allTypesProgress.getOrNull(i)
             } else {
                 allTypesProgress.find { it.first.id == attendance.first.id }
@@ -129,19 +129,19 @@ class StudentPerformanceViewModel @AssistedInject constructor(
             val typeName: UiText
             var totalProgressText: UiText = UiText.empty
             var totalAttendanceText: UiText = UiText.empty
-            if (attendance != null && progress != null) {
+            if (attendance != null && typeProgress != null) {
                 typeId = attendance.first.id
                 typeName = UiText.Dynamic(attendance.first.name)
-                totalProgressText = progress.second.formatted()
+                totalProgressText = typeProgress.second.formatted()
                 totalAttendanceText = attendance.second.formatted()
             } else if (attendance != null) {
                 typeId = attendance.first.id
                 typeName = UiText.Dynamic(attendance.first.name)
                 totalAttendanceText = attendance.second.formatted()
             } else {
-                typeId = progress!!.first.id
-                typeName = UiText.Dynamic(progress.first.name)
-                totalProgressText = progress.second.formatted()
+                typeId = typeProgress!!.first.id
+                typeName = UiText.Dynamic(typeProgress.first.name)
+                totalProgressText = typeProgress.second.formatted()
             }
             typeUiItems.add(
                 TopicTypeUiItem(
@@ -150,7 +150,7 @@ class StudentPerformanceViewModel @AssistedInject constructor(
                     totalProgressText,
                     totalAttendanceText,
                     attendance != null,
-                    progress != null
+                    typeProgress != null
                 )
             )
         }
