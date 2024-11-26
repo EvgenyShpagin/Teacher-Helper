@@ -14,6 +14,9 @@ import org.junit.Test
 
 class GetSubjectStudentSummaryPerformanceUseCaseTest {
 
+    val studentId = 1
+    val subjectId = 1
+
     val getTotalStudentPerformance = mockk<GetSubjectStudentPerformanceUseCase>()
 
     // Use real implementation for simplicity
@@ -21,9 +24,6 @@ class GetSubjectStudentSummaryPerformanceUseCaseTest {
 
     @Test
     fun shouldReturn_0_performance_whenAllLabsFailedToPass() = runTest {
-        val studentId = 1
-        val subjectId = 1
-
         val studentTotalPerformance = Labs.map { lab ->
             lab to Performance(
                 null, PerformanceItem.Progress(0f),
@@ -52,9 +52,6 @@ class GetSubjectStudentSummaryPerformanceUseCaseTest {
 
     @Test
     fun shouldReturn_100_performance_whenAllLabsPassed() = runTest {
-        val studentId = 1
-        val subjectId = 1
-
         val studentTotalPerformance = Labs.map { lab ->
             lab to Performance(
                 null, PerformanceItem.Progress(1f),
