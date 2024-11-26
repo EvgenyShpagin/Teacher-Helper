@@ -19,8 +19,9 @@ class GetSubjectStudentSummaryPerformanceUseCaseTest {
 
     val getTotalStudentPerformance = mockk<GetSubjectStudentPerformanceUseCase>()
 
-    // Use real implementation for simplicity
+    // Use real implementations for simplicity
     val getSuggestedProgressForGrade = GetSuggestedProgressForGradeUseCase()
+    val getSuggestedProgressForAssessment = GetSuggestedProgressForAssessmentUseCase()
 
     @Test
     fun shouldReturn_0_performance_whenAllLabsFailedToPass() = runTest {
@@ -37,7 +38,8 @@ class GetSubjectStudentSummaryPerformanceUseCaseTest {
 
         val useCase = GetSubjectStudentSummaryPerformanceUseCase(
             getTotalStudentPerformance,
-            getSuggestedProgressForGrade
+            getSuggestedProgressForGrade,
+            getSuggestedProgressForAssessment
         )
 
         val expectedTypeToPerformanceList = listOf(
@@ -65,7 +67,8 @@ class GetSubjectStudentSummaryPerformanceUseCaseTest {
 
         val useCase = GetSubjectStudentSummaryPerformanceUseCase(
             getTotalStudentPerformance,
-            getSuggestedProgressForGrade
+            getSuggestedProgressForGrade,
+            getSuggestedProgressForAssessment
         )
 
         val expectedTypeToPerformanceList = listOf(
@@ -78,6 +81,64 @@ class GetSubjectStudentSummaryPerformanceUseCaseTest {
         )
     }
 
+    @Test
+    fun shouldReturn_0_performance_whenAllAssessmentsFailedToPass() = runTest {
+        val studentTotalPerformance = Assessments.map { lab ->
+            lab to Performance(
+                null, null,
+                PerformanceItem.Assessment.FAIL, listOf(PerformanceItem.Attendance.Present)
+            )
+        }
+
+        coEvery {
+            getTotalStudentPerformance(studentId, subjectId)
+        } returns flow { emit(studentTotalPerformance) }
+
+        val useCase = GetSubjectStudentSummaryPerformanceUseCase(
+            getTotalStudentPerformance,
+            getSuggestedProgressForGrade,
+            getSuggestedProgressForAssessment
+        )
+
+        val expectedTypeToPerformanceList = listOf(
+            AssessmentTopicType to SumProgress(0f, 4f)
+        )
+
+        assertEquals(
+            expectedTypeToPerformanceList,
+            useCase(studentId, subjectId, Assessments.map { it.id })
+        )
+    }
+
+    @Test
+    fun shouldReturn_100_performance_whenAllAssessmentsPassed() = runTest {
+        val studentTotalPerformance = Assessments.map { lab ->
+            lab to Performance(
+                null, null,
+                PerformanceItem.Assessment.PASS, listOf(PerformanceItem.Attendance.Present)
+            )
+        }
+
+        coEvery {
+            getTotalStudentPerformance(studentId, subjectId)
+        } returns flow { emit(studentTotalPerformance) }
+
+        val useCase = GetSubjectStudentSummaryPerformanceUseCase(
+            getTotalStudentPerformance,
+            getSuggestedProgressForGrade,
+            getSuggestedProgressForAssessment
+        )
+
+        val expectedTypeToPerformanceList = listOf(
+            AssessmentTopicType to SumProgress(4f, 4f)
+        )
+
+        assertEquals(
+            expectedTypeToPerformanceList,
+            useCase(studentId, subjectId, Assessments.map { it.id })
+        )
+    }
+
     companion object {
         val LabTopicType = TopicType(1, "Лабораторная", "", true, false, true, false, true, false)
         val Labs = List(4) { i ->
@@ -85,6 +146,15 @@ class GetSubjectStudentSummaryPerformanceUseCaseTest {
                 id = i,
                 type = LabTopicType,
                 name = Topic.Name("Лабораторная", "", null, null, null)
+            )
+        }
+
+        val AssessmentTopicType = TopicType(2, "Зачет", "", true, false, false, true, false, false)
+        val Assessments = List(4) { i ->
+            Topic(
+                id = i,
+                type = AssessmentTopicType,
+                name = Topic.Name("Зачет", "", null, null, null)
             )
         }
     }

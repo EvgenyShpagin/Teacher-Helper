@@ -11,7 +11,8 @@ private typealias TypeToProgress = Pair<TopicType, SumProgress<Float>>
 
 class GetSubjectStudentSummaryPerformanceUseCase @Inject constructor(
     private val getTotalStudentPerformance: GetSubjectStudentPerformanceUseCase,
-    private val getSuggestedProgressForGrade: GetSuggestedProgressForGradeUseCase
+    private val getSuggestedProgressForGrade: GetSuggestedProgressForGradeUseCase,
+    private val getSuggestedProgressForAssessment: GetSuggestedProgressForAssessmentUseCase
 ) {
     suspend operator fun invoke(
         studentId: Int,
@@ -23,7 +24,11 @@ class GetSubjectStudentSummaryPerformanceUseCase @Inject constructor(
         getTotalStudentPerformance(studentId, subjectId).first()
             .filter { (topic, _) ->
                 topic.id in takenInAccountTopicIds
-                        && (topic.type.isProgressAcceptable || topic.type.isGradeAcceptable)
+                        && (
+                        topic.type.isProgressAcceptable
+                                || topic.type.isGradeAcceptable
+                                || topic.type.isAssessmentAcceptable
+                        )
             }
             .forEach { (topic, performance) ->
                 val typeIsAlreadyAdded = typesPerformance.any { (type, _) -> type == topic.type }
@@ -59,10 +64,10 @@ class GetSubjectStudentSummaryPerformanceUseCase @Inject constructor(
     }
 
     private fun getTopicProgressValue(topic: Topic, performance: Performance): Float {
-        return if (topic.type.isProgressAcceptable) {
-            performance.progress!!.value
-        } else {
-            getSuggestedProgressForGrade(performance.grade!!).value
+        return when {
+            topic.type.isProgressAcceptable -> performance.progress!!.value
+            topic.type.isGradeAcceptable -> getSuggestedProgressForGrade(performance.grade).value
+            else -> getSuggestedProgressForAssessment(performance.assessment!!).value
         }
     }
 }
