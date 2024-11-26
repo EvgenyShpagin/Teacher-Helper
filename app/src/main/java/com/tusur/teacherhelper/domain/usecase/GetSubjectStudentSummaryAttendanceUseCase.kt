@@ -51,9 +51,9 @@ class GetSubjectStudentSummaryAttendanceUseCase @Inject constructor(
         return typesAttendance
     }
 
-    private fun PerformanceItem.Attendance.toProgressFraction(): Float {
+    private fun PerformanceItem.Attendance?.toProgressFraction(): Float {
         return when (this) {
-            PerformanceItem.Attendance.Absent -> 0f
+            null, PerformanceItem.Attendance.Absent -> 0f
             else -> 1f
         }
     }

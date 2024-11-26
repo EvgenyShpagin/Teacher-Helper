@@ -30,7 +30,7 @@ interface StudentPerformanceRepository {
     suspend fun getAttendance(
         topicIds: List<Int>,
         studentId: Int
-    ): List<Pair<Topic, PerformanceItem.Attendance>>
+    ): List<Pair<Topic, PerformanceItem.Attendance?>>
 
     suspend fun getSetPerformance(
         topicIds: List<Int>,

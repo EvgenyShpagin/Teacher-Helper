@@ -74,9 +74,9 @@ class StudentPerformanceRepositoryImpl @Inject constructor(
     override suspend fun getAttendance(
         topicIds: List<Int>,
         studentId: Int
-    ): List<Pair<Topic, PerformanceItem.Attendance>> {
+    ): List<Pair<Topic, PerformanceItem.Attendance?>> {
         return studentTopicPerformanceDao.getOfStudent(topicIds, studentId).map {
-            getTopic(it.topicId) to it.attendance!!
+            getTopic(it.topicId) to it.attendance
         }
     }
 
