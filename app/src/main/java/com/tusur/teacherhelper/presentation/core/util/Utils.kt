@@ -101,8 +101,8 @@ fun List<Int>.toNativeArray(): IntArray {
 
 fun PerformanceItem.toUiText(): UiText {
     return when (this) {
-        PerformanceItem.Assessment.FAIL -> UiText.Resource(R.string.assessment_fail)
-        PerformanceItem.Assessment.PASS -> UiText.Resource(R.string.assessment_pass)
+        PerformanceItem.Assessment.FAIL -> UiText.Dynamic("✕")
+        PerformanceItem.Assessment.PASS -> UiText.Dynamic("✓")
         PerformanceItem.Attendance.Absent -> UiText.Resource(R.string.attendance_absent)
         PerformanceItem.Attendance.Excused -> UiText.Resource(R.string.attendance_excused)
         PerformanceItem.Attendance.Present -> UiText.Resource(R.string.attendance_present)

@@ -150,7 +150,7 @@ class PerformanceTableViewModel @AssistedInject constructor(
         }
 
     private fun Performance.primaryPerformance(): UiText {
-        return grade?.toUiText() ?: progress?.toUiText() ?: UiText.empty
+        return grade?.toUiText() ?: progress?.toUiText() ?: assessment?.toUiText() ?: UiText.empty
     }
 
     fun fetchClickedInfo(columnIndex: Int, rowIndex: Int) {
