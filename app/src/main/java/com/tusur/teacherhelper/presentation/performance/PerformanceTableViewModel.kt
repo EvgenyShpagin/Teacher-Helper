@@ -153,17 +153,18 @@ class PerformanceTableViewModel @AssistedInject constructor(
         return grade?.toUiText() ?: progress?.toUiText() ?: assessment?.toUiText() ?: UiText.empty
     }
 
-    fun fetchClickedInfo(columnIndex: Int, rowIndex: Int) {
+    fun click(columnIndex: Int, rowIndex: Int) {
         viewModelScope.launch {
             val studentId = getStudentId(rowIndex)
             if (columnIndex == 0) {
-                _onetimeEventChannel.send(OnetimeEvent.StudentClick(studentId))
+                _onetimeEventChannel.send(OnetimeEvent.ShowStudentSummaryPerformance(studentId))
             } else {
                 val topicId = getTopicId(columnIndex)
-                val classDatetimeMs = getFinalPerformanceClassDayDatetimeMs(studentId, topicId)!!
+                val classDatetimeMs = getFinalPerformanceClassDayDatetimeMs(studentId, topicId)
                 _onetimeEventChannel.send(
-                    OnetimeEvent.PerformanceClick(
+                    OnetimeEvent.SetTopicPerformance(
                         studentId = studentId,
+                        groupId = groupId,
                         topicId = topicId,
                         datetimeMs = classDatetimeMs
                     )
@@ -180,13 +181,14 @@ class PerformanceTableViewModel @AssistedInject constructor(
     )
 
     sealed interface OnetimeEvent {
-        data class PerformanceClick(
+        data class SetTopicPerformance(
             val studentId: Int,
+            val groupId: Int,
             val topicId: Int,
-            val datetimeMs: Long
+            val datetimeMs: Long?
         ) : OnetimeEvent
 
-        data class StudentClick(val studentId: Int) : OnetimeEvent
+        data class ShowStudentSummaryPerformance(val studentId: Int) : OnetimeEvent
     }
 
     @AssistedFactory

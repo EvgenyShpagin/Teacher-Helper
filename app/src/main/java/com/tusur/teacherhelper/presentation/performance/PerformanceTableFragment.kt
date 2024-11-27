@@ -16,16 +16,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentPerformanceTableBinding
+import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.util.map
 import com.tusur.teacherhelper.presentation.core.dialog.EmptyGroupDialog
 import com.tusur.teacherhelper.presentation.core.util.EXCEL_FILE_NEW_MIME_TYPE
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
+import com.tusur.teacherhelper.presentation.topic.ClassTimeBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -120,14 +124,33 @@ class PerformanceTableFragment : Fragment() {
                 launch(Dispatchers.Main.immediate) {
                     viewModel.onetimeEvent.collect {
                         when (it) {
-                            is PerformanceTableViewModel.OnetimeEvent.PerformanceClick ->
-                                navigateToStudentTopicPerformance(
-                                    studentId = it.studentId,
-                                    topicId = it.topicId,
-                                    classDayDatetimeMs = it.datetimeMs
-                                )
+                            is PerformanceTableViewModel.OnetimeEvent.SetTopicPerformance -> {
+                                if (it.datetimeMs == null) {
+                                    showDatePickerDialog(
+                                        datetimeMillis = Datetime.current().toMillis()
+                                    ) { dateMillis ->
+                                        showClassTimeDialog(
+                                            topicId = it.topicId,
+                                            groupId = it.groupId,
+                                            classDate = Date.fromMillis(dateMillis)
+                                        ) { datetimeMillis ->
+                                            navigateToStudentTopicPerformance(
+                                                studentId = it.studentId,
+                                                topicId = it.topicId,
+                                                classDayDatetimeMs = datetimeMillis
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    navigateToStudentTopicPerformance(
+                                        studentId = it.studentId,
+                                        topicId = it.topicId,
+                                        classDayDatetimeMs = it.datetimeMs
+                                    )
+                                }
+                            }
 
-                            is PerformanceTableViewModel.OnetimeEvent.StudentClick ->
+                            is PerformanceTableViewModel.OnetimeEvent.ShowStudentSummaryPerformance ->
                                 navigateToStudentTotalPerformance(studentId = it.studentId)
                         }
                     }
@@ -154,7 +177,7 @@ class PerformanceTableFragment : Fragment() {
 
         binding.tableView.onClickListener = object : TableView.OnClickListener {
             override fun onCellClick(columnIndex: Int, rowIndex: Int) {
-                viewModel.fetchClickedInfo(columnIndex, rowIndex)
+                viewModel.click(columnIndex, rowIndex)
             }
 
             override fun onLabelClick(ordinal: Int) {
@@ -227,5 +250,31 @@ class PerformanceTableFragment : Fragment() {
                 onConfirm()
             }.create()
         emptyDialog!!.show()
+    }
+
+    private fun showDatePickerDialog(datetimeMillis: Long, onConfirm: (dateMillis: Long) -> Unit) {
+        MaterialDatePicker.Builder.datePicker()
+            .setTitleText(R.string.dialog_edit_class_date_title)
+            .setSelection(datetimeMillis)
+            .build().also { picker ->
+                picker.addOnPositiveButtonClickListener { dateMillis ->
+                    onConfirm(dateMillis)
+                }
+            }.show(childFragmentManager, null)
+    }
+
+    private fun showClassTimeDialog(
+        topicId: Int,
+        groupId: Int,
+        classDate: Date,
+        onSelect: (datetimeMillis: Long) -> Unit
+    ) {
+        ClassTimeBottomSheet(
+            topicId = topicId,
+            groupListIds = listOf(groupId),
+            classDate = classDate
+        ) { initTimeMs ->
+            onSelect.invoke(classDate.toMillis() + initTimeMs)
+        }.show(childFragmentManager, null)
     }
 }
