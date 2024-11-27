@@ -221,15 +221,13 @@ class PerformanceViewModel @AssistedInject constructor(
     ) {
         val checkedGradePosition
             get() = gradeItems.indexOfFirst { it.isSelected }.coerceAtLeast(0)
-        val assessmentIcon: Icon? = if (!assessmentSet) {
-            Icon(
+        val assessmentIcon: Icon? = when {
+            !assessmentSet -> null
+            assessmentPassed -> Icon(R.drawable.ic_check_small_24)
+            else -> Icon(
                 iconRes = R.drawable.ic_close_small_24,
                 colorAttrRes = attr.colorError
             )
-        } else if (assessmentPassed) {
-            Icon(R.drawable.ic_check_small_24)
-        } else {
-            null
         }
     }
 
