@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/default_list_item_height"
-    android:background="@drawable/group_list_first_item_ripple"
     android:clickable="true"
     android:focusable="true">
 

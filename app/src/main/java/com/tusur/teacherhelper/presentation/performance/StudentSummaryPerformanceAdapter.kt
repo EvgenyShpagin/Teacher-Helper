@@ -2,6 +2,7 @@ package com.tusur.teacherhelper.presentation.performance
 
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.presentation.core.view.recycler.BaseAdapter
 
@@ -14,17 +15,27 @@ class StudentSummaryPerformanceProgressAdapter(
         }
     },
     idSelector = { it.typeId },
-    firstItemLayoutResId = R.layout.group_list_first_item_topic_type_progress,
-    middleItemLayoutResId = R.layout.group_list_middle_item_topic_type_progress,
-    lastItemLayoutResId = R.layout.group_list_last_item_topic_type_progress,
-    singleItemLayoutResId = R.layout.group_list_single_item_topic_type_progress,
+    itemLayoutResId = R.layout.group_list_item_topic_type_progress
 ) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): BaseAdapter<TopicTypeUiItem>.DefaultViewHolder {
-        return super.onCreateViewHolder(parent, viewType)
+        return DefaultViewHolder(
+            itemView = parent.inflate(getLayoutResFromViewType(viewType))
+                .also { view ->
+                    view.background = ContextCompat.getDrawable(
+                        parent.context,
+                        when (viewType) {
+                            DEFAULT_ITEM_SINGLE -> R.drawable.group_list_single_item_ripple
+                            DEFAULT_ITEM_MIDDLE -> R.drawable.group_list_middle_item_ripple
+                            DEFAULT_ITEM_FIRST -> R.drawable.group_list_first_item_ripple
+                            else -> R.drawable.group_list_last_item_ripple
+                        }
+                    )
+                }
+        )
     }
 
     override fun onBindViewHolder(
