@@ -28,7 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
+@AndroidEntryPoint // TODO: inject
 class SharedClassDatesBottomSheet(
     private val topicId: Int,
     private val groupListIds: List<Int>,

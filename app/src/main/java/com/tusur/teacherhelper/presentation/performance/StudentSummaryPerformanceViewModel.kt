@@ -13,6 +13,7 @@ import com.tusur.teacherhelper.domain.usecase.GetSubjectTopicsUseCase
 import com.tusur.teacherhelper.domain.util.formattedShort
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.formatted
+import com.tusur.teacherhelper.presentation.topic.PerformanceType
 import com.tusur.teacherhelper.presentation.topicperformance.StudentPerformanceBaseViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -24,7 +25,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Locale
-import kotlin.math.max
 
 
 @HiltViewModel(assistedFactory = StudentPerformanceViewModel.Factory::class)
@@ -76,7 +76,10 @@ class StudentPerformanceViewModel @AssistedInject constructor(
                 hasPrevStudent = prevStudent != null,
                 hasNextStudent = nextStudent != null,
                 topicUiItems = topics.map { it.toUiItem() },
-                topicTypesUiItems = topics.toTopicTypesUiItems()
+                performanceTopicTypeUiItems =
+                    topics.toTopicTypeUiItems(PerformanceType.OTHER_PERFORMANCE),
+                attendanceTopicTypeUiItems =
+                    topics.toTopicTypeUiItems(PerformanceType.ATTENDANCE)
             )
         }
     }
@@ -86,75 +89,70 @@ class StudentPerformanceViewModel @AssistedInject constructor(
         name = UiText.Dynamic(name.formattedShort(locale)),
         isTakenInAccount = true,
         onClick = {
-            viewModelScope.launch {
-                _uiState.update { state ->
-                    val takenInAccountItemCount = state.topicUiItems.count { it.isTakenInAccount }
-                    val currentItemId = state.topicUiItems.find { it.id == id }
-                    if (takenInAccountItemCount == 1 && currentItemId?.isTakenInAccount == true) {
-                        return@update state
-                    }
-                    state.copy(
-                        topicUiItems = state.topicUiItems.map {
-                            if (it.id == id) {
-                                it.copy(isTakenInAccount = !it.isTakenInAccount)
-                            } else {
-                                it
-                            }
-                        },
-                        topicTypesUiItems = topics.toTopicTypesUiItems()
-                    )
-                }
-            }
+            onTopicAccountingChange(this)
         }
     )
 
-    private suspend fun List<Topic>.toTopicTypesUiItems(): List<TopicTypeUiItem> {
-        val topicIds = map { it.id }
-        val allTypesAttendance = getTotalStudentAttendance(currentStudentId, subjectId, topicIds)
-        val allTypesProgress = getTotalStudentPerformanceProgress(
-            studentId = currentStudentId,
-            subjectId = subjectId,
-            takenInAccountTopicIds = topicIds
-        )
-        val typeUiItems =
-            ArrayList<TopicTypeUiItem>(allTypesAttendance.size + allTypesProgress.size)
-        for (i in 0 until max(allTypesAttendance.size, allTypesProgress.size)) {
-            val attendance = allTypesAttendance.getOrNull(i)
-            val typeProgress = if (attendance == null) {
-                allTypesProgress.getOrNull(i)
-            } else {
-                allTypesProgress.find { it.first.id == attendance.first.id }
-            }
-            val typeId: Int
-            val typeName: UiText
-            var totalProgressText: UiText = UiText.empty
-            var totalAttendanceText: UiText = UiText.empty
-            if (attendance != null && typeProgress != null) {
-                typeId = attendance.first.id
-                typeName = UiText.Dynamic(attendance.first.name)
-                totalProgressText = typeProgress.second.formatted()
-                totalAttendanceText = attendance.second.formatted()
-            } else if (attendance != null) {
-                typeId = attendance.first.id
-                typeName = UiText.Dynamic(attendance.first.name)
-                totalAttendanceText = attendance.second.formatted()
-            } else {
-                typeId = typeProgress!!.first.id
-                typeName = UiText.Dynamic(typeProgress.first.name)
-                totalProgressText = typeProgress.second.formatted()
-            }
-            typeUiItems.add(
-                TopicTypeUiItem(
-                    typeId,
-                    typeName,
-                    totalProgressText,
-                    totalAttendanceText,
-                    attendance != null,
-                    typeProgress != null
+    private fun onTopicAccountingChange(topic: Topic) {
+        viewModelScope.launch {
+            _uiState.update { state ->
+                val takenInAccountItemCount = state.topicUiItems.count { it.isTakenInAccount }
+                val currentItemId = state.topicUiItems.find { it.id == topic.id }
+                if (takenInAccountItemCount == 1 && currentItemId?.isTakenInAccount == true) {
+                    return@update state
+                }
+                val updatedTopicUiItems = state.topicUiItems.map {
+                    if (it.id == topic.id) {
+                        it.copy(isTakenInAccount = !it.isTakenInAccount)
+                    } else {
+                        it
+                    }
+                }
+
+                val takenIntoAccountTopicIds = updatedTopicUiItems
+                    .filter { it.isTakenInAccount }
+                    .map { it.id }
+
+                val takenIntoAccountTopics = topics
+                    .filter { it.id in takenIntoAccountTopicIds }
+
+                state.copy(
+                    topicUiItems = updatedTopicUiItems,
+                    performanceTopicTypeUiItems = takenIntoAccountTopics
+                        .toTopicTypeUiItems(PerformanceType.OTHER_PERFORMANCE),
+                    attendanceTopicTypeUiItems = takenIntoAccountTopics
+                        .toTopicTypeUiItems(PerformanceType.ATTENDANCE)
                 )
+            }
+        }
+    }
+
+    private suspend fun List<Topic>.toTopicTypeUiItems(
+        performanceType: PerformanceType
+    ): List<TopicTypeUiItem> {
+        val accountingIds = map { topic -> topic.id }
+
+        val typeToProgressList = when (performanceType) {
+            PerformanceType.ATTENDANCE -> getTotalStudentAttendance(
+                studentId = currentStudent!!.id,
+                subjectId = subjectId,
+                takenInAccountTopicIds = accountingIds
+            )
+
+            PerformanceType.OTHER_PERFORMANCE -> getTotalStudentPerformanceProgress(
+                studentId = currentStudent!!.id,
+                subjectId = subjectId,
+                takenInAccountTopicIds = accountingIds
             )
         }
-        return typeUiItems
+
+        return typeToProgressList.map { (type, progress) ->
+            TopicTypeUiItem(
+                typeId = type.id,
+                name = UiText.Dynamic(type.name),
+                progress = progress.formatted(),
+            )
+        }
     }
 
     data class UiState(
@@ -162,7 +160,8 @@ class StudentPerformanceViewModel @AssistedInject constructor(
         val hasPrevStudent: Boolean = false,
         val hasNextStudent: Boolean = false,
         val topicUiItems: List<TopicUiItem> = emptyList(),
-        val topicTypesUiItems: List<TopicTypeUiItem> = emptyList()
+        val performanceTopicTypeUiItems: List<TopicTypeUiItem> = emptyList(),
+        val attendanceTopicTypeUiItems: List<TopicTypeUiItem> = emptyList(),
     )
 
     sealed interface Event {
@@ -192,8 +191,5 @@ data class TopicUiItem(
 data class TopicTypeUiItem(
     val typeId: Int,
     val name: UiText,
-    val totalProgress: UiText,
-    val totalAttendance: UiText,
-    val hasAttendance: Boolean,
-    val hasProgress: Boolean
+    val progress: UiText
 )

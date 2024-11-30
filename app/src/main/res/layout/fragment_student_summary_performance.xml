@@ -63,32 +63,54 @@
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chip_group"
-                    app:selectionRequired="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:selectionRequired="true"
                     app:singleLine="true" />
 
             </HorizontalScrollView>
 
-            <com.tusur.teacherhelper.presentation.core.view.ListLayout
-                android:id="@+id/topics_progress_list_layout"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/performance_progress_label"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/large_content_margin"
-                app:label="@string/passed_topics_label"
+                android:text="@string/passed_topics_label"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chip_group_scroll_view" />
+                app:layout_constraintTop_toBottomOf="@id/chip_group_scroll_view" />
 
-            <com.tusur.teacherhelper.presentation.core.view.ListLayout
-                android:id="@+id/topics_attendance_list_layout"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/topics_performance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/large_content_margin"
-                app:label="@string/attendance_label"
+                android:layout_marginTop="@dimen/group_list_item_vertical_margin"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/topics_progress_list_layout" />
+                app:layout_constraintTop_toBottomOf="@+id/performance_progress_label" />
+
+            <TextView
+                android:id="@+id/attendance_progress_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_content_margin"
+                android:text="@string/attendance_label"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topics_performance" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/topics_attendance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/group_list_item_vertical_margin"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/attendance_progress_label" />
 
             <Button
                 android:id="@+id/set_result_grade_button"
@@ -99,7 +121,7 @@
                 android:text="@string/set_result_grade"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/topics_attendance_list_layout" />
+                app:layout_constraintTop_toBottomOf="@+id/topics_attendance" />
 
             <include
                 android:id="@+id/switch_buttons"

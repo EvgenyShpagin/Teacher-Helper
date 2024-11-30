@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.LinearLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isEmpty
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -22,9 +22,8 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentStudentSummaryPerformanceBinding
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
-import com.tusur.teacherhelper.presentation.core.util.getListItemAt
+import com.tusur.teacherhelper.presentation.core.util.getGroupListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
-import com.tusur.teacherhelper.presentation.core.view.ListItemView
 import com.tusur.teacherhelper.presentation.performance.StudentPerformanceViewModel.Event
 import com.tusur.teacherhelper.presentation.topic.PerformanceType
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,6 +48,21 @@ class StudentSummaryPerformanceFragment : Fragment() {
             )
         }
     })
+
+    private val performanceProgressAdapter = StudentSummaryPerformanceProgressAdapter { type ->
+        navigateToOneTypeTopicsResults(
+            args.studentId,
+            type.typeId,
+            PerformanceType.OTHER_PERFORMANCE
+        )
+    }
+    private val attendanceProgressAdapter = StudentSummaryPerformanceProgressAdapter { type ->
+        navigateToOneTypeTopicsResults(
+            args.studentId,
+            type.typeId,
+            PerformanceType.ATTENDANCE
+        )
+    }
 
     private var wasStudentPerformanceShown = false
     private lateinit var studentSwapEffectAnimation: Animation
@@ -80,6 +94,8 @@ class StudentSummaryPerformanceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerViews()
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -89,10 +105,23 @@ class StudentSummaryPerformanceFragment : Fragment() {
                     }
                 }
                 launch {
-                    viewModel.uiState.distinctUntilChangedBy { it.topicTypesUiItems }.collect {
-                        updateListItems(it.topicTypesUiItems)
-                    }
+                    viewModel.uiState.distinctUntilChangedBy { it.performanceTopicTypeUiItems }
+                        .collect {
+                            binding.performanceProgressLabel.isVisible =
+                                it.performanceTopicTypeUiItems.isNotEmpty()
+                            performanceProgressAdapter.submitList(it.performanceTopicTypeUiItems)
+                        }
                 }
+
+                launch {
+                    viewModel.uiState.distinctUntilChangedBy { it.attendanceTopicTypeUiItems }
+                        .collect {
+                            binding.attendanceProgressLabel.isVisible =
+                                it.attendanceTopicTypeUiItems.isNotEmpty()
+                            attendanceProgressAdapter.submitList(it.attendanceTopicTypeUiItems)
+                        }
+                }
+
                 launch {
                     viewModel.uiState.distinctUntilChangedBy { it.topicUiItems }.collect {
                         updateTopicChips(it.topicUiItems)
@@ -132,72 +161,6 @@ class StudentSummaryPerformanceFragment : Fragment() {
         for (i in 0 until binding.chipGroup.childCount) {
             val chip = binding.chipGroup.getChildAt(i) as Chip
             chip.isChecked = topicUiItems[i].isTakenInAccount
-        }
-    }
-
-    private fun updateListItems(topicTypesUiItems: List<TopicTypeUiItem>) {
-        if (!binding.topicsAttendanceListLayout.hasVisibleItems &&
-            !binding.topicsProgressListLayout.hasVisibleItems
-        ) {
-            createListItems(topicTypesUiItems)
-        }
-
-        var progressListItemIndex = 0
-        var attendanceListItemIndex = 0
-        topicTypesUiItems.forEach { uiItem ->
-            if (uiItem.hasAttendance) {
-                binding.topicsAttendanceListLayout.getListItemAt(attendanceListItemIndex)?.apply {
-                    title = uiItem.name.toString(requireContext())
-                    trailingSupportText = uiItem.totalAttendance.toString(requireContext())
-                    ++attendanceListItemIndex
-                }
-            }
-            if (uiItem.hasProgress) {
-                binding.topicsProgressListLayout.getListItemAt(progressListItemIndex)?.apply {
-                    title = uiItem.name.toString(requireContext())
-                    trailingSupportText = uiItem.totalProgress.toString(requireContext())
-                    ++progressListItemIndex
-                }
-            }
-        }
-    }
-
-    private fun createListItem(onClickListener: View.OnClickListener): ListItemView {
-        return ListItemView(requireContext()).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                resources.getDimension(R.dimen.default_list_item_height).toInt()
-            )
-            leadingComponent = ListItemView.Component.NOTHING
-            trailingComponent = ListItemView.Component.SUPPORT_TEXT
-            setOnClickListener(onClickListener)
-        }
-    }
-
-    private fun createListItems(topicTypesUiItems: List<TopicTypeUiItem>) {
-        topicTypesUiItems.forEach { typeItem ->
-            if (typeItem.hasProgress) {
-                binding.topicsProgressListLayout.addView(
-                    createListItem {
-                        navigateToOneTypeTopicsResults(
-                            args.studentId,
-                            typeItem.typeId,
-                            PerformanceType.OTHER_PERFORMANCE
-                        )
-                    }
-                )
-            }
-            if (typeItem.hasAttendance) {
-                binding.topicsAttendanceListLayout.addView(
-                    createListItem {
-                        navigateToOneTypeTopicsResults(
-                            args.studentId,
-                            typeItem.typeId,
-                            PerformanceType.ATTENDANCE
-                        )
-                    }
-                )
-            }
         }
     }
 
@@ -241,5 +204,21 @@ class StudentSummaryPerformanceFragment : Fragment() {
         binding.headline.text = state.studentName.toString(requireContext())
         binding.switchButtons.nextButton.isEnabled = state.hasNextStudent
         binding.switchButtons.prevButton.isEnabled = state.hasPrevStudent
+    }
+
+    private fun setupRecyclerViews() {
+        binding.topicsPerformance.apply {
+            adapter = performanceProgressAdapter
+            isNestedScrollingEnabled = false
+        }
+        binding.topicsAttendance.apply {
+            adapter = attendanceProgressAdapter
+            isNestedScrollingEnabled = false
+        }
+
+        val itemDecoration = getGroupListItemDecoration(resources, false)
+
+        binding.topicsPerformance.addItemDecoration(itemDecoration)
+        binding.topicsAttendance.addItemDecoration(itemDecoration)
     }
 }
