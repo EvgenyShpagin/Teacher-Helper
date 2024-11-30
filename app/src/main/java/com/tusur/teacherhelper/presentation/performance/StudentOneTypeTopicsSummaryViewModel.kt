@@ -63,7 +63,9 @@ class StudentOneTypeTopicsResultsViewModel @AssistedInject constructor(
             topicId = topic.id,
             topicName = UiText.Dynamic(topic.name.formatted(locale)),
             results = if (performanceType == PerformanceType.OTHER_PERFORMANCE) {
-                performance.grade?.toUiText() ?: performance.progress!!.toUiText()
+                performance.grade?.toUiText()
+                    ?: performance.progress?.toUiText()
+                    ?: performance.assessment!!.toUiText()
             } else {
                 performance.attendance!!.getTotalAttendance().formatted()
             }
