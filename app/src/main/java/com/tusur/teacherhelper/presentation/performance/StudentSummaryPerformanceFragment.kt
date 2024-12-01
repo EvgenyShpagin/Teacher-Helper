@@ -101,7 +101,6 @@ class StudentSummaryPerformanceFragment : Fragment() {
                 launch {
                     viewModel.uiState.distinctUntilChangedBy { it.studentName }.collect {
                         updateUiOnStudentSwitch(it)
-                        view.doOnPreDraw { startPostponedEnterTransition() }
                     }
                 }
                 launch {
@@ -119,6 +118,9 @@ class StudentSummaryPerformanceFragment : Fragment() {
                             binding.attendanceProgressLabel.isVisible =
                                 it.attendanceTopicTypeUiItems.isNotEmpty()
                             attendanceProgressAdapter.submitList(it.attendanceTopicTypeUiItems)
+                            if (it.attendanceTopicTypeUiItems.isNotEmpty()) {
+                                view.doOnPreDraw { startPostponedEnterTransition() }
+                            }
                         }
                 }
 
