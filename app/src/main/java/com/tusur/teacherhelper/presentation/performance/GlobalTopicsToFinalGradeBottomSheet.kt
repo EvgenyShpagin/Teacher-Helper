@@ -20,20 +20,21 @@ import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
 import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicAdapter
+import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicListViewModel
+import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicListViewModel.Event
 import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicUiState
-import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
+@AndroidEntryPoint // TODO: was not tested
 class GlobalTopicsToFinalGradeBottomSheet : BottomSheetDialogFragment() {
 
     private val binding get() = _binding!!
     private var _binding: BottomSheetGlobalTopicsBinding? = null
-    private val viewModel: GlobalTopicsViewModel by viewModels(
+    private val viewModel: GlobalTopicListViewModel by viewModels(
         extrasProducer = {
-            creationCallback<GlobalTopicsViewModel.Factory> { factory ->
+            creationCallback<GlobalTopicListViewModel.Factory> { factory ->
                 factory.create(resources.primaryLocale)
             }
         }
@@ -54,7 +55,7 @@ class GlobalTopicsToFinalGradeBottomSheet : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            viewModel.fetch()
+            viewModel.send(Event.Fetch)
         }
     }
 
@@ -78,8 +79,8 @@ class GlobalTopicsToFinalGradeBottomSheet : BottomSheetDialogFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.uiState.distinctUntilChangedBy { it.globalTopicItemsUiState }
-                        .collect { adapter.submitList(it.globalTopicItemsUiState) }
+                    viewModel.uiState.distinctUntilChangedBy { it.topicsUiState }
+                        .collect { adapter.submitList(it.topicsUiState) }
                 }
             }
         }

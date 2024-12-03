@@ -113,7 +113,7 @@ class SubjectListFragment : Fragment() {
     }
 
     private fun navigateToGlobalTopics() {
-        val action = SubjectListFragmentDirections.actionToGlobalTopicsBottomSheet()
+        val action = SubjectListFragmentDirections.actionToGlobalTopicListFragment()
         findNavController().navigate(action)
     }
 

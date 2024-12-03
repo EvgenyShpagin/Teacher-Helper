@@ -16,8 +16,8 @@
             android:id="@+id/action_to_topicTypesBottomSheet"
             app:destination="@id/topicTypesBottomSheet" />
         <action
-            android:id="@+id/action_to_globalTopicsBottomSheet"
-            app:destination="@id/globalTopicsBottomSheet" />
+            android:id="@+id/action_to_globalTopicListFragment"
+            app:destination="@id/globalTopicListFragment" />
         <action
             android:id="@+id/action_to_allGroupsFragment"
             app:destination="@id/allGroupsFragment" />
@@ -244,18 +244,18 @@
             app:argType="boolean" />
     </fragment>
 
-    <dialog
-        android:id="@+id/globalTopicsBottomSheet"
-        android:name="com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicsBottomSheet"
-        android:label="GlobalTopicsBottomSheet"
-        tools:layout="@layout/bottom_sheet_global_topics">
+    <fragment
+        android:id="@+id/globalTopicListFragment"
+        android:name="com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicListFragment"
+        android:label="GlobalTopicListFragment"
+        tools:layout="@layout/fragment_global_topic_list">
         <action
             android:id="@+id/action_to_topicFragment"
             app:destination="@id/topicFragment" />
         <action
             android:id="@+id/action_to_topicNameFragment"
             app:destination="@id/topicNameFragment" />
-    </dialog>
+    </fragment>
 
     <fragment
         android:id="@+id/performanceTableFragment"
