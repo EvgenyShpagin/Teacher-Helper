@@ -64,6 +64,7 @@
     <string name="attendance_label">Посещаемость</string>
     <string name="empty_group_label">Список пуст</string>
     <string name="empty_list">Список пуст</string>
+    <string name="subheader_navigation">Навигация</string>
     <!-- Menu items -->
     <string name="item_remove">Удалить</string>
     <string name="item_cancel">Отменить</string>
@@ -73,6 +74,8 @@
     <string name="item_all_groups">Список групп</string>
     <string name="item_import">Импорт из Excel</string>
     <string name="item_export">Экспорт в Excel</string>
+    <string name="item_subjects">Предметы</string>
+    <string name="item_groups">Группы</string>
     <!-- Content description -->
     <string name="cd_remove_groups">Выбор групп для удаления</string>
     <string name="cd_stop_action">Прекратить</string>

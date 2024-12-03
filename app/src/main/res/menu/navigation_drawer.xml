@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="@string/subheader_navigation">
+        <menu>
+            <item
+                android:id="@+id/subjects"
+                android:icon="@drawable/ic_subjects_24"
+                android:title="@string/item_subjects"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/groups"
+                android:icon="@drawable/ic_groups_24"
+                android:title="@string/item_groups"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/global_topics"
+                android:icon="@drawable/ic_global_topics_24"
+                android:title="@string/item_global_topics"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/topic_types"
+                android:icon="@drawable/ic_topic_types_24"
+                android:title="@string/item_topic_types"
+                app:showAsAction="ifRoom" />
+        </menu>
+    </item>
+</menu>
