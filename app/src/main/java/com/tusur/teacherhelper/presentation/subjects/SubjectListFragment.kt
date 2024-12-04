@@ -118,7 +118,7 @@ class SubjectListFragment : Fragment() {
     }
 
     private fun navigateToTopicTypes() {
-        val action = SubjectListFragmentDirections.actionToTopicTypesBottomSheet()
+        val action = SubjectListFragmentDirections.actionToTopicTypeListFragment()
         findNavController().navigate(action)
     }
 

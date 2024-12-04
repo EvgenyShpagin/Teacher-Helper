@@ -13,8 +13,8 @@
             android:id="@+id/action_to_subjectDetailsFragment"
             app:destination="@id/subjectDetailsFragment" />
         <action
-            android:id="@+id/action_to_topicTypesBottomSheet"
-            app:destination="@id/topicTypesBottomSheet" />
+            android:id="@+id/action_to_topicTypeListFragment"
+            app:destination="@id/topicTypeListFragment" />
         <action
             android:id="@+id/action_to_globalTopicListFragment"
             app:destination="@id/globalTopicListFragment" />
@@ -221,15 +221,15 @@
             app:argType="integer" />
     </dialog>
 
-    <dialog
-        android:id="@+id/topicTypesBottomSheet"
-        android:name="com.tusur.teacherhelper.presentation.topictype.TopicTypesBottomSheet"
-        android:label="TopicTypesBottomSheet"
-        tools:layout="@layout/bottom_sheet_topic_types">
+    <fragment
+        android:id="@+id/topicTypeListFragment"
+        android:name="com.tusur.teacherhelper.presentation.topictype.TopicTypeListFragment"
+        android:label="TopicTypeListFragment"
+        tools:layout="@layout/fragment_topic_type_list">
         <action
             android:id="@+id/action_to_topicTypeFragment"
             app:destination="@id/topicTypeFragment" />
-    </dialog>
+    </fragment>
 
     <fragment
         android:id="@+id/topicTypeFragment"

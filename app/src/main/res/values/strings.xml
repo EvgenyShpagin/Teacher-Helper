@@ -44,6 +44,7 @@
     <string name="student_performance_title">Успеваемость студента</string>
     <string name="all_group_list_title">Список групп</string>
     <string name="global_topics_list_title">Глобальные темы</string>
+    <string name="topic_types_list_title">Типы тем</string>
     <string name="dialog_group_cannot_be_deleted_title">Эту группу нельзя удалить</string>
     <string name="dialog_class_time_title">Время проведения занятия</string>
     <!-- Labels -->
@@ -80,6 +81,7 @@
     <!-- Content description -->
     <string name="cd_remove_groups">Выбор групп для удаления</string>
     <string name="cd_remove_global_topics">Выбор глобальных тем для удаления</string>
+    <string name="cd_remove_topic_types">Выбор типов тем для удаления</string>
     <string name="cd_stop_action">Прекратить</string>
     <string name="cd_remove">Удалить</string>
     <string name="cd_add_button">Добавить</string>
