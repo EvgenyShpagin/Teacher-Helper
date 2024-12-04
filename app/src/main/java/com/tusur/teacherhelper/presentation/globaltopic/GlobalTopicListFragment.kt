@@ -100,7 +100,8 @@ class GlobalTopicListFragment : Fragment(), SearchView.OnQueryTextListener {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.uiState.distinctUntilChangedBy { it.topicsUiState }
+                    viewModel.uiState
+                        .distinctUntilChangedBy { uiState -> uiState.topicsUiState }
                         .collectLatest { uiState ->
                             doOnListUpdate(uiState)
                             if (uiState.topicsUiState.isNotEmpty()) {
@@ -112,8 +113,11 @@ class GlobalTopicListFragment : Fragment(), SearchView.OnQueryTextListener {
                         }
                 }
                 launch {
-                    viewModel.uiState.distinctUntilChangedBy { it.isDeleting }
-                        .collectLatest { uiState -> doOnDeleting(uiState) }
+                    viewModel.uiState
+                        .distinctUntilChangedBy { uiState -> uiState.isDeleting }
+                        .collect { uiState ->
+                            doOnDeleting(uiState)
+                        }
                 }
                 launch(Dispatchers.Main.immediate) {
                     viewModel.onetimeEvent.collect { onetimeEvent ->
@@ -149,6 +153,11 @@ class GlobalTopicListFragment : Fragment(), SearchView.OnQueryTextListener {
                 findNavController().navigateUp()
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
