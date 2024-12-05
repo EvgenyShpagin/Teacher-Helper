@@ -21,7 +21,7 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentStudentSummaryPerformanceBinding
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
-import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
 import com.tusur.teacherhelper.presentation.core.util.getGroupListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.performance.StudentPerformanceViewModel.Event
@@ -29,6 +29,7 @@ import com.tusur.teacherhelper.presentation.topic.PerformanceType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
@@ -131,7 +132,8 @@ class StudentSummaryPerformanceFragment : Fragment() {
                 }
             }
         }
-        postponeEnterTransition()
+        // TODO: do not hardcode
+        postponeEnterTransition(500, TimeUnit.MILLISECONDS)
     }
 
     override fun onStart() {
@@ -146,7 +148,7 @@ class StudentSummaryPerformanceFragment : Fragment() {
             navigateToSetFinalGrade()
         }
 
-        doOnBackPressed(binding.topAppBar) {
+        doOnNavigationRequest(binding.topAppBar) {
             findNavController().navigateUp()
         }
     }

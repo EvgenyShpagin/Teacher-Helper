@@ -28,7 +28,7 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentSubjectDetailsBinding
 import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
-import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.util.setTextColor
 import com.tusur.teacherhelper.presentation.subjectdetails.SubjectDetailsViewModel.Companion.GROUPS_FRAGMENT_POSITION
@@ -165,7 +165,7 @@ class SubjectDetailsFragment : Fragment(), SearchView.OnQueryTextListener {
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
-        doOnBackPressed(topAppBar = binding.topAppBar) {
+        doOnNavigationRequest(topAppBar = binding.topAppBar) {
             if (!binding.searchView.isIconified) {
                 setDefaultState(true)
             } else if (binding.pager.currentItem == TOPICS_FRAGMENT_POSITION) {

@@ -19,7 +19,7 @@ import com.tusur.teacherhelper.databinding.FragmentSubjectGroupSelectBinding
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.presentation.core.dialog.EmptyGroupDialog
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
-import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.toNativeArray
 import com.tusur.teacherhelper.presentation.topic.ClassTimeBottomSheet
@@ -97,7 +97,7 @@ class SubjectGroupSelectFragment : Fragment(), OnQueryTextListener {
 
         setupSearch()
 
-        doOnBackPressed(topAppBar = binding.topAppBar) {
+        doOnNavigationRequest(topAppBar = binding.topAppBar) {
             if (!binding.searchView.isIconified) {
                 viewModel.stopSearch()
                 binding.searchView.setQuery("", true)

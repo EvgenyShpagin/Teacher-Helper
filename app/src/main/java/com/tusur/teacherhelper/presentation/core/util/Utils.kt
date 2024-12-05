@@ -73,7 +73,7 @@ fun MenuItem.setTextColor(@ColorInt color: Int) {
     }
 }
 
-fun Fragment.doOnBackPressed(topAppBar: Toolbar, action: () -> Unit) {
+fun Fragment.doOnNavigationRequest(topAppBar: Toolbar, action: () -> Unit) {
     topAppBar.setNavigationOnClickListener { action.invoke() }
     doOnBackPressed(action)
 }

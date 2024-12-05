@@ -2,14 +2,43 @@ package com.tusur.teacherhelper.presentation.core
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import com.tusur.teacherhelper.R
+import com.tusur.teacherhelper.databinding.ActivityMainBinding
+import com.tusur.teacherhelper.presentation.core.util.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
+    lateinit var appBarConfiguration: AppBarConfiguration
+        private set
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+
+        val navController = navHostFragment.navController
+
+        appBarConfiguration = AppBarConfiguration(
+            drawerLayout = binding.root,
+            topLevelDestinationIds = setOf(
+                R.id.subjectsFragment,
+                R.id.allGroupsFragment,
+                R.id.globalTopicListFragment,
+                R.id.topicTypeListFragment
+            )
+        )
+
+        binding.navView.setupWithNavController(navController)
     }
 }

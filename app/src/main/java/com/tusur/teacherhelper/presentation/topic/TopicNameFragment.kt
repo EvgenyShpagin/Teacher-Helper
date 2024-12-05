@@ -26,7 +26,7 @@ import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.SingleChoiceAlertAdapter
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
-import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
 import com.tusur.teacherhelper.presentation.core.util.getGroupListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.util.setDisabledItems
@@ -183,7 +183,7 @@ class TopicNameFragment : Fragment() {
             viewModel.send(Event.Save)
         }
 
-        doOnBackPressed(binding.topAppBar) {
+        doOnNavigationRequest(binding.topAppBar) {
             findNavController().navigateUp()
         }
     }

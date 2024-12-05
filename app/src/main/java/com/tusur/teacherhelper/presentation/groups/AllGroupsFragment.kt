@@ -18,13 +18,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.transition.MaterialSharedAxis
+import com.google.android.material.transition.MaterialFadeThrough
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentAllGroupListBinding
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.fixCollapsing
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.setTextColor
+import com.tusur.teacherhelper.presentation.core.util.setupTopLevelAppBarConfiguration
 import com.tusur.teacherhelper.presentation.subjectdetails.DeletableGroupAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -62,10 +63,8 @@ class AllGroupsFragment : Fragment(), SearchView.OnQueryTextListener {
                 }
             }
         })
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
-        returnTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
-        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
     }
 
     override fun onCreateView(
@@ -80,6 +79,7 @@ class AllGroupsFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupTopLevelAppBarConfiguration(binding.topAppBar)
         setupRecyclerView()
         setupEmptyLabelGravity()
 
@@ -114,14 +114,12 @@ class AllGroupsFragment : Fragment(), SearchView.OnQueryTextListener {
             navigateToAddGroup()
         }
 
-        doOnBackPressed(binding.topAppBar) {
+        doOnBackPressed {
             if (!binding.searchView.isIconified) {
                 setDefaultState(true)
             }
             if (viewModel.uiState.value.isDeleting) {
                 viewModel.stopDelete()
-            } else {
-                findNavController().navigateUp()
             }
         }
     }

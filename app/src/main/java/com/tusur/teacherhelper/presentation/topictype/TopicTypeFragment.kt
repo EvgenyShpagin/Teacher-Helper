@@ -20,7 +20,7 @@ import com.tusur.teacherhelper.databinding.FragmentTopicTypeBinding
 import com.tusur.teacherhelper.domain.util.TOPIC_TYPE_SHORT_NAME_MAX_LENGTH
 import com.tusur.teacherhelper.presentation.core.util.clearFocusOnActionDone
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
-import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -132,7 +132,7 @@ class TopicTypeFragment : Fragment() {
             }
         }
 
-        doOnBackPressed(binding.topAppBar) {
+        doOnNavigationRequest(binding.topAppBar) {
             navigateBack()
         }
     }

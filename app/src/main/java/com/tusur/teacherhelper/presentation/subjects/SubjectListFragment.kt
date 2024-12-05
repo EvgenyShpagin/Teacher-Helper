@@ -15,10 +15,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.transition.MaterialSharedAxis
-import com.tusur.teacherhelper.R
+import com.google.android.material.transition.MaterialFadeThrough
 import com.tusur.teacherhelper.databinding.FragmentSubjectListBinding
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
+import com.tusur.teacherhelper.presentation.core.util.setupTopLevelAppBarConfiguration
 import com.tusur.teacherhelper.presentation.core.view.recycler.checkNestedScrollState
 import com.tusur.teacherhelper.presentation.subjects.SubjectListViewModel.Event
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,8 +44,9 @@ class SubjectListFragment : Fragment() {
         }
 
         adapter = SubjectAdapter()
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
-        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
     }
 
     override fun onCreateView(
@@ -60,6 +61,7 @@ class SubjectListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupTopLevelAppBarConfiguration(binding.topAppBar)
         setupRecyclerView()
         setupEmptyLabelGravity()
         postponeEnterTransition()
@@ -70,6 +72,7 @@ class SubjectListFragment : Fragment() {
                     binding.progressCircular.isVisible = uiState.isFetching
                     binding.emptyListLabel.isVisible = uiState.listIsEmpty
                     adapter.submitList(uiState.itemsUiState)
+                    // TODO: resolve problem with checking nested scroll state and starting postponed transition
                     view.doOnPreDraw {
                         binding.subjectList.checkNestedScrollState()
                         val needToExpandAppBar = !binding.subjectList.isNestedScrollingEnabled
@@ -83,8 +86,6 @@ class SubjectListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        setupMenu()
-
         binding.addButton.setOnClickListener {
             SubjectInputBottomSheet().show(childFragmentManager, null)
         }
@@ -93,33 +94,6 @@ class SubjectListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun setupMenu() {
-        binding.topAppBar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.topic_types -> navigateToTopicTypes()
-                R.id.global_topics -> navigateToGlobalTopics()
-                R.id.groups -> navigateToGroupList()
-                else -> return@setOnMenuItemClickListener false
-            }
-            true
-        }
-    }
-
-    private fun navigateToGroupList() {
-        val action = SubjectListFragmentDirections.actionToAllGroupsFragment()
-        findNavController().navigate(action)
-    }
-
-    private fun navigateToGlobalTopics() {
-        val action = SubjectListFragmentDirections.actionToGlobalTopicListFragment()
-        findNavController().navigate(action)
-    }
-
-    private fun navigateToTopicTypes() {
-        val action = SubjectListFragmentDirections.actionToTopicTypeListFragment()
-        findNavController().navigate(action)
     }
 
     private fun setupRecyclerView() {

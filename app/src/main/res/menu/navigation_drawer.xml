@@ -4,22 +4,26 @@
     <item android:title="@string/subheader_navigation">
         <menu>
             <item
-                android:id="@+id/subjects"
+                android:id="@+id/subjectsFragment"
+                android:checkable="true"
                 android:icon="@drawable/ic_subjects_24"
                 android:title="@string/item_subjects"
                 app:showAsAction="ifRoom" />
             <item
-                android:id="@+id/groups"
+                android:id="@+id/allGroupsFragment"
+                android:checkable="true"
                 android:icon="@drawable/ic_groups_24"
                 android:title="@string/item_groups"
                 app:showAsAction="ifRoom" />
             <item
-                android:id="@+id/global_topics"
+                android:id="@+id/globalTopicListFragment"
+                android:checkable="true"
                 android:icon="@drawable/ic_global_topics_24"
                 android:title="@string/item_global_topics"
                 app:showAsAction="ifRoom" />
             <item
-                android:id="@+id/topic_types"
+                android:id="@+id/topicTypeListFragment"
+                android:checkable="true"
                 android:icon="@drawable/ic_topic_types_24"
                 android:title="@string/item_topic_types"
                 app:showAsAction="ifRoom" />

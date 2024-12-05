@@ -28,7 +28,7 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentGroupStudentsBinding
 import com.tusur.teacherhelper.presentation.core.util.EXCEL_FILE_MIME_TYPES
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
-import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.getExcelFileFromUri
 import com.tusur.teacherhelper.presentation.core.view.recycler.checkNestedScrollState
@@ -170,7 +170,7 @@ class GroupStudentsFragment : Fragment() {
             }
         }
 
-        doOnBackPressed(binding.topAppBar) {
+        doOnNavigationRequest(binding.topAppBar) {
             findNavController().navigateUp()
         }
     }

@@ -27,7 +27,7 @@ import com.tusur.teacherhelper.domain.util.map
 import com.tusur.teacherhelper.presentation.core.dialog.EmptyGroupDialog
 import com.tusur.teacherhelper.presentation.core.util.EXCEL_FILE_NEW_MIME_TYPE
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
-import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.topic.ClassTimeBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
@@ -185,7 +185,7 @@ class PerformanceTableFragment : Fragment() {
             }
         }
 
-        doOnBackPressed(binding.topAppBar) {
+        doOnNavigationRequest(binding.topAppBar) {
             findNavController().navigateUp()
         }
     }

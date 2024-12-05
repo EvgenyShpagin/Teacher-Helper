@@ -18,7 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.transition.MaterialSharedAxis
+import com.google.android.material.transition.MaterialFadeThrough
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentGlobalTopicListBinding
 import com.tusur.teacherhelper.domain.util.GLOBAL_TOPICS_SUBJECT_ID
@@ -30,6 +30,7 @@ import com.tusur.teacherhelper.presentation.core.util.fixCollapsing
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.util.setTextColor
+import com.tusur.teacherhelper.presentation.core.util.setupTopLevelAppBarConfiguration
 import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
 import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicListViewModel.Event
 import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicListViewModel.UiState
@@ -72,10 +73,9 @@ class GlobalTopicListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
-        returnTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
-        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
 
         if (savedInstanceState == null) {
             viewModel.send(Event.Fetch)
@@ -94,6 +94,7 @@ class GlobalTopicListFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupTopLevelAppBarConfiguration(binding.topAppBar)
         setupRecyclerView()
         setupEmptyLabelGravity()
 
@@ -104,7 +105,7 @@ class GlobalTopicListFragment : Fragment(), SearchView.OnQueryTextListener {
                         .distinctUntilChangedBy { uiState -> uiState.topicsUiState }
                         .collectLatest { uiState ->
                             doOnListUpdate(uiState)
-                            if (uiState.topicsUiState.isNotEmpty()) {
+                            if (uiState.topicsUiState.isNotEmpty()) {// TODO: mb empty
                                 requireView().doOnPreDraw {
                                     binding.appBarLayout.fixCollapsing(binding.topics)
                                     startPostponedEnterTransition()
@@ -143,14 +144,12 @@ class GlobalTopicListFragment : Fragment(), SearchView.OnQueryTextListener {
             navigateToTopic(topicId = NO_ID, create = true)
         }
 
-        doOnBackPressed(binding.topAppBar) {
+        doOnBackPressed {
             if (!binding.searchView.isIconified) {
                 setDefaultState(true)
             }
             if (viewModel.uiState.value.isDeleting) {
                 viewModel.send(Event.StopDelete)
-            } else {
-                findNavController().navigateUp()
             }
         }
     }

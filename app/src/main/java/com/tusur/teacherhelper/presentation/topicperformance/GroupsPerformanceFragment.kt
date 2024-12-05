@@ -19,7 +19,7 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentGroupsPerformanceBinding
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
-import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
+import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.util.toNativeArray
@@ -116,7 +116,7 @@ class GroupsPerformanceFragment : Fragment(), OnQueryTextListener {
             navigateToTopic()
         }
 
-        doOnBackPressed(topAppBar = binding.topAppBar) {
+        doOnNavigationRequest(topAppBar = binding.topAppBar) {
             if (!binding.searchView.isIconified) {
                 viewModel.stopSearch()
                 binding.searchView.setQuery("", true)

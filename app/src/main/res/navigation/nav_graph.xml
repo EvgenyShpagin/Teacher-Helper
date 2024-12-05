@@ -12,15 +12,6 @@
         <action
             android:id="@+id/action_to_subjectDetailsFragment"
             app:destination="@id/subjectDetailsFragment" />
-        <action
-            android:id="@+id/action_to_topicTypeListFragment"
-            app:destination="@id/topicTypeListFragment" />
-        <action
-            android:id="@+id/action_to_globalTopicListFragment"
-            app:destination="@id/globalTopicListFragment" />
-        <action
-            android:id="@+id/action_to_allGroupsFragment"
-            app:destination="@id/allGroupsFragment" />
     </fragment>
 
     <fragment
