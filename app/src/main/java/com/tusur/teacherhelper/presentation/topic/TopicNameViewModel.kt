@@ -388,8 +388,8 @@ class TopicNameViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             locale: Locale,
-            @Assisted("topicId") subjectId: Int,
-            @Assisted("subjectId") topicId: Int
+            @Assisted("subjectId") subjectId: Int,
+            @Assisted("topicId") topicId: Int
         ): TopicNameViewModel
     }
 
