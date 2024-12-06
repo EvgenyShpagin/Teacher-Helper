@@ -8,7 +8,6 @@ class SearchTopicTypeUseCase @Inject constructor(
     private val topicTypeRepository: TopicTypeRepository
 ) {
     suspend operator fun invoke(query: String): List<TopicType> {
-//        return topicTypeRepository.search(query) // TODO: implement
-        return emptyList()
+        return topicTypeRepository.search(query)
     }
 }

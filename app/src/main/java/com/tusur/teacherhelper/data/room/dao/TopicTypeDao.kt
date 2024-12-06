@@ -59,4 +59,7 @@ interface TopicTypeDao {
         """
     )
     suspend fun isAppliedToAnyTopic(topicTypeId: Int): Boolean
+
+    @Query("SELECT * FROM topic_type WHERE topic_type.name LIKE :query OR topic_type.short_name LIKE :query")
+    suspend fun search(query: String): List<TopicType>
 }

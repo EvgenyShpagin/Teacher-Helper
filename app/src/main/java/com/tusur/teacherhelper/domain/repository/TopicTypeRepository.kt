@@ -14,4 +14,5 @@ interface TopicTypeRepository {
     fun getAll(): Flow<List<TopicType>>
     suspend fun getWithAttendance(): List<TopicType>
     suspend fun isTypeAppliedToAnyTopic(topicTypeId: Int): Boolean
+    suspend fun search(query: String): List<TopicType>
 }

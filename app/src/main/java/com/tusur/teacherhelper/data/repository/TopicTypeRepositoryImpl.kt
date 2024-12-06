@@ -49,4 +49,8 @@ class TopicTypeRepositoryImpl @Inject constructor(
     override suspend fun isTypeAppliedToAnyTopic(topicTypeId: Int): Boolean {
         return topicTypeDao.isAppliedToAnyTopic(topicTypeId)
     }
+
+    override suspend fun search(query: String): List<TopicType> {
+        return topicTypeDao.search(query).map { it.toDomain() }
+    }
 }
