@@ -86,13 +86,20 @@ class AllGroupsFragment : Fragment(), SearchView.OnQueryTextListener {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    viewModel.uiState
+                        .distinctUntilChangedBy { uiState -> uiState.isFetching }
+                        .collect { uiState ->
+                            if (!uiState.isFetching) {
+                                view.doOnPreDraw {
+                                    startPostponedEnterTransition()
+                                }
+                            }
+                        }
+                }
+                launch {
                     viewModel.uiState.distinctUntilChangedBy { it.groupsUiState }
                         .collectLatest { uiState ->
                             doOnListUpdate(uiState)
-                            requireView().doOnPreDraw {
-                                binding.appBarLayout.fixCollapsing(binding.groups)
-                                startPostponedEnterTransition()
-                            }
                         }
                 }
                 launch {
@@ -256,6 +263,9 @@ class AllGroupsFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun doOnListUpdate(uiState: AllGroupsViewModel.UiState) {
         adapter.submitList(uiState.groupsUiState)
         binding.emptyListLabel.isVisible = uiState.groupsUiState.isEmpty()
+        binding.groups.doOnPreDraw {
+            binding.appBarLayout.fixCollapsing(binding.groups)
+        }
     }
 
     private fun setupRecyclerView() {

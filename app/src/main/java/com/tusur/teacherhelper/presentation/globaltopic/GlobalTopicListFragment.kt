@@ -39,7 +39,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
@@ -102,15 +101,20 @@ class GlobalTopicListFragment : Fragment(), SearchView.OnQueryTextListener {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.uiState
-                        .distinctUntilChangedBy { uiState -> uiState.topicsUiState }
-                        .collectLatest { uiState ->
-                            doOnListUpdate(uiState)
-                            if (uiState.topicsUiState.isNotEmpty()) {// TODO: mb empty
-                                requireView().doOnPreDraw {
-                                    binding.appBarLayout.fixCollapsing(binding.topics)
+                        .distinctUntilChangedBy { uiState -> uiState.isFetching }
+                        .collect { uiState ->
+                            if (!uiState.isFetching) {
+                                view.doOnPreDraw {
                                     startPostponedEnterTransition()
                                 }
                             }
+                        }
+                }
+                launch {
+                    viewModel.uiState
+                        .distinctUntilChangedBy { uiState -> uiState.topicsUiState }
+                        .collectLatest { uiState ->
+                            doOnListUpdate(uiState)
                         }
                 }
                 launch {
@@ -132,7 +136,7 @@ class GlobalTopicListFragment : Fragment(), SearchView.OnQueryTextListener {
             }
         }
 
-        postponeEnterTransition(300, TimeUnit.MILLISECONDS)
+        postponeEnterTransition()
     }
 
     override fun onStart() {
@@ -293,6 +297,9 @@ class GlobalTopicListFragment : Fragment(), SearchView.OnQueryTextListener {
         adapter.submitList(uiState.topicsUiState)
         binding.emptyListLabel.isVisible = uiState.topicsUiState.isEmpty()
         binding.topAppBar.menu.findItem(R.id.remove).isVisible = uiState.topicsUiState.isNotEmpty()
+        binding.topics.doOnPreDraw {
+            binding.appBarLayout.fixCollapsing(binding.topics)
+        }
     }
 
     private fun setupRecyclerView() {

@@ -17,12 +17,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialFadeThrough
 import com.tusur.teacherhelper.databinding.FragmentSubjectListBinding
+import com.tusur.teacherhelper.presentation.core.util.fixCollapsing
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.setupTopLevelAppBarConfiguration
-import com.tusur.teacherhelper.presentation.core.view.recycler.checkNestedScrollState
 import com.tusur.teacherhelper.presentation.subjects.SubjectListViewModel.Event
+import com.tusur.teacherhelper.presentation.subjects.SubjectListViewModel.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 
@@ -68,16 +70,21 @@ class SubjectListFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collectLatest { uiState ->
-                    binding.progressCircular.isVisible = uiState.isFetching
-                    binding.emptyListLabel.isVisible = uiState.listIsEmpty
-                    adapter.submitList(uiState.itemsUiState)
-                    // TODO: resolve problem with checking nested scroll state and starting postponed transition
-                    view.doOnPreDraw {
-                        binding.subjectList.checkNestedScrollState()
-                        val needToExpandAppBar = !binding.subjectList.isNestedScrollingEnabled
-                        binding.appBarLayout.setExpanded(needToExpandAppBar)
-                        startPostponedEnterTransition()
+                launch {
+                    viewModel.uiState
+                        .distinctUntilChangedBy { uiState -> uiState.isFetching }
+                        .collect { uiState ->
+                            if (!uiState.isFetching) {
+                                view.doOnPreDraw {
+                                    startPostponedEnterTransition()
+                                }
+                            }
+                        }
+                }
+
+                launch {
+                    viewModel.uiState.collectLatest { uiState ->
+                        doOnListUpdate(uiState)
                     }
                 }
             }
@@ -114,6 +121,15 @@ class SubjectListFragment : Fragment() {
                 gravity = Gravity.CENTER
                 topMargin = binding.appBarLayout.height
             }
+        }
+    }
+
+    private fun doOnListUpdate(uiState: UiState) {
+        binding.progressCircular.isVisible = uiState.isFetching
+        binding.emptyListLabel.isVisible = uiState.listIsEmpty
+        adapter.submitList(uiState.itemsUiState)
+        binding.subjectList.doOnPreDraw {
+            binding.appBarLayout.fixCollapsing(binding.subjectList)
         }
     }
 }

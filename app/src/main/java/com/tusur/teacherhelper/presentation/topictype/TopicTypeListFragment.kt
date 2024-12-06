@@ -35,7 +35,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class TopicTypeListFragment : Fragment(), SearchView.OnQueryTextListener {
@@ -88,21 +87,24 @@ class TopicTypeListFragment : Fragment(), SearchView.OnQueryTextListener {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
                 launch {
                     viewModel.uiState
-                        .distinctUntilChangedBy { uiState -> uiState.typesUiState }
+                        .distinctUntilChangedBy { uiState -> uiState.isFetching }
                         .collect { uiState ->
-                            doOnListUpdate(uiState)
-                            if (uiState.typesUiState.isNotEmpty()) {
-                                requireView().doOnPreDraw {
-                                    binding.appBarLayout.fixCollapsing(binding.topicTypes)
+                            if (!uiState.isFetching) {
+                                view.doOnPreDraw {
                                     startPostponedEnterTransition()
                                 }
                             }
                         }
                 }
-
+                launch {
+                    viewModel.uiState
+                        .distinctUntilChangedBy { uiState -> uiState.typesUiState }
+                        .collect { uiState ->
+                            doOnListUpdate(uiState)
+                        }
+                }
                 launch {
                     viewModel.uiState
                         .distinctUntilChangedBy { it.isDeleting }
@@ -110,17 +112,15 @@ class TopicTypeListFragment : Fragment(), SearchView.OnQueryTextListener {
                             doOnDeleting(uiState)
                         }
                 }
-
                 launch(Dispatchers.Main.immediate) {
                     viewModel.onetimeEvent.collect { event ->
                         showDeleteErrorDialog()
                     }
                 }
-
             }
         }
 
-        postponeEnterTransition(300, TimeUnit.MILLISECONDS)
+        postponeEnterTransition()
     }
 
     override fun onStart() {
@@ -266,6 +266,9 @@ class TopicTypeListFragment : Fragment(), SearchView.OnQueryTextListener {
         adapter.submitList(uiState.typesUiState)
         binding.emptyListLabel.isVisible = uiState.typesUiState.isEmpty()
         binding.topAppBar.menu.findItem(R.id.remove).isVisible = uiState.typesUiState.isNotEmpty()
+        binding.topicTypes.doOnPreDraw {
+            binding.appBarLayout.fixCollapsing(binding.topicTypes)
+        }
     }
 
     private fun setupRecyclerView() {
