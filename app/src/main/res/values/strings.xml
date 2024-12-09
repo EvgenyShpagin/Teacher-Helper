@@ -42,7 +42,7 @@
     <string name="topic_type_editing_title">Редактирование типа тем</string>
     <string name="group_performance_title">Успеваемость %s группы</string>
     <string name="student_performance_title">Успеваемость студента</string>
-    <string name="all_group_list_title">Список групп</string>
+    <string name="group_list_title">Список групп</string>
     <string name="global_topics_list_title">Глобальные темы</string>
     <string name="topic_types_list_title">Типы тем</string>
     <string name="dialog_group_cannot_be_deleted_title">Эту группу нельзя удалить</string>
@@ -80,6 +80,7 @@
     <string name="item_groups">Группы</string>
     <!-- Content description -->
     <string name="cd_remove_groups">Выбор групп для удаления</string>
+    <string name="cd_select_items_to_remove">Выбор элементов для удаления</string>
     <string name="cd_remove_global_topics">Выбор глобальных тем для удаления</string>
     <string name="cd_remove_topic_types">Выбор типов тем для удаления</string>
     <string name="cd_stop_action">Прекратить</string>
@@ -149,7 +150,7 @@
     <!-- Body text -->
     <string name="dialog_no_groups_body">Прежде чем добавить успеваемость, для предмета должны быть указаны непустые группы</string>
     <string name="dialog_no_not_cancelled_topics">Прежде чем добавить успеваемость, для предмета должны быть добавлены не отмененные темы</string>
-    <string name="dialog_group_cannot_be_deleted_body">Группа принадлежит некоторым темам</string>
+    <string name="dialog_group_cannot_be_deleted_body">Группа связана с некоторыми темами</string>
     <string name="dialog_delete_base_error_topic_type_body">Нельзя удалить базовый тип темы</string>
     <string name="dialog_delete_used_error_topic_type_body">Тип темы используется некоторыми темами</string>
     <string name="class_day_edit_error_message">Невозможно отредактировать дату и время занятия, так как с такой датой и временем уже есть занятие</string>

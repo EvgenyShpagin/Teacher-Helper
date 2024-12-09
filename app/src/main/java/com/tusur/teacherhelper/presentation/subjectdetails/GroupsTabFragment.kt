@@ -15,6 +15,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentGroupsTabBinding
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
+import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
+import com.tusur.teacherhelper.presentation.groups.GroupAdapter
+import com.tusur.teacherhelper.presentation.groups.GroupItemUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -30,20 +33,20 @@ class GroupsTabFragment : Fragment() {
     private val viewModel: SubjectDetailsViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
-    private lateinit var adapter: DeletableGroupAdapter
+    private lateinit var adapter: GroupAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = DeletableGroupAdapter(object : DeletableGroupAdapter.OnClickListener {
-            override fun onClick(groupId: Int) {
-                navigateToGroupPerformance(groupId)
+        adapter = GroupAdapter(object : BaseDeletableAdapter.Listener<GroupItemUiState> {
+            override fun onClick(item: GroupItemUiState) {
+                navigateToGroupPerformance(item.id)
             }
 
-            override fun onDeleteClick(groupId: Int) {
+            override fun onDelete(item: GroupItemUiState) {
                 showDeleteGroupDialog {
                     viewModel.stopDelete()
-                    viewModel.deleteGroup(groupId)
+                    viewModel.deleteGroup(item.id)
                 }
             }
         })
@@ -97,11 +100,7 @@ class GroupsTabFragment : Fragment() {
     }
 
     private fun doOnDeleting(uiState: SubjectDetailsViewModel.UiState) {
-        if (uiState.isDeleting) {
-            adapter.showDeleteButtons()
-        } else {
-            adapter.hideDeleteButtons()
-        }
+        adapter.isDeleting = uiState.isDeleting
     }
 
     private fun doOnListUpdate(uiState: SubjectDetailsViewModel.UiState) {

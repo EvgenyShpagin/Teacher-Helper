@@ -19,6 +19,7 @@ import com.tusur.teacherhelper.domain.usecase.SearchSubjectGroupUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchSubjectTopicUseCase
 import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.groups.GroupItemUiState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -184,11 +185,6 @@ class SubjectDetailsViewModel @AssistedInject constructor(
                     && type.isAttendanceForOneClassOnly
         )
 }
-
-data class GroupItemUiState(
-    val id: Int,
-    val number: String
-)
 
 sealed class TopicItemUiState(val itemId: Int) {
     data class Topic(

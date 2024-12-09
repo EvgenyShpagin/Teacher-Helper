@@ -338,9 +338,9 @@
     </dialog>
     <fragment
         android:id="@+id/allGroupsFragment"
-        android:name="com.tusur.teacherhelper.presentation.groups.AllGroupsFragment"
-        android:label="AllGroupsFragment"
-        tools:layout="@layout/fragment_all_group_list">
+        android:name="com.tusur.teacherhelper.presentation.groups.GroupListFragment"
+        android:label="@string/group_list_title"
+        tools:layout="@layout/fragment_top_level_list">
         <action
             android:id="@+id/action_to_groupStudentsFragment"
             app:destination="@id/groupStudentsFragment" />
