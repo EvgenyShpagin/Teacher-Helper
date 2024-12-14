@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "TeacherHelper"
 include(":app")
- 
+include(":shared-test")
