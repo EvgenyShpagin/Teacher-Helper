@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import com.tusur.teacherhelper.presentation.core.MainActivity
 import java.lang.ref.WeakReference
 
 /**
@@ -23,13 +22,12 @@ import java.lang.ref.WeakReference
  */
 fun Fragment.setupTopLevelAppBarConfiguration(toolbar: Toolbar) {
     val navController = findNavController()
+    val appBarConfigurationProvider = requireActivity() as? AppBarConfigurationProvider ?: return
     toolbar.setupWithNavController(
         navController = navController,
-        configuration = mainActivity.appBarConfiguration
+        configuration = appBarConfigurationProvider.appBarConfiguration
     )
 }
-
-private val Fragment.mainActivity get() = requireActivity() as MainActivity
 
 /**
  * Sets up a NavigationView for use with a NavController.

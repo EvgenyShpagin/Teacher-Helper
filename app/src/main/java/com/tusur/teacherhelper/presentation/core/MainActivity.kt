@@ -6,15 +6,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.ActivityMainBinding
+import com.tusur.teacherhelper.presentation.core.util.AppBarConfigurationProvider
 import com.tusur.teacherhelper.presentation.core.util.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AppBarConfigurationProvider {
 
     private lateinit var binding: ActivityMainBinding
 
-    lateinit var appBarConfiguration: AppBarConfiguration
+    override lateinit var appBarConfiguration: AppBarConfiguration
         private set
 
 
