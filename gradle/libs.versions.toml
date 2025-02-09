@@ -2,7 +2,7 @@
 compileSdk = "34"
 targetSdk = "34"
 minSdk = "26"
-agp = "8.5.2"
+agp = "8.8.0"
 fragmentTesting = "1.8.5"
 gson = "2.11.0"
 hiltAndroid = "2.51.1"
