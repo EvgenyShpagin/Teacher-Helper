@@ -10,49 +10,49 @@ import com.tusur.teacherhelper.domain.model.Topic
 @TypeConverters
 class Converters {
     @TypeConverter
-    fun Topic.Name.convertToString(): String {
-        return Gson().toJson(this)
+    fun convertToString(name: Topic.Name): String {
+        return Gson().toJson(name)
     }
 
     @TypeConverter
-    fun String.convertToTopicName(): Topic.Name {
-        return Gson().fromJson(this, Topic.Name::class.java)
+    fun convertToTopicName(string: String): Topic.Name {
+        return Gson().fromJson(string, Topic.Name::class.java)
     }
 
     @TypeConverter
-    fun Student.Name.convertToString(): String {
-        return full
+    fun convertToString(name: Student.Name): String {
+        return name.full
     }
 
     @TypeConverter
-    fun String.convertToName(): Student.Name {
-        val names = split(' ')
+    fun convertToName(string: String): Student.Name {
+        val names = string.split(' ')
         return Student.Name(names[0], names[1], names.getOrElse(2) { "" })
     }
 
     @TypeConverter
-    fun PerformanceItem.Grade?.convertToInt(): Int? {
-        return this?.value
+    fun convertToInt(grade: PerformanceItem.Grade?): Int? {
+        return grade?.value
     }
 
     @TypeConverter
-    fun Int?.convertToGrade(): PerformanceItem.Grade? {
-        return this?.let { PerformanceItem.Grade(it) }
+    fun convertToGrade(grade: Int?): PerformanceItem.Grade? {
+        return grade?.let { PerformanceItem.Grade(it) }
     }
 
     @TypeConverter
-    fun PerformanceItem.Progress?.convertToFloat(): Float? {
-        return this?.value
+    fun convertToFloat(progress: PerformanceItem.Progress?): Float? {
+        return progress?.value
     }
 
     @TypeConverter
-    fun Float?.convertToProgress(): PerformanceItem.Progress? {
-        return this?.let { PerformanceItem.Progress(it) }
+    fun convertToProgress(progress: Float?): PerformanceItem.Progress? {
+        return progress?.let { PerformanceItem.Progress(it) }
     }
 
     @TypeConverter
-    fun PerformanceItem.Attendance?.convertToInt(): Int? {
-        return when (this) {
+    fun convertToInt(attendance: PerformanceItem.Attendance?): Int? {
+        return when (attendance) {
             null -> null
             PerformanceItem.Attendance.Absent -> 0
             PerformanceItem.Attendance.Excused -> 1
@@ -61,8 +61,8 @@ class Converters {
     }
 
     @TypeConverter
-    fun Int?.convertToAttendance(): PerformanceItem.Attendance? {
-        return when (this) {
+    fun convertToAttendance(ordinal: Int?): PerformanceItem.Attendance? {
+        return when (ordinal) {
             null -> null
             0 -> PerformanceItem.Attendance.Absent
             1 -> PerformanceItem.Attendance.Excused
@@ -71,8 +71,8 @@ class Converters {
     }
 
     @TypeConverter
-    fun PerformanceItem.Assessment?.convertToInt(): Int? {
-        return when (this) {
+    fun convertToInt(assessment: PerformanceItem.Assessment?): Int? {
+        return when (assessment) {
             null -> null
             PerformanceItem.Assessment.FAIL -> 0
             PerformanceItem.Assessment.PASS -> 1
@@ -80,8 +80,8 @@ class Converters {
     }
 
     @TypeConverter
-    fun Int?.convertToAssessment(): PerformanceItem.Assessment? {
-        return when (this) {
+    fun convertToAssessment(ordinal: Int?): PerformanceItem.Assessment? {
+        return when (ordinal) {
             null -> null
             0 -> PerformanceItem.Assessment.FAIL
             else -> PerformanceItem.Assessment.PASS
