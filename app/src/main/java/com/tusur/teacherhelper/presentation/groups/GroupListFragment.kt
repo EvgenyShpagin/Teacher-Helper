@@ -72,9 +72,9 @@ class GroupListFragment : TopLevelListFragment<GroupItemUiState, GroupsUiState, 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_group_cannot_be_deleted_title)
             .setMessage(R.string.dialog_group_cannot_be_deleted_body)
-            .setOnDismissListener { viewModel.onEvent(Event.StopDelete) }
+            .setOnDismissListener { updateDeleteState(delete = false) }
             .setPositiveButton(R.string.ok_button) { _, _ ->
-                viewModel.onEvent(Event.StopDelete)
+                updateDeleteState(delete = false)
             }.show()
     }
 

@@ -25,10 +25,8 @@ class GroupListViewModel @Inject constructor(
 
     override fun onEvent(event: Event) {
         when (event) {
-            Event.BeginDelete -> startDelete()
             Event.Fetch -> fetch()
             is Event.Search -> searchGroup(event.query)
-            Event.StopDelete -> stopDelete()
             is Event.TryDelete -> deleteGroup(event.itemId)
         }
     }
@@ -57,14 +55,6 @@ class GroupListViewModel @Inject constructor(
                 it.copy(isFetching = false, searchedItems = items)
             }
         }
-    }
-
-    private fun stopDelete() {
-        updateState { it.copy(isDeleting = false) }
-    }
-
-    private fun startDelete() {
-        updateState { it.copy(isDeleting = true) }
     }
 
     private fun deleteGroup(groupId: Int) {
