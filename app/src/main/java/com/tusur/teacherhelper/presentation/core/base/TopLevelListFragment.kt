@@ -6,14 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.color.MaterialColors
 import com.google.android.material.transition.MaterialFadeThrough
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentTopLevelListBinding
@@ -22,14 +23,12 @@ import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.fixCollapsing
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
 import com.tusur.teacherhelper.presentation.core.util.launchOnOwnerStart
-import com.tusur.teacherhelper.presentation.core.util.setTextColor
 import com.tusur.teacherhelper.presentation.core.util.setupTopLevelAppBarConfiguration
 import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
-import com.google.android.material.R as materialR
 
 /**
  * Base fragment for all top-level destinations which are being navigated through Drawer
@@ -93,8 +92,10 @@ abstract class TopLevelListFragment<ItemState,
         }
 
         doOnBackPressed {
-            if (binding.searchView.isShowing) {
-                binding.searchView.hide()
+            when {
+                binding.searchView.isShowing -> binding.searchView.hide()
+                isDeleting -> updateDeleteState(false)
+                else -> findNavController().navigateUp()
             }
         }
 
@@ -131,25 +132,26 @@ abstract class TopLevelListFragment<ItemState,
     }
 
     private fun setupMenu() {
-        binding.topAppBar.apply {
-            menu.findItem(R.id.remove).setTextColor(
-                MaterialColors.getColor(binding.root, materialR.attr.colorError)
-            )
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.remove -> updateDeleteState(delete = true)
-                    R.id.cancel -> updateDeleteState(delete = false)
-                    R.id.search -> {
-                        // Show after first search as there is a bug
-                        // where SearchView is not shown but its scrim is shown.
-                        binding.searchView.isVisible = true
-                        binding.searchView.show()
-                    }
+        binding.topAppBar.setupMenuListeners()
+        binding.searchView.inflateMenu(R.menu.top_level_fragment_search_menu)
+        binding.searchView.toolbar.setupMenuListeners()
+    }
 
-                    else -> return@setOnMenuItemClickListener false
+    private fun Toolbar.setupMenuListeners() {
+        setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.remove -> updateDeleteState(delete = true)
+                R.id.cancel -> updateDeleteState(delete = false)
+                R.id.search -> {
+                    // Show after first search as there is a bug
+                    // where SearchView is not shown but its scrim is shown.
+                    binding.searchView.isVisible = true
+                    binding.searchView.show()
                 }
-                return@setOnMenuItemClickListener true
+
+                else -> false
             }
+            true
         }
     }
 
@@ -209,10 +211,16 @@ abstract class TopLevelListFragment<ItemState,
 
         binding.addButton.isVisible = !delete
         mainAdapter.isDeleting = delete
+        searchAdapter.isDeleting = delete
 
-        binding.topAppBar.menu.apply {
-            findItem(R.id.cancel).isVisible = delete
-            findItem(R.id.remove).isVisible = !delete
+        binding.topAppBar.updateMenuItemsVisibility(delete)
+        binding.searchView.toolbar.updateMenuItemsVisibility(delete)
+    }
+
+    private fun Toolbar.updateMenuItemsVisibility(isDeleting: Boolean) {
+        menu.apply {
+            findItem(R.id.cancel).isVisible = isDeleting
+            findItem(R.id.remove).isVisible = !isDeleting
         }
     }
 
