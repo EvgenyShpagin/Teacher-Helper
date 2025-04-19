@@ -59,10 +59,6 @@ class GroupListViewModel @Inject constructor(
         }
     }
 
-    suspend fun canGroupBeDeleted(groupId: Int): Boolean {
-        return !isGroupAssociatedToAnySubject(groupId)
-    }
-
     private fun stopDelete() {
         updateState { it.copy(isDeleting = false) }
     }
@@ -73,10 +69,10 @@ class GroupListViewModel @Inject constructor(
 
     private fun deleteGroup(groupId: Int) {
         viewModelScope.launch {
-            if (canGroupBeDeleted(groupId)) {
-                viewModelScope.launch { deleteGroup.invoke(groupId) }
-            } else {
+            if (isGroupAssociatedToAnySubject(groupId)) {
                 triggerEffect(GroupsEffect.FailedToDeleteGroup)
+            } else {
+                deleteGroup.invoke(groupId)
             }
         }
     }
