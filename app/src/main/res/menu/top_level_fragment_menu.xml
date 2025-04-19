@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/search"
+        android:contentDescription="@string/cd_search"
+        android:icon="@drawable/ic_search_24"
+        android:title="@string/item_search"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/remove"
         android:contentDescription="@string/cd_select_items_to_remove"
         android:icon="@drawable/ic_delete_24"

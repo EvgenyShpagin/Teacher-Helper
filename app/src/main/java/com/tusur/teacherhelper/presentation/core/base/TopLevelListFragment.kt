@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.color.MaterialColors
@@ -46,14 +46,15 @@ import kotlinx.coroutines.launch
  */
 abstract class TopLevelListFragment<ItemState,
         State : TopLevelListUiState<ItemState>,
-        Effect : TopLevelListUiEffect> : Fragment(), SearchView.OnQueryTextListener {
+        Effect : TopLevelListUiEffect> : Fragment() {
 
     private var _binding: FragmentTopLevelListBinding? = null
     protected val binding get() = _binding!!
 
-    protected abstract val viewModel: TopLevelListViewModel<State, Effect>
-    protected abstract val adapter: BaseDeletableAdapter<ItemState>
+    protected abstract val mainAdapter: BaseDeletableAdapter<ItemState>
+    protected abstract val searchAdapter: BaseDeletableAdapter<ItemState>
 
+    protected abstract val viewModel: TopLevelListViewModel<State, Effect>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,31 +83,37 @@ abstract class TopLevelListFragment<ItemState,
         setupRecyclerView()
         setupEmptyLabelGravity()
 
-        setupSearch()
         setupMenu()
 
         launchOnOwnerStart {
             initCollectors(this)
         }
 
-        binding.addButton.setOnClickListener {
-            onAddButtonClick()
+        doOnBackPressed {
+            if (binding.searchView.isShowing) {
+                binding.searchView.hide()
+            }
         }
 
-        doOnBackPressed {
-            if (!binding.searchView.isIconified) {
-                setDefaultState(true)
-            }
-            if (viewModel.uiState.value.isDeleting) {
-                viewModel.onEvent(Event.StopDelete)
-            }
+        handleSearchInput()
+
+        if (savedInstanceState != null) {
+            binding.searchView.isVisible = savedInstanceState.getBoolean(IS_SEARCH_SHOWN_KEY)
         }
+
+        postponeEnterTransition()
     }
 
     protected open fun setupRecyclerView() {
-        binding.recyclerView.apply {
-            adapter = this@TopLevelListFragment.adapter
-            addItemDecoration(getDefaultListItemDecoration(resources))
+        val itemDecoration = getDefaultListItemDecoration(resources)
+        binding.mainList.apply {
+            adapter = mainAdapter
+            addItemDecoration(itemDecoration)
+        }
+
+        binding.searchList.apply {
+            adapter = searchAdapter
+            addItemDecoration(itemDecoration)
         }
     }
 
@@ -119,24 +126,6 @@ abstract class TopLevelListFragment<ItemState,
         }
     }
 
-    private fun setupSearch() = with(binding.searchView) {
-        setOnSearchClickListener {
-            setSearchingStateMenu()
-        }
-        setOnCloseListener {
-            viewModel.uiState.value.also {
-                if (it.isDeleting) {
-                    setDeleteStateMenu()
-                } else {
-                    setDefaultState(closeSearch = false)
-                }
-            }
-            false
-        }
-
-        setOnQueryTextListener(this@TopLevelListFragment)
-    }
-
     private fun setupMenu() {
         binding.topAppBar.apply {
             menu.findItem(R.id.remove).setTextColor(
@@ -146,6 +135,13 @@ abstract class TopLevelListFragment<ItemState,
                 when (it.itemId) {
                     R.id.remove -> viewModel.onEvent(Event.BeginDelete)
                     R.id.cancel -> viewModel.onEvent(Event.StopDelete)
+                    R.id.search -> {
+                        // Show after first search as there is a bug
+                        // where SearchView is not shown but its scrim is shown.
+                        binding.searchView.isVisible = true
+                        binding.searchView.show()
+                    }
+
                     else -> return@setOnMenuItemClickListener false
                 }
                 return@setOnMenuItemClickListener true
@@ -153,109 +149,83 @@ abstract class TopLevelListFragment<ItemState,
         }
     }
 
-    private fun setSearchingStateMenu() {
-        binding.topAppBar.menu.apply {
-            findItem(R.id.cancel).isVisible = false
-            findItem(R.id.remove).isVisible = false
-        }
-    }
-
-    protected abstract fun onAddButtonClick()
-
-    private fun setDefaultState(closeSearch: Boolean) {
-        binding.addButton.isVisible = true
-        viewModel.onEvent(Event.StopDelete)
-        adapter.isDeleting = false
-        setDefaultStateMenu(closeSearch)
-    }
-
-    private fun setDefaultStateMenu(closeSearch: Boolean) {
-        binding.topAppBar.menu.apply {
-            findItem(R.id.cancel).isVisible = false
-            findItem(R.id.remove).isVisible = true
-        }
-        if (closeSearch && !binding.searchView.isIconified) {
-            binding.searchView.setQuery("", true)
-            binding.searchView.isIconified = true
-        }
-    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        binding.searchView.clearFocus()
-        return true
-    }
-
-    override fun onQueryTextChange(query: String?): Boolean {
-        if (query == null) {
-            return true
-        }
-        val searchQuery = "%$query%"
-        viewModel.onEvent(Event.Search(searchQuery))
-        return true
+    private fun handleSearchInput() {
+        binding.searchView.editText.addTextChangedListener(
+            onTextChanged = { charSequence, _, _, _ ->
+                viewModel.onEvent(Event.Search(charSequence?.toString() ?: ""))
+            }
+        )
     }
 
     @CallSuper
     protected open fun initCollectors(scope: CoroutineScope) {
         scope.launch {
             viewModel.uiState
-                .distinctUntilChangedBy { uiState -> uiState.isFetching }
+                .distinctUntilChangedBy { it.isFetching }
                 .collect { uiState ->
                     if (!uiState.isFetching) {
-                        requireView().doOnPreDraw {
-                            startPostponedEnterTransition()
-                        }
+                        doOnFetchFinish()
                     }
                 }
         }
         scope.launch {
             viewModel.uiState
-                .distinctUntilChangedBy { it.items }
+                .distinctUntilChangedBy { it.allItems }
                 .collectLatest { uiState ->
-                    doOnListUpdate(uiState.items)
+                    doOnMainListUpdate(uiState.allItems)
                 }
         }
         scope.launch {
             viewModel.uiState
+                .distinctUntilChangedBy { it.searchedItems }
+                .collectLatest { uiState -> doOnSearchListUpdate(uiState.searchedItems) }
+        }
+        scope.launch {
+            viewModel.uiState
                 .distinctUntilChangedBy { it.isDeleting }
-                .collectLatest { uiState -> doOnDeleting(uiState) }
+                .collectLatest { uiState -> doOnDeleting(uiState.isDeleting) }
         }
     }
 
-    protected open fun doOnListUpdate(items: List<ItemState>) {
-        adapter.submitList(items)
+    private fun doOnFetchFinish() {
+        requireView().doOnPreDraw {
+            startPostponedEnterTransition()
+        }
+    }
+
+    private fun doOnMainListUpdate(items: List<ItemState>) {
+        mainAdapter.submitList(items)
         binding.emptyListLabel.isVisible = items.isEmpty()
-        binding.recyclerView.doOnPreDraw { view ->
+        binding.mainList.doOnPreDraw { view ->
             binding.appBarLayout.fixCollapsing(view as RecyclerView)
         }
     }
 
-    private fun doOnDeleting(uiState: State) {
-        if (!binding.searchView.isIconified) {
-            setSearchingStateMenu()
-        } else {
-            if (uiState.isDeleting) {
-                setDeleteState()
-            } else {
-                setDefaultState(true)
-            }
-        }
+    private fun doOnSearchListUpdate(searchedItems: List<ItemState>) {
+        searchAdapter.submitList(searchedItems)
     }
 
-    private fun setDeleteState() {
-        binding.addButton.isVisible = false
-        adapter.isDeleting = true
-        setDeleteStateMenu()
-    }
+    private fun doOnDeleting(isDeleting: Boolean) {
+        binding.addButton.isVisible = !isDeleting
+        mainAdapter.isDeleting = isDeleting
 
-    private fun setDeleteStateMenu() {
         binding.topAppBar.menu.apply {
-            findItem(R.id.cancel).isVisible = true
-            findItem(R.id.remove).isVisible = false
+            findItem(R.id.cancel).isVisible = isDeleting
+            findItem(R.id.remove).isVisible = !isDeleting
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(IS_SEARCH_SHOWN_KEY, binding.searchView.isVisible)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private companion object {
+        const val IS_SEARCH_SHOWN_KEY = "IS_SEARCH_SHOWN_KEY"
     }
 }

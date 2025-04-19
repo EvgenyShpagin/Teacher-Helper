@@ -78,9 +78,11 @@
     <string name="item_export">Экспорт в Excel</string>
     <string name="item_subjects">Предметы</string>
     <string name="item_groups">Группы</string>
+    <string name="item_search">Поиск</string>
     <!-- Content description -->
     <string name="cd_remove_groups">Выбор групп для удаления</string>
     <string name="cd_select_items_to_remove">Выбор элементов для удаления</string>
+    <string name="cd_search">Поиск</string>
     <string name="cd_remove_global_topics">Выбор глобальных тем для удаления</string>
     <string name="cd_remove_topic_types">Выбор типов тем для удаления</string>
     <string name="cd_stop_action">Прекратить</string>
