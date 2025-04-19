@@ -225,7 +225,8 @@ class GroupListFragmentTest {
             }
         ) {
             // Disable animations in RecyclerView
-            requireView().findViewById<RecyclerView>(R.id.recycler_view).itemAnimator = null
+            requireView().findViewById<RecyclerView>(R.id.main_list).itemAnimator = null
+            requireView().findViewById<RecyclerView>(R.id.search_list).itemAnimator = null
         }
     }
 }

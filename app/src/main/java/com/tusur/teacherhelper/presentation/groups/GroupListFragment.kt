@@ -1,6 +1,7 @@
 package com.tusur.teacherhelper.presentation.groups
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -17,12 +18,13 @@ import kotlinx.coroutines.launch
 class GroupListFragment : TopLevelListFragment<GroupItemUiState, GroupsUiState, GroupsEffect>() {
 
     override val viewModel: GroupListViewModel by viewModels()
-    override lateinit var adapter: GroupAdapter
-
+    override lateinit var mainAdapter: GroupAdapter
+    override lateinit var searchAdapter: GroupAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = GroupAdapter(object : BaseDeletableAdapter.Listener<GroupItemUiState> {
+
+        val itemClickListener = object : BaseDeletableAdapter.Listener<GroupItemUiState> {
             override fun onClick(item: GroupItemUiState) {
                 navigateToGroupPerformance(item.id)
             }
@@ -32,11 +34,20 @@ class GroupListFragment : TopLevelListFragment<GroupItemUiState, GroupsUiState, 
                     viewModel.onEvent(Event.TryDelete(item.id))
                 })
             }
-        })
+        }
+
+        mainAdapter = GroupAdapter(itemClickListener)
+        searchAdapter = GroupAdapter(itemClickListener)
     }
 
-    override fun onAddButtonClick() {
-        navigateToAddGroup()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.addButton.setOnClickListener {
+            navigateToAddGroup()
+        }
+
+        binding.searchView.setHint(R.string.group_number_hint)
     }
 
     override fun initCollectors(scope: CoroutineScope) {

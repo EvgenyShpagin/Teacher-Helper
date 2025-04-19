@@ -36,9 +36,11 @@ class GroupListViewModel @Inject constructor(
     private fun fetch() {
         viewModelScope.launch {
             getAllGroups().flowOn(Dispatchers.IO).collect { groups ->
+                val uiGroups = groups.map { it.toItemUiState() }
                 updateState { uiState ->
                     uiState.copy(
-                        items = groups.map { it.toItemUiState() },
+                        allItems = uiGroups,
+                        searchedItems = uiGroups,
                         isFetching = false
                     )
                 }
@@ -49,10 +51,10 @@ class GroupListViewModel @Inject constructor(
     private fun searchGroup(searchQuery: String) {
         updateState { it.copy(isFetching = true) }
         viewModelScope.launch {
-            val items = searchGroup.invoke(searchQuery)
+            val items = searchGroup.invoke("%$searchQuery%")
                 .map { group -> group.toItemUiState() }
             updateState {
-                it.copy(isFetching = false, items = items)
+                it.copy(isFetching = false, searchedItems = items)
             }
         }
     }
