@@ -29,6 +29,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
+import com.google.android.material.R as materialR
 
 /**
  * Base fragment for all top-level destinations which are being navigated through Drawer
@@ -55,6 +56,8 @@ abstract class TopLevelListFragment<ItemState,
     protected abstract val searchAdapter: BaseDeletableAdapter<ItemState>
 
     protected abstract val viewModel: TopLevelListViewModel<State, Effect>
+
+    private var isDeleting: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,6 +102,7 @@ abstract class TopLevelListFragment<ItemState,
 
         if (savedInstanceState != null) {
             binding.searchView.isVisible = savedInstanceState.getBoolean(IS_SEARCH_SHOWN_KEY)
+            updateDeleteState(savedInstanceState.getBoolean(IS_DELETING_KEY))
         }
 
         postponeEnterTransition()
@@ -129,12 +133,12 @@ abstract class TopLevelListFragment<ItemState,
     private fun setupMenu() {
         binding.topAppBar.apply {
             menu.findItem(R.id.remove).setTextColor(
-                MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorError)
+                MaterialColors.getColor(binding.root, materialR.attr.colorError)
             )
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.remove -> viewModel.onEvent(Event.BeginDelete)
-                    R.id.cancel -> viewModel.onEvent(Event.StopDelete)
+                    R.id.remove -> updateDeleteState(delete = true)
+                    R.id.cancel -> updateDeleteState(delete = false)
                     R.id.search -> {
                         // Show after first search as there is a bug
                         // where SearchView is not shown but its scrim is shown.
@@ -180,11 +184,6 @@ abstract class TopLevelListFragment<ItemState,
                 .distinctUntilChangedBy { it.searchedItems }
                 .collectLatest { uiState -> doOnSearchListUpdate(uiState.searchedItems) }
         }
-        scope.launch {
-            viewModel.uiState
-                .distinctUntilChangedBy { it.isDeleting }
-                .collectLatest { uiState -> doOnDeleting(uiState.isDeleting) }
-        }
     }
 
     private fun doOnFetchFinish() {
@@ -205,19 +204,22 @@ abstract class TopLevelListFragment<ItemState,
         searchAdapter.submitList(searchedItems)
     }
 
-    private fun doOnDeleting(isDeleting: Boolean) {
-        binding.addButton.isVisible = !isDeleting
-        mainAdapter.isDeleting = isDeleting
+    protected fun updateDeleteState(delete: Boolean) {
+        isDeleting = delete
+
+        binding.addButton.isVisible = !delete
+        mainAdapter.isDeleting = delete
 
         binding.topAppBar.menu.apply {
-            findItem(R.id.cancel).isVisible = isDeleting
-            findItem(R.id.remove).isVisible = !isDeleting
+            findItem(R.id.cancel).isVisible = delete
+            findItem(R.id.remove).isVisible = !delete
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(IS_SEARCH_SHOWN_KEY, binding.searchView.isVisible)
+        outState.putBoolean(IS_DELETING_KEY, isDeleting)
     }
 
     override fun onDestroyView() {
@@ -227,5 +229,6 @@ abstract class TopLevelListFragment<ItemState,
 
     private companion object {
         const val IS_SEARCH_SHOWN_KEY = "IS_SEARCH_SHOWN_KEY"
+        const val IS_DELETING_KEY = "IS_DELETING_KEY"
     }
 }

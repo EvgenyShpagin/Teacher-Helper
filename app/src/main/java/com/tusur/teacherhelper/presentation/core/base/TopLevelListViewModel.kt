@@ -6,8 +6,6 @@ abstract class TopLevelListViewModel<State : TopLevelListUiState<*>, Effect : To
 
     sealed interface Event : UiEvent {
         data object Fetch : Event
-        data object BeginDelete : Event
-        data object StopDelete : Event
         data class Search(val query: String) : Event
         data class TryDelete(val itemId: Int) : Event
     }
