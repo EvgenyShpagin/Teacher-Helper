@@ -216,7 +216,7 @@
         android:id="@+id/topicTypeListFragment"
         android:name="com.tusur.teacherhelper.presentation.topictype.TopicTypeListFragment"
         android:label="@string/topic_types_list_title"
-        tools:layout="@layout/fragment_topic_type_list">
+        tools:layout="@layout/fragment_top_level_list">
         <action
             android:id="@+id/action_to_topicTypeFragment"
             app:destination="@id/topicTypeFragment" />
@@ -239,7 +239,7 @@
         android:id="@+id/globalTopicListFragment"
         android:name="com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicListFragment"
         android:label="@string/global_topics_list_title"
-        tools:layout="@layout/fragment_global_topic_list">
+        tools:layout="@layout/fragment_top_level_list">
         <action
             android:id="@+id/action_to_topicFragment"
             app:destination="@id/topicFragment" />
