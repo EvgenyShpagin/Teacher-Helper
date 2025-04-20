@@ -15,6 +15,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.search.SearchView
 import com.google.android.material.transition.MaterialFadeThrough
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentTopLevelListBinding
@@ -101,6 +102,8 @@ abstract class TopLevelListFragment<ItemState,
 
         handleSearchInput()
 
+        fixSearchViewVisibility()
+
         if (savedInstanceState != null) {
             binding.searchView.isVisible = savedInstanceState.getBoolean(IS_SEARCH_SHOWN_KEY)
             updateDeleteState(savedInstanceState.getBoolean(IS_DELETING_KEY))
@@ -161,6 +164,17 @@ abstract class TopLevelListFragment<ItemState,
                 viewModel.onEvent(Event.Search(charSequence?.toString() ?: ""))
             }
         )
+    }
+
+    private fun fixSearchViewVisibility() {
+        // Make invisible by default to hide scrim when is SearchView is hidden
+        binding.searchView.isVisible = false
+
+        binding.searchView.addTransitionListener { _, _, newState ->
+            if (newState == SearchView.TransitionState.HIDDEN) {
+                binding.searchView.isVisible = false
+            }
+        }
     }
 
     @CallSuper
