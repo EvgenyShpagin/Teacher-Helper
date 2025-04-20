@@ -124,6 +124,7 @@
     <string name="global_topics_info">Темы принадлежащие всем предметам</string>
     <string name="student_full_name_hint">Фамилия Имя Отчество</string>
     <string name="global_topic_hint">Поиск глобальных тем</string>
+    <string name="topic_type_hint">Поиск типов тем</string>
     <!-- Action menu buttons & content-->
     <string name="topic_type_lecture">Лекция</string>
     <string name="topic_type_other">Другое</string>

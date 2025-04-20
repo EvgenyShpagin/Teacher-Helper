@@ -215,7 +215,7 @@
     <fragment
         android:id="@+id/topicTypeListFragment"
         android:name="com.tusur.teacherhelper.presentation.topictype.TopicTypeListFragment"
-        android:label="TopicTypeListFragment"
+        android:label="@string/topic_types_list_title"
         tools:layout="@layout/fragment_topic_type_list">
         <action
             android:id="@+id/action_to_topicTypeFragment"
