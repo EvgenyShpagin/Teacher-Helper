@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">TeacherHelper</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="subject_list_fragment_label">Subject List Fragment</string>
     <string name="subject_details_fragment_label">Subject Details Fragment</string>
     <string name="add_subject_group_dialog_label">Add Subject Group Dialog</string>
     <string name="group_students_fragment_label">Group Students Fragment</string>
@@ -125,6 +124,7 @@
     <string name="student_full_name_hint">Фамилия Имя Отчество</string>
     <string name="global_topic_hint">Поиск глобальных тем</string>
     <string name="topic_type_hint">Поиск типов тем</string>
+    <string name="subject_hint">Поиск предмета</string>
     <!-- Action menu buttons & content-->
     <string name="topic_type_lecture">Лекция</string>
     <string name="topic_type_other">Другое</string>

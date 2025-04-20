@@ -7,8 +7,8 @@
     <fragment
         android:id="@+id/subjectsFragment"
         android:name="com.tusur.teacherhelper.presentation.subjects.SubjectListFragment"
-        android:label="@string/subject_list_fragment_label"
-        tools:layout="@layout/fragment_subject_list">
+        android:label="@string/subject_list_headline"
+        tools:layout="@layout/fragment_top_level_list">
         <action
             android:id="@+id/action_to_subjectDetailsFragment"
             app:destination="@id/subjectDetailsFragment" />
