@@ -22,6 +22,9 @@ interface SubjectDao {
     @Query("SELECT * FROM subject WHERE name = :name")
     suspend fun getByName(name: String): Subject?
 
+    @Query("SELECT * FROM subject WHERE name LIKE :query")
+    suspend fun search(query: String): List<Subject>
+
     @Insert
     suspend fun insert(subject: Subject): Long
 

@@ -9,4 +9,5 @@ interface SubjectRepository {
     suspend fun getById(subjectId: Int): Subject
     suspend fun getOfTopic(topicId: Int): Subject
     suspend fun getByName(name: String): Subject?
+    suspend fun search(query: String): List<Subject>
 }

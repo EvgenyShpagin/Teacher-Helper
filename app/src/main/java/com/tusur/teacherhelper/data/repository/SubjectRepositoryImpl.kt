@@ -31,4 +31,8 @@ class SubjectRepositoryImpl @Inject constructor(
     override suspend fun getByName(name: String): Subject? {
         return subjectDao.getByName(name)?.toDomain()
     }
+
+    override suspend fun search(query: String): List<Subject> {
+        return subjectDao.search(query).map { it.toDomain() }
+    }
 }
