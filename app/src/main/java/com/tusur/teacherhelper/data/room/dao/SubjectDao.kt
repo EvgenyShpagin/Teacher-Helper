@@ -1,9 +1,9 @@
 package com.tusur.teacherhelper.data.room.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.tusur.teacherhelper.data.model.Subject
 import kotlinx.coroutines.flow.Flow
@@ -31,6 +31,15 @@ interface SubjectDao {
     @Update
     suspend fun update(subject: Subject)
 
-    @Delete
-    suspend fun delete(subject: Subject)
+    @Transaction
+    suspend fun delete(subjectId: Int) {
+        deleteSubjectGroups(subjectId)
+        deleteSubject(subjectId)
+    }
+
+    @Query("DELETE FROM subject_group WHERE subject_id = :subjectId")
+    suspend fun deleteSubjectGroups(subjectId: Int)
+
+    @Query("DELETE FROM subject WHERE id = :subjectId")
+    suspend fun deleteSubject(subjectId: Int)
 }

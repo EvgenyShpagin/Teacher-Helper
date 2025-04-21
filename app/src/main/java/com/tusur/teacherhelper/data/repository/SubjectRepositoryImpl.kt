@@ -35,4 +35,8 @@ class SubjectRepositoryImpl @Inject constructor(
     override suspend fun search(query: String): List<Subject> {
         return subjectDao.search(query).map { it.toDomain() }
     }
+
+    override suspend fun delete(subjectId: Int) {
+        subjectDao.delete(subjectId)
+    }
 }
