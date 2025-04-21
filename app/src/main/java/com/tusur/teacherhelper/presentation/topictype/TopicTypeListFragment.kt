@@ -37,6 +37,7 @@ class TopicTypeListFragment :
             override fun onDelete(item: TopicTypeItemUiState) {
                 showDeleteTypeDialog(onConfirm = {
                     viewModel.onEvent(Event.TryDelete(item.typeId))
+                    updateDeleteState(delete = false)
                 })
             }
         }
@@ -83,3 +84,5 @@ class TopicTypeListFragment :
         TopicDeleteErrorDialog.show(requireContext())
     }
 }
+
+// TODO: show dialog when reason differs

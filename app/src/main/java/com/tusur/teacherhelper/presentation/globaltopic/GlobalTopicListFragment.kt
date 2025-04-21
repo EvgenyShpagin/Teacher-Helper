@@ -60,6 +60,7 @@ class GlobalTopicListFragment :
                 showDeleteTopicDialog(
                     onConfirm = {
                         viewModel.onEvent(Event.TryDelete(item.topicId))
+                        updateDeleteState(delete = false)
                     }
                 )
             }

@@ -32,6 +32,7 @@ class GroupListFragment : TopLevelListFragment<GroupItemUiState, GroupsUiState, 
             override fun onDelete(item: GroupItemUiState) {
                 showDeleteGroupDialog(onConfirm = {
                     viewModel.onEvent(Event.TryDelete(item.id))
+                    updateDeleteState(delete = false)
                 })
             }
         }
