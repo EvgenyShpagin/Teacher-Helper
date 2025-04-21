@@ -10,4 +10,5 @@ interface ClassDateRepository {
     suspend fun getId(date: Date): Int?
     suspend fun getIdByMillis(datetimeMillis: Long): Int?
     suspend fun add(datetimeMillis: Long): Int
+    suspend fun delete(datetimeMillis: Long)
 }

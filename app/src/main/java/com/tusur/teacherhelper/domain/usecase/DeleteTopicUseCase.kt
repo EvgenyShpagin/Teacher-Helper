@@ -2,6 +2,7 @@ package com.tusur.teacherhelper.domain.usecase
 
 import com.tusur.teacherhelper.domain.model.error.DeadlineUpdateError
 import com.tusur.teacherhelper.domain.model.error.DeleteTopicError
+import com.tusur.teacherhelper.domain.repository.ClassDateRepository
 import com.tusur.teacherhelper.domain.repository.SubjectGroupRepository
 import com.tusur.teacherhelper.domain.repository.TopicRepository
 import com.tusur.teacherhelper.domain.util.Result
@@ -12,6 +13,7 @@ import javax.inject.Inject
 class DeleteTopicUseCase @Inject constructor(
     private val topicRepository: TopicRepository,
     private val subjectGroupRepository: SubjectGroupRepository,
+    private val classDateRepository: ClassDateRepository,
     private val setTopicDeadline: SetTopicDeadlineUseCase,
     private val deletePerformance: DeletePerformanceUseCase,
     private val getClassDatetime: GetClassDatetimeUseCase
@@ -26,6 +28,9 @@ class DeleteTopicUseCase @Inject constructor(
         val groups = subjectGroupRepository.getBySubject(subjectId).first()
         deletePerformance(topicId, groups.map { it.id }, classDays)
         topicRepository.delete(topicId)
+        classDays.forEach { datetime ->
+            classDateRepository.delete(datetime.toMillis())
+        }
         return Result.Success()
     }
 }

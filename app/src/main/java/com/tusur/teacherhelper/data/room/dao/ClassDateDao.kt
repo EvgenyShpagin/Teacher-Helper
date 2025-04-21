@@ -1,7 +1,6 @@
 package com.tusur.teacherhelper.data.room.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -58,6 +57,6 @@ interface ClassDateDao {
     @Update
     suspend fun update(classDate: ClassDate)
 
-    @Delete
-    suspend fun delete(classDate: ClassDate)
+    @Query("DELETE FROM class_date WHERE datetime_millis = :datetimeMillis")
+    suspend fun delete(datetimeMillis: Long)
 }

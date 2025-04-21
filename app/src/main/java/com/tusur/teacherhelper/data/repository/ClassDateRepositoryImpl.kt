@@ -38,4 +38,8 @@ class ClassDateRepositoryImpl @Inject constructor(
     override suspend fun add(datetimeMillis: Long): Int {
         return classDataDao.insert(ClassDate(NO_ID, datetimeMillis)).toInt()
     }
+
+    override suspend fun delete(datetimeMillis: Long) {
+        classDataDao.delete(datetimeMillis)
+    }
 }
