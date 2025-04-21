@@ -1,7 +1,9 @@
 package com.tusur.teacherhelper.presentation.subjects
 
 import androidx.lifecycle.viewModelScope
+import com.tusur.teacherhelper.domain.usecase.DeleteSubjectWithTopicsUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectListUseCase
+import com.tusur.teacherhelper.domain.usecase.SearchSubjectUseCase
 import com.tusur.teacherhelper.presentation.core.base.TopLevelListViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -9,7 +11,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SubjectListViewModel @Inject constructor(
-    private val getSubjectList: GetSubjectListUseCase
+    private val getSubjectList: GetSubjectListUseCase,
+    private val searchSubject: SearchSubjectUseCase,
+    private val deleteSubjectWithTopics: DeleteSubjectWithTopicsUseCase
 ) : TopLevelListViewModel<SubjectListUiState, Nothing>(
     initialUiState = SubjectListUiState()
 ) {
@@ -38,13 +42,17 @@ class SubjectListViewModel @Inject constructor(
 
     private fun search(query: String) {
         viewModelScope.launch {
-            // TODO: implement
+            updateState { state -> state.copy(isFetching = true) }
+            val searchedSubjects = searchSubject("%$query%")
+            updateState { state ->
+                state.copy(isFetching = false, searchedItems = searchedSubjects)
+            }
         }
     }
 
     private fun delete(subjectId: Int) {
         viewModelScope.launch {
-            // TODO: implement
+            deleteSubjectWithTopics(subjectId)
         }
     }
 }

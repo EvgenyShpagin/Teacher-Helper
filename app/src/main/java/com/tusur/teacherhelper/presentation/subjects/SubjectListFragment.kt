@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.presentation.core.base.TopLevelListFragment
 import com.tusur.teacherhelper.presentation.core.base.TopLevelListViewModel.Event
@@ -32,6 +33,7 @@ class SubjectListFragment :
             override fun onDelete(item: SubjectItemUiState) {
                 showDeleteSubjectDialog(onConfirm = {
                     viewModel.onEvent(Event.TryDelete(item.id))
+                    updateDeleteState(delete = false)
                 })
             }
         }
@@ -57,6 +59,11 @@ class SubjectListFragment :
     }
 
     private fun showDeleteSubjectDialog(onConfirm: () -> Unit) {
-        // TODO: implement
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.dialog_delete_subject_title)
+            .setNegativeButton(R.string.cancel_button, null)
+            .setPositiveButton(R.string.confirm_button) { _, _ ->
+                onConfirm.invoke()
+            }.show()
     }
 }

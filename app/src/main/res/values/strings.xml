@@ -46,6 +46,7 @@
     <string name="topic_types_list_title">Типы тем</string>
     <string name="dialog_group_cannot_be_deleted_title">Эту группу нельзя удалить</string>
     <string name="dialog_class_time_title">Время проведения занятия</string>
+    <string name="dialog_delete_subject_title">Удалить предмет и все связанные с ним темы?</string>
     <!-- Labels -->
     <string name="no_subjects_label">Пусто</string>
     <string name="groups_label">Группы</string>
