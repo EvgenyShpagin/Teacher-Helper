@@ -3,6 +3,7 @@ package com.tusur.teacherhelper.domain.model
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import androidx.annotation.IntRange
+import kotlinx.datetime.LocalTime
 
 data class Datetime(
     @IntRange(from = 2024)
@@ -25,7 +26,7 @@ data class Datetime(
         minute = 0
     )
 
-    constructor(date: Date, time: Time) : this(
+    constructor(date: Date, time: LocalTime) : this(
         year = date.year,
         month = date.month,
         dayOfMonth = date.dayOfMonth,
@@ -41,8 +42,8 @@ data class Datetime(
         )
     }
 
-    fun getTime(): Time {
-        return Time(hour = hour, minute = minute)
+    fun getTime(): LocalTime {
+        return LocalTime(hour = hour, minute = minute)
     }
 
     fun toMillis(timezoneId: String = "UTC"): Long {

@@ -6,8 +6,10 @@ import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.SumProgress
 import com.tusur.teacherhelper.domain.model.TableContent
-import com.tusur.teacherhelper.domain.model.Time
 import com.tusur.teacherhelper.domain.model.Topic
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.format
+import kotlinx.datetime.format.char
 import java.text.DateFormat
 import java.text.DecimalFormat
 import java.util.Calendar
@@ -48,13 +50,17 @@ fun Datetime.formatted(
     withYear: Boolean = true,
     timezoneId: String = "UTC"
 ): String {
-    return "${getDate().formatted(locale, withYear, timezoneId)} ${getTime().formatted(locale)}"
+    return "${getDate().formatted(locale, withYear, timezoneId)} ${getTime().formatted()}"
 }
 
-private const val TIME_FORMAT = "%02d:%02d"
-
-fun Time.formatted(locale: Locale): String {
-    return String.format(locale, TIME_FORMAT, hour, minute)
+fun LocalTime.formatted(): String {
+    return format(
+        LocalTime.Format {
+            hour()
+            char(':')
+            minute()
+        }
+    )
 }
 
 fun Date.formatted(locale: Locale, withYear: Boolean = true, timezoneId: String = "UTC"): String {

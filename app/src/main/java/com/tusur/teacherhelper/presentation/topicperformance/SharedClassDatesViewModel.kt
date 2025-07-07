@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Datetime
-import com.tusur.teacherhelper.domain.model.Time
 import com.tusur.teacherhelper.domain.usecase.DeletePerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSharedClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.util.formatted
@@ -19,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalTime
 import java.util.Locale
 
 @HiltViewModel(assistedFactory = SharedClassDatesViewModel.Factory::class)
@@ -89,9 +89,9 @@ class SharedClassDatesViewModel @AssistedInject constructor(
         )
     }
 
-    private fun Time.toUiItem(datetime: Datetime): TimeItemUiState {
+    private fun LocalTime.toUiItem(datetime: Datetime): TimeItemUiState {
         return TimeItemUiState(
-            timeText = UiText.Dynamic(formatted(locale)),
+            timeText = UiText.Dynamic(formatted()),
             onDelete = {
                 viewModelScope.launch {
                     deleteAttendance(datetime)
