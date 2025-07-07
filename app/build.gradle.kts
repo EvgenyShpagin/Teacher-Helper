@@ -66,6 +66,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     implementation(libs.gson)
+    implementation(libs.kotlinx.datetime)
 
     debugImplementation(libs.androidx.fragment.testing.manifest)
 
