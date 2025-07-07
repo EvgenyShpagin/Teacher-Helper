@@ -39,6 +39,8 @@ interface StudentPerformanceRepository {
 
     suspend fun deletePerformance(topicId: Int, groupListIds: List<Int>, datetime: List<Datetime>)
 
+    suspend fun deleteAllTopic(topicId: Int)
+
     suspend fun update(studentId: Int, topicId: Int, classDateId: Int, performance: Performance)
     suspend fun add(studentId: Int, topicId: Int, classDateId: Int, performance: Performance)
 }

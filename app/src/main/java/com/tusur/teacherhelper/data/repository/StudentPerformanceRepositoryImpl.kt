@@ -130,6 +130,10 @@ class StudentPerformanceRepositoryImpl @Inject constructor(
         studentTopicPerformanceDao.delete(topicId, studentIds, classDateIds)
     }
 
+    override suspend fun deleteAllTopic(topicId: Int) {
+        studentTopicPerformanceDao.deleteAllTopic(topicId)
+    }
+
     override suspend fun getFinalPerformanceClassDayDatetimeMs(
         studentId: Int,
         topicId: Int

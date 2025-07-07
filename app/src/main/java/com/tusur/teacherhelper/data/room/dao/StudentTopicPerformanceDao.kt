@@ -110,6 +110,14 @@ interface StudentTopicPerformanceDao {
     @Query(
         """
         DELETE FROM student_topic_performance
+        WHERE topic_id = :topicId
+        """
+    )
+    suspend fun deleteAllTopic(topicId: Int)
+
+    @Query(
+        """
+        DELETE FROM student_topic_performance
         WHERE student_id = :studentId
     """
     )
