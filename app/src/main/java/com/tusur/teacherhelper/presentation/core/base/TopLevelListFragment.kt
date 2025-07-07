@@ -240,6 +240,8 @@ abstract class TopLevelListFragment<ItemState,
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        /** Save UI related data only if fragment is visible. **/
+        if (_binding == null) return
         outState.putBoolean(IS_SEARCH_SHOWN_KEY, binding.searchView.isVisible)
         outState.putBoolean(IS_DELETING_KEY, isDeleting)
     }
