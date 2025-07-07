@@ -1,7 +1,7 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.model.ClassTime
 import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.domain.model.ClassTime
 import javax.inject.Inject
 
 class GetSharedClassTimeUseCase @Inject constructor(

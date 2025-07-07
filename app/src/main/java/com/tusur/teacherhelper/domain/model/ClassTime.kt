@@ -1,10 +1,13 @@
 package com.tusur.teacherhelper.domain.model
 
+import kotlinx.datetime.LocalTime
+
 data class ClassTime(
-    val initTime: Time,
-    val finishTime: Time
+    val initTime: LocalTime,
+    val finishTime: LocalTime
 ) {
-    operator fun contains(time: Time): Boolean {
-        return time.totalMinutes in initTime.totalMinutes..finishTime.totalMinutes
+    @Deprecated("Move to specific package and test")
+    operator fun contains(time: LocalTime): Boolean {
+        return time in initTime..finishTime
     }
 }

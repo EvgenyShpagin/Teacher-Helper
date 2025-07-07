@@ -1,13 +1,14 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.model.ClassTime
 import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.Time
+import com.tusur.teacherhelper.domain.model.ClassTime
 import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalTime
 import org.junit.Before
 import org.junit.Test
 
@@ -19,9 +20,9 @@ class GetSharedClassTimeUseCaseTest {
     @Before
     fun setup() {
         coEvery { getAllClassTimeUseCase() } returns listOf(
-            ClassTime(initTime = Time(8, 50), finishTime = Time(10, 25)),
-            ClassTime(initTime = Time(10, 40), finishTime = Time(12, 15)),
-            ClassTime(initTime = Time(13, 15), finishTime = Time(14, 50)),
+            ClassTime(initTime = LocalTime(8, 50), finishTime = LocalTime(10, 25)),
+            ClassTime(initTime = LocalTime(10, 40), finishTime = LocalTime(12, 15)),
+            ClassTime(initTime = LocalTime(13, 15), finishTime = LocalTime(14, 50)),
         )
     }
 
@@ -41,8 +42,8 @@ class GetSharedClassTimeUseCaseTest {
 
         assertEquals(
             listOf(
-                ClassTime(initTime = Time(8, 50), finishTime = Time(10, 25)),
-                ClassTime(initTime = Time(10, 40), finishTime = Time(12, 15))
+                ClassTime(initTime = LocalTime(8, 50), finishTime = LocalTime(10, 25)),
+                ClassTime(initTime = LocalTime(10, 40), finishTime = LocalTime(12, 15))
             ),
             useCase(topicId, groupIds, classDate)
         )

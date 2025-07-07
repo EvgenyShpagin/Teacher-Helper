@@ -60,7 +60,11 @@ class ClassTimeViewModel @AssistedInject constructor(
             args = arrayOf(initTime.hour, initTime.minute, finishTime.hour, finishTime.minute),
         ),
         hasPerformance = hasPerformance,
-        onClick = { _uiState.update { it.copy(chosenTimeMillis = initTime.toMillis()) } }
+        onClick = {
+            _uiState.update {
+                it.copy(chosenTimeMillis = initTime.toMillisecondOfDay().toLong())
+            }
+        }
     )
 
     data class UiState(
