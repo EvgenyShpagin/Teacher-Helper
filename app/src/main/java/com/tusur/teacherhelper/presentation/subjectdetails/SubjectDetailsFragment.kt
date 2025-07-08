@@ -48,10 +48,7 @@ class SubjectDetailsFragment : Fragment(), SearchView.OnQueryTextListener {
     private val args: SubjectDetailsFragmentArgs by navArgs()
     private val viewModel: SubjectDetailsViewModel by viewModels(extrasProducer = {
         creationCallback<SubjectDetailsViewModel.Factory> { factory ->
-            factory.create(
-                subjectId = args.subjectId,
-                locale = resources.primaryLocale
-            )
+            factory.create(subjectId = args.subjectId)
         }
     })
 
