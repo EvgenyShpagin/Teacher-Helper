@@ -10,8 +10,8 @@ import com.tusur.teacherhelper.domain.usecase.GetAllTopicsDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.GetDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.SetTopicDeadlineUseCase
 import com.tusur.teacherhelper.domain.util.NO_ID
-import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.formatted
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

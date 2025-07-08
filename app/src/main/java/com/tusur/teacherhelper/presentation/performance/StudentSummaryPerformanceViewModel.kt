@@ -10,9 +10,9 @@ import com.tusur.teacherhelper.domain.usecase.GetStudentUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectStudentSummaryAttendanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectStudentSummaryPerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectTopicsUseCase
-import com.tusur.teacherhelper.domain.util.formattedShort
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.formatted
+import com.tusur.teacherhelper.presentation.core.util.formattedShort
 import com.tusur.teacherhelper.presentation.topic.PerformanceType
 import com.tusur.teacherhelper.presentation.topicperformance.StudentPerformanceBaseViewModel
 import dagger.assisted.Assisted

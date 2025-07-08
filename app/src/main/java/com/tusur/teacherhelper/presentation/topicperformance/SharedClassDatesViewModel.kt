@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.usecase.DeletePerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSharedClassDatetimeUseCase
-import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.domain.util.toEpochMillis
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.formatted

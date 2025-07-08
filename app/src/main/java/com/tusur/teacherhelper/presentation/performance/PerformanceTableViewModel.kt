@@ -13,9 +13,9 @@ import com.tusur.teacherhelper.domain.usecase.GetGroupSubjectPerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectTopicsUseCase
 import com.tusur.teacherhelper.domain.usecase.IsGroupNotEmptyUseCase
 import com.tusur.teacherhelper.domain.usecase.SaveGroupPerformanceToExcelFileUseCase
-import com.tusur.teacherhelper.domain.util.formattedShort
-import com.tusur.teacherhelper.domain.util.shortName
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.formattedShort
+import com.tusur.teacherhelper.presentation.core.util.shortName
 import com.tusur.teacherhelper.presentation.core.util.toUiText
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

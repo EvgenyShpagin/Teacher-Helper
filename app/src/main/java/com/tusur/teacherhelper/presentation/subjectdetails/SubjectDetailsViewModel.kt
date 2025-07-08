@@ -16,8 +16,8 @@ import com.tusur.teacherhelper.domain.usecase.GetSubjectTopicsUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchGlobalTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchSubjectGroupUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchSubjectTopicUseCase
-import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.formatted
 import com.tusur.teacherhelper.presentation.groups.GroupItemUiState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

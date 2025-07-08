@@ -6,8 +6,8 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.usecase.EditTopicClassDayUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicClassDaysUseCase
-import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.formatted
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

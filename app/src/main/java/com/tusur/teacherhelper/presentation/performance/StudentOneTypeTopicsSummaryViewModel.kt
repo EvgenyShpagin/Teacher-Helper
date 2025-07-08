@@ -6,7 +6,6 @@ import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.Performance
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.usecase.GetStudentOneTypeTopicsPerformanceUseCase
-import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.domain.util.getTotalAttendance
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.formatted

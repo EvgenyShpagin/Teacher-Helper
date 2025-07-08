@@ -24,15 +24,21 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.tusur.teacherhelper.R
+import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.PerformanceItem
+import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.SumProgress
-import com.tusur.teacherhelper.domain.util.formatted
+import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.view.ListItemView
 import com.tusur.teacherhelper.presentation.core.view.ListLayout
 import com.tusur.teacherhelper.presentation.core.view.recycler.checkNestedScrollState
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.format
+import kotlinx.datetime.format.char
+import java.text.DecimalFormat
 import java.util.Locale
 
 
@@ -214,3 +220,64 @@ fun AppBarLayout.fixCollapsing(recyclerView: RecyclerView) {
     val needToExpandAppBar = !recyclerView.isNestedScrollingEnabled
     setExpanded(needToExpandAppBar)
 }
+
+fun Topic.Name.formattedShort(): String {
+    val stringBuilder = StringBuilder(24)
+    stringBuilder.append(shortTypeName)
+    stringBuilder.append(' ')
+    if (ordinal != null) {
+        stringBuilder.append(ordinal)
+    } else if (date != null) {
+        stringBuilder.append(date.formatted(withYear = false))
+    } else if (addText != null) {
+        if (addText.length > 7) {
+            stringBuilder.append(addText.substring(0, 5)).append("..")
+        } else {
+            stringBuilder.append(addText)
+        }
+    }
+    return stringBuilder.toString()
+}
+
+fun Topic.Name.formatted(): String {
+    val stringBuilder = StringBuilder(40)
+    stringBuilder.append(typeName)
+
+    ordinal?.let { stringBuilder.append(' ').append(it) }
+    addText?.let { stringBuilder.append(' ').append(it) }
+    date?.let { stringBuilder.append(' ').append(it.formatted()) }
+    return stringBuilder.toString()
+}
+
+fun Datetime.formatted(withYear: Boolean = true): String {
+    return "${getDate().formatted(withYear)} ${getTime().formatted()}"
+}
+
+fun LocalTime.formatted(): String {
+    return format(
+        LocalTime.Format {
+            hour()
+            char(':')
+            minute()
+        }
+    )
+}
+
+private val doubleShortDecimalFormat = DecimalFormat("0.#")
+
+fun Double.formatted(): String {
+    return doubleShortDecimalFormat.format(this)
+}
+
+fun Float.formatted(): String {
+    return toDouble().formatted()
+}
+
+val Student.shortName: String
+    get() {
+        return if (name.middleName.isNotEmpty()) {
+            "${name.lastName} ${name.firstName.first()}. ${name.middleName.first()}."
+        } else {
+            "${name.lastName} ${name.firstName.first()}."
+        }
+    }

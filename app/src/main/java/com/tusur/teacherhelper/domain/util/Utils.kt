@@ -1,75 +1,16 @@
 package com.tusur.teacherhelper.domain.util
 
-import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.PerformanceItem
-import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.SumProgress
 import com.tusur.teacherhelper.domain.model.TableContent
-import com.tusur.teacherhelper.domain.model.Topic
-import com.tusur.teacherhelper.presentation.core.util.formatted
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
-import kotlinx.datetime.format
-import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
-import java.text.DecimalFormat
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
-
-fun Topic.Name.formattedShort(): String {
-    val stringBuilder = StringBuilder(24)
-    stringBuilder.append(shortTypeName)
-    stringBuilder.append(' ')
-    if (ordinal != null) {
-        stringBuilder.append(ordinal)
-    } else if (date != null) {
-        stringBuilder.append(date.formatted(withYear = false))
-    } else if (addText != null) {
-        if (addText.length > 7) {
-            stringBuilder.append(addText.substring(0, 5)).append("..")
-        } else {
-            stringBuilder.append(addText)
-        }
-    }
-    return stringBuilder.toString()
-}
-
-fun Topic.Name.formatted(): String {
-    val stringBuilder = StringBuilder(40)
-    stringBuilder.append(typeName)
-
-    ordinal?.let { stringBuilder.append(' ').append(it) }
-    addText?.let { stringBuilder.append(' ').append(it) }
-    date?.let { stringBuilder.append(' ').append(it.formatted()) }
-    return stringBuilder.toString()
-}
-
-fun Datetime.formatted(withYear: Boolean = true): String {
-    return "${getDate().formatted(withYear)} ${getTime().formatted()}"
-}
-
-fun LocalTime.formatted(): String {
-    return format(
-        LocalTime.Format {
-            hour()
-            char(':')
-            minute()
-        }
-    )
-}
-
-val Student.shortName: String
-    get() {
-        return if (name.middleName.isNotEmpty()) {
-            "${name.lastName} ${name.firstName.first()}. ${name.middleName.first()}."
-        } else {
-            "${name.lastName} ${name.firstName.first()}."
-        }
-    }
 
 fun PerformanceItem.Progress.inPercentage(): Int {
     return (value * 100).toInt()
@@ -86,15 +27,6 @@ fun <T, R> TableContent<T>.map(
     }
 }
 
-private val doubleShortDecimalFormat = DecimalFormat("0.#")
-
-fun Double.formatted(): String {
-    return doubleShortDecimalFormat.format(this)
-}
-
-fun Float.formatted(): String {
-    return toDouble().formatted()
-}
 
 fun List<PerformanceItem.Attendance>.getTotalAttendance(): SumProgress<Int> {
     return SumProgress(count { it !is PerformanceItem.Attendance.Absent }, count())

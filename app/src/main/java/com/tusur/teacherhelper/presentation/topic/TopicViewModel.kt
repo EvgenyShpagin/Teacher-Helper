@@ -11,10 +11,9 @@ import com.tusur.teacherhelper.domain.usecase.DoesTopicHaveClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetDeadlineUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicAsFlowUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicNameByIdUseCase
-import com.tusur.teacherhelper.domain.util.formatted
-import com.tusur.teacherhelper.domain.util.formattedShort
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.formatted
+import com.tusur.teacherhelper.presentation.core.util.formattedShort
 import com.tusur.teacherhelper.presentation.topic.TopicViewModel.OnetimeEvent.FailedToDeleteDeadline
 import com.tusur.teacherhelper.presentation.topic.TopicViewModel.OnetimeEvent.NavigateBack
 import dagger.assisted.Assisted

@@ -10,9 +10,9 @@ import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.usecase.GetTopicGroupsPerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicNameByIdUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchInListUseCase
-import com.tusur.teacherhelper.domain.util.formatted
-import com.tusur.teacherhelper.domain.util.shortName
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.formatted
+import com.tusur.teacherhelper.presentation.core.util.shortName
 import com.tusur.teacherhelper.presentation.core.util.toUiText
 import com.tusur.teacherhelper.presentation.topic.PerformanceType
 import dagger.assisted.Assisted
