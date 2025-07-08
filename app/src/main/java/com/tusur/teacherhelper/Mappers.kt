@@ -2,11 +2,11 @@ package com.tusur.teacherhelper
 
 import com.tusur.teacherhelper.data.model.ClassDate
 import com.tusur.teacherhelper.data.model.StudentTopicPerformance
-import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.Performance
 import com.tusur.teacherhelper.domain.util.fromEpochMillis
 import com.tusur.teacherhelper.domain.util.toEpochMillis
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlin.time.ExperimentalTime
 import com.tusur.teacherhelper.data.model.Deadline as DataDeadline
 import com.tusur.teacherhelper.data.model.Group as DataGroup
@@ -21,8 +21,8 @@ import com.tusur.teacherhelper.domain.model.Subject as DomainSubject
 import com.tusur.teacherhelper.domain.model.Topic as DomainTopic
 import com.tusur.teacherhelper.domain.model.TopicType as DomainTopicType
 
-fun ClassDate.toDomain(): Datetime {
-    return Datetime.fromMillis(datetimeMillis)
+fun ClassDate.toDomain(): LocalDateTime {
+    return LocalDateTime.fromEpochMillis(datetimeMillis)
 }
 
 @OptIn(ExperimentalTime::class)

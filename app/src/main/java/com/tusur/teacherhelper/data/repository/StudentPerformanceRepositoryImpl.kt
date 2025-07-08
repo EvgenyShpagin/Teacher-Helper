@@ -7,18 +7,19 @@ import com.tusur.teacherhelper.data.room.dao.StudentDao
 import com.tusur.teacherhelper.data.room.dao.StudentTopicPerformanceDao
 import com.tusur.teacherhelper.data.room.dao.TopicDao
 import com.tusur.teacherhelper.data.room.dao.TopicTypeDao
-import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.Performance
 import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.repository.StudentPerformanceRepository
 import com.tusur.teacherhelper.domain.util.applyOrderOf
+import com.tusur.teacherhelper.domain.util.toEpochMillis
 import com.tusur.teacherhelper.presentation.core.util.toNativeArray
 import com.tusur.teacherhelper.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.LocalDateTime
 import javax.inject.Inject
 
 class StudentPerformanceRepositoryImpl @Inject constructor(
@@ -120,9 +121,11 @@ class StudentPerformanceRepositoryImpl @Inject constructor(
     override suspend fun deletePerformance(
         topicId: Int,
         groupListIds: List<Int>,
-        datetime: List<Datetime>
+        datetime: List<LocalDateTime>
     ) {
-        val classDateIds = datetime.map { classDateDao.getByDatetimeMillis(it.toMillis())!!.id }
+        val classDateIds = datetime.map {
+            classDateDao.getByDatetimeMillis(it.toEpochMillis())!!.id
+        }
         val studentIds = ArrayList<Int>()
         groupListIds.forEach { groupId ->
             studentIds.addAll(studentDao.getAllIds(groupId))

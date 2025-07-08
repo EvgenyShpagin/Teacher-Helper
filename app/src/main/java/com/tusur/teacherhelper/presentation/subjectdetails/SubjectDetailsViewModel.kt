@@ -176,7 +176,7 @@ class SubjectDetailsViewModel @AssistedInject constructor(
         TopicItemUiState.Topic(
             id = id,
             name = name.formatted(),
-            lastClassDate = getLastClassDatetime(id)?.getDate(),
+            lastClassDate = getLastClassDatetime(id)?.date,
             isCancelled = isCancelled,
             isFinished = type.isAttendanceAcceptable
                     && doesTopicHaveClassDatetime(id)

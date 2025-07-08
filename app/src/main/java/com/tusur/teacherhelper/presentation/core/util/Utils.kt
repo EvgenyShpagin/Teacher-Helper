@@ -24,7 +24,6 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.SumProgress
@@ -35,6 +34,7 @@ import com.tusur.teacherhelper.presentation.core.view.ListLayout
 import com.tusur.teacherhelper.presentation.core.view.recycler.checkNestedScrollState
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
@@ -249,8 +249,8 @@ fun Topic.Name.formatted(): String {
     return stringBuilder.toString()
 }
 
-fun Datetime.formatted(withYear: Boolean = true): String {
-    return "${getDate().formatted(withYear)} ${getTime().formatted()}"
+fun LocalDateTime.formatted(withYear: Boolean = true): String {
+    return "${date.formatted(withYear)} ${time.formatted()}"
 }
 
 fun LocalTime.formatted(): String {

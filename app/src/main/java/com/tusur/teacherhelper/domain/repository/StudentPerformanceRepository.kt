@@ -1,11 +1,11 @@
 package com.tusur.teacherhelper.domain.repository
 
-import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.Performance
 import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.Topic
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.LocalDateTime
 
 interface StudentPerformanceRepository {
     suspend fun getSetPerformance(
@@ -37,7 +37,11 @@ interface StudentPerformanceRepository {
         studentId: Int
     ): List<Pair<Topic, Performance>>
 
-    suspend fun deletePerformance(topicId: Int, groupListIds: List<Int>, datetime: List<Datetime>)
+    suspend fun deletePerformance(
+        topicId: Int,
+        groupListIds: List<Int>,
+        datetime: List<LocalDateTime>
+    )
 
     suspend fun deleteAllTopic(topicId: Int)
 

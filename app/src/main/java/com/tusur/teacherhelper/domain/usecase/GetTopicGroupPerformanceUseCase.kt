@@ -1,13 +1,14 @@
 package com.tusur.teacherhelper.domain.usecase
 
 import android.util.Log
-import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.Performance
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.repository.StudentPerformanceRepository
 import com.tusur.teacherhelper.domain.repository.StudentRepository
+import com.tusur.teacherhelper.domain.util.fromEpochMillis
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.LocalDateTime
 import javax.inject.Inject
 
 class GetTopicGroupPerformanceUseCase @Inject constructor(
@@ -27,7 +28,7 @@ class GetTopicGroupPerformanceUseCase @Inject constructor(
                 Log.d(
                     "TAG_1",
                     "GetTopicGroupPerformanceUseCase.invoke(): class date (${
-                        Datetime.fromMillis(datetimeMillis)
+                        LocalDateTime.fromEpochMillis(datetimeMillis)
                     }) does not exist in database"
                 )
             }

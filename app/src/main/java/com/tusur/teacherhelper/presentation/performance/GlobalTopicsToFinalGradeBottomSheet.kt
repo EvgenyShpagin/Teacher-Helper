@@ -31,6 +31,7 @@ import kotlinx.datetime.LocalDate
 class GlobalTopicsToFinalGradeBottomSheet : BottomSheetDialogFragment() {
 
     private val binding get() = _binding!!
+    private var _binding: BottomSheetGlobalTopicsBinding? = null // TODO
     private val viewModel: GlobalTopicListViewModel by viewModels()
 
     private val args: GlobalTopicsToFinalGradeBottomSheetArgs by navArgs()

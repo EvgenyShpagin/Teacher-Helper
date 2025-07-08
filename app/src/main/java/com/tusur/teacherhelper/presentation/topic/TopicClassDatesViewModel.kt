@@ -3,9 +3,9 @@ package com.tusur.teacherhelper.presentation.topic
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.usecase.EditTopicClassDayUseCase
 import com.tusur.teacherhelper.domain.usecase.GetTopicClassDaysUseCase
+import com.tusur.teacherhelper.domain.util.toEpochMillis
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.formatted
 import dagger.assisted.Assisted
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDateTime
 
 
 @HiltViewModel(assistedFactory = TopicClassDatesViewModel.Factory::class)
@@ -54,8 +55,8 @@ class TopicClassDatesViewModel @AssistedInject constructor(
         }
     }
 
-    private fun Datetime.toUiItem() = DatetimeItemUiState(
-        toMillis(),
+    private fun LocalDateTime.toUiItem() = DatetimeItemUiState(
+        toEpochMillis(),
         UiText.Dynamic(formatted())
     )
 

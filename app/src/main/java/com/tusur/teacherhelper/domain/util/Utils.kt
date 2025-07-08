@@ -4,8 +4,10 @@ import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.SumProgress
 import com.tusur.teacherhelper.domain.model.TableContent
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -61,13 +63,27 @@ fun <S, T> List<S>.applyOrderOf(
 }
 
 @OptIn(ExperimentalTime::class)
+fun LocalDateTime.Companion.fromEpochMillis(
+    epochMillis: Long,
+    zone: TimeZone = TimeZone.currentSystemDefault()
+): LocalDateTime {
+    val instant = Instant.fromEpochMilliseconds(epochMillis)
+    return instant.toLocalDateTime(zone)
+}
+
+@OptIn(ExperimentalTime::class)
 fun LocalDate.Companion.fromEpochMillis(
     epochMillis: Long,
     zone: TimeZone = TimeZone.currentSystemDefault()
 ): LocalDate {
-    val instant = Instant.fromEpochMilliseconds(epochMillis)
-    return instant.toLocalDateTime(zone).date
+    return LocalDateTime.fromEpochMillis(epochMillis, zone).date
 }
+
+@OptIn(ExperimentalTime::class)
+fun LocalDateTime.toEpochMillis(
+    zone: TimeZone = TimeZone.currentSystemDefault()
+) = toInstant(zone).toEpochMilliseconds()
+
 
 @OptIn(ExperimentalTime::class)
 fun LocalDate.toEpochMillis(
@@ -87,3 +103,19 @@ fun LocalDate.toEpochMillis(
 fun LocalDate.Companion.today(
     zone: TimeZone = TimeZone.currentSystemDefault()
 ): LocalDate = Clock.System.now().toLocalDateTime(zone).date
+
+@OptIn(ExperimentalTime::class)
+fun LocalDateTime.Companion.currentMinute(
+    zone: TimeZone = TimeZone.currentSystemDefault()
+): LocalDateTime {
+    val now = Clock.System.now().toLocalDateTime(zone)
+    return LocalDateTime(
+        now.year,
+        now.month,
+        now.day,
+        now.hour,
+        now.minute,
+        0,          // seconds
+        0           // nanoseconds
+    )
+}

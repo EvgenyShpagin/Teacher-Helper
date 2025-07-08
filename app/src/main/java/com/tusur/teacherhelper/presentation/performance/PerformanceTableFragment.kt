@@ -21,7 +21,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentPerformanceTableBinding
-import com.tusur.teacherhelper.domain.model.Datetime
+import com.tusur.teacherhelper.domain.util.currentMinute
 import com.tusur.teacherhelper.domain.util.fromEpochMillis
 import com.tusur.teacherhelper.domain.util.map
 import com.tusur.teacherhelper.domain.util.toEpochMillis
@@ -35,6 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 
 
 @AndroidEntryPoint
@@ -127,7 +128,9 @@ class PerformanceTableFragment : Fragment() {
                             is PerformanceTableViewModel.OnetimeEvent.SetTopicPerformance -> {
                                 if (it.datetimeMs == null) {
                                     showDatePickerDialog(
-                                        datetimeMillis = Datetime.current().toMillis()
+                                        datetimeMillis = LocalDateTime
+                                            .currentMinute()
+                                            .toEpochMillis()
                                     ) { dateMillis ->
                                         showClassTimeDialog(
                                             topicId = it.topicId,

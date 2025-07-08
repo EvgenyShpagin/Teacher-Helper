@@ -2,7 +2,6 @@ package com.tusur.teacherhelper.presentation.topicperformance
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.usecase.DeletePerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSharedClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.util.toEpochMillis
@@ -19,6 +18,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 
 @HiltViewModel(assistedFactory = SharedClassDatesViewModel.Factory::class)
@@ -42,8 +42,8 @@ class SharedClassDatesViewModel @AssistedInject constructor(
             val classDateTimeOfEach = mutableMapOf<DateItemUiState, List<TimeItemUiState>>()
 
             sharedClassDates.forEach { datetime ->
-                val date = datetime.getDate().toUiItem()
-                val time = datetime.getTime().toUiItem(datetime)
+                val date = datetime.date.toUiItem()
+                val time = datetime.time.toUiItem(datetime)
                 if (date in classDateTimeOfEach) {
                     classDateTimeOfEach[date] = classDateTimeOfEach[date]!! + time
                 } else {
@@ -53,7 +53,7 @@ class SharedClassDatesViewModel @AssistedInject constructor(
 
             _uiState.update { state ->
                 state.copy(
-                    sharedClassDates = sharedClassDates.map { it.getDate().toUiItem() }.distinct(),
+                    sharedClassDates = sharedClassDates.map { it.date.toUiItem() }.distinct(),
                     classDateTimeOfEach = classDateTimeOfEach,
                     isFetched = true
                 )
@@ -61,7 +61,7 @@ class SharedClassDatesViewModel @AssistedInject constructor(
         }
     }
 
-    private suspend fun deleteAttendance(datetime: Datetime) {
+    private suspend fun deleteAttendance(datetime: LocalDateTime) {
         deletePerformance(
             topicId = topicId,
             groupListIds = groupListIds,
@@ -88,7 +88,7 @@ class SharedClassDatesViewModel @AssistedInject constructor(
         )
     }
 
-    private fun LocalTime.toUiItem(datetime: Datetime): TimeItemUiState {
+    private fun LocalTime.toUiItem(datetime: LocalDateTime): TimeItemUiState {
         return TimeItemUiState(
             timeText = UiText.Dynamic(formatted()),
             onDelete = {

@@ -2,12 +2,12 @@ package com.tusur.teacherhelper.data.repository
 
 import com.tusur.teacherhelper.data.model.ClassDate
 import com.tusur.teacherhelper.data.room.dao.ClassDateDao
-import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.repository.ClassDateRepository
 import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.domain.util.toEpochMillis
 import com.tusur.teacherhelper.toDomain
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import javax.inject.Inject
 
 class ClassDateRepositoryImpl @Inject constructor(
@@ -20,11 +20,11 @@ class ClassDateRepositoryImpl @Inject constructor(
         classDataDao.update(updatedClassDate)
     }
 
-    override suspend fun getShared(topicId: Int, groupsIds: List<Int>): List<Datetime> {
+    override suspend fun getShared(topicId: Int, groupsIds: List<Int>): List<LocalDateTime> {
         return classDataDao.getShared(topicId, groupsIds).map { it.toDomain() }
     }
 
-    override suspend fun getOfTopic(topicId: Int): List<Datetime> {
+    override suspend fun getOfTopic(topicId: Int): List<LocalDateTime> {
         return classDataDao.getOfTopic(topicId).map { it.toDomain() }
     }
 

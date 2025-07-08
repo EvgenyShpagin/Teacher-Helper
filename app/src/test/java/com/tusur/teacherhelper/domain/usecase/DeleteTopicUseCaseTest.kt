@@ -1,9 +1,9 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.Group
 import com.tusur.teacherhelper.domain.model.error.DeadlineUpdateError
 import com.tusur.teacherhelper.domain.model.error.DeleteTopicError
+import com.tusur.teacherhelper.domain.repository.ClassDateRepository
 import com.tusur.teacherhelper.domain.repository.SubjectGroupRepository
 import com.tusur.teacherhelper.domain.repository.TopicRepository
 import com.tusur.teacherhelper.domain.util.Result
@@ -15,6 +15,7 @@ import io.mockk.mockk
 import io.mockk.runs
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDateTime
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -47,8 +48,8 @@ class DeleteTopicUseCaseTest {
     fun shouldReturnSuccess_whenTopicIsDeleted() = runTest {
         val groups = listOf(Group(1, "430-3"), Group(2, "430-4"))
         val classDays = listOf(
-            Datetime(2024, 10, 15, 8, 50),
-            Datetime(2024, 10, 15, 10, 40)
+            LocalDateTime(2024, 10, 15, 8, 50),
+            LocalDateTime(2024, 10, 15, 10, 40)
         )
 
         coEvery { setTopicDeadline(topicId, null) } returns Result.Success()
@@ -78,7 +79,7 @@ class DeleteTopicUseCaseTest {
         coVerify(exactly = 1) { setTopicDeadline(topicId, null) }
         coVerify(exactly = 0) { getClassDatetime(any()) }
         coVerify(exactly = 0) { subjectGroupRepository.getBySubject(any()) }
-        coVerify(exactly = 0) { deletePerformance(topicId, any(), any<List<Datetime>>()) }
+        coVerify(exactly = 0) { deletePerformance(topicId, any(), any<List<LocalDateTime>>()) }
         coVerify(exactly = 0) { topicRepository.delete(any()) }
 
         assertEquals(
@@ -91,8 +92,8 @@ class DeleteTopicUseCaseTest {
     fun shouldCallDeletePerformanceWithCorrectParameters_whenDeleteIsPossible() = runTest {
         val groups = listOf(Group(1, "430-3"), Group(2, "430-4"))
         val classDays = listOf(
-            Datetime(2024, 10, 15, 8, 50),
-            Datetime(2024, 10, 15, 10, 40)
+            LocalDateTime(2024, 10, 15, 8, 50),
+            LocalDateTime(2024, 10, 15, 10, 40)
         )
 
         coEvery { setTopicDeadline(topicId, null) } returns Result.Success()

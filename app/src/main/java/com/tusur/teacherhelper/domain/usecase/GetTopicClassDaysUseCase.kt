@@ -1,13 +1,13 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.repository.ClassDateRepository
+import kotlinx.datetime.LocalDateTime
 import javax.inject.Inject
 
 class GetTopicClassDaysUseCase @Inject constructor(
     private val classDateRepository: ClassDateRepository
 ) {
-    suspend operator fun invoke(topicId: Int): List<Datetime> {
+    suspend operator fun invoke(topicId: Int): List<LocalDateTime> {
         return classDateRepository.getOfTopic(topicId)
     }
 }

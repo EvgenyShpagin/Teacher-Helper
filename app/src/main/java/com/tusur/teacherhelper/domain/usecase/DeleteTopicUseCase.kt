@@ -7,6 +7,7 @@ import com.tusur.teacherhelper.domain.repository.SubjectGroupRepository
 import com.tusur.teacherhelper.domain.repository.TopicRepository
 import com.tusur.teacherhelper.domain.util.Result
 import com.tusur.teacherhelper.domain.util.Success
+import com.tusur.teacherhelper.domain.util.toEpochMillis
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
@@ -29,7 +30,7 @@ class DeleteTopicUseCase @Inject constructor(
         deletePerformance(topicId, groups.map { it.id }, classDays)
         topicRepository.delete(topicId)
         classDays.forEach { datetime ->
-            classDateRepository.delete(datetime.toMillis())
+            classDateRepository.delete(datetime.toEpochMillis())
         }
         return Result.Success()
     }

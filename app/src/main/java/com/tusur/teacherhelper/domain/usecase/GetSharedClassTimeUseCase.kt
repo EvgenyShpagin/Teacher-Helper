@@ -14,8 +14,8 @@ class GetSharedClassTimeUseCase @Inject constructor(
         classDate: LocalDate
     ): List<ClassTime> {
         val initTimeList = getSharedClassDatetime(topicId, groupsIds)
-            .filter { it.getDate() == classDate }
-            .map { it.getTime() }
+            .filter { it.date == classDate }
+            .map { it.time }
         val allClassTime = getAllClassTimeUseCase()
         val classTimeList = ArrayList<ClassTime>(groupsIds.count())
         initTimeList.forEach { time ->
