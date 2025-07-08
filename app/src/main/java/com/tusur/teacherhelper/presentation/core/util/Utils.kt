@@ -1,6 +1,5 @@
 package com.tusur.teacherhelper.presentation.core.util
 
-import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
@@ -25,7 +24,6 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.SumProgress
 import com.tusur.teacherhelper.domain.util.formatted
@@ -34,6 +32,7 @@ import com.tusur.teacherhelper.presentation.core.view.ListItemView
 import com.tusur.teacherhelper.presentation.core.view.ListLayout
 import com.tusur.teacherhelper.presentation.core.view.recycler.checkNestedScrollState
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
+import kotlinx.datetime.LocalDate
 import java.util.Locale
 
 
@@ -93,7 +92,12 @@ fun View.hideKeyboard() {
     findFragment<Fragment>().hideKeyboard()
 }
 
-fun Date.formatted(context: Context) = formatted(context.resources.primaryLocale)
+fun LocalDate.formatted(
+    withYear: Boolean = true
+): String {
+    val formatted = LocalDate.Formats.ISO.format(this)
+    return if (withYear) formatted else formatted.substringAfter('-')
+}
 
 fun List<Int>.toNativeArray(): IntArray {
     return IntArray(count()) { index -> get(index) }

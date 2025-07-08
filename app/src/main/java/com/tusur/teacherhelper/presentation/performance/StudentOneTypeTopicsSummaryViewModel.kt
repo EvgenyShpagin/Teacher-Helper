@@ -20,12 +20,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 
 @HiltViewModel(assistedFactory = StudentOneTypeTopicsResultsViewModel.Factory::class)
 class StudentOneTypeTopicsResultsViewModel @AssistedInject constructor(
-    @Assisted private val locale: Locale,
     @Assisted private val performanceType: PerformanceType,
     @Assisted("subjectId") private val subjectId: Int,
     @Assisted("studentId") private val studentId: Int,
@@ -61,7 +59,7 @@ class StudentOneTypeTopicsResultsViewModel @AssistedInject constructor(
         val (topic, performance) = this
         return TopicResultUiItem(
             topicId = topic.id,
-            topicName = UiText.Dynamic(topic.name.formatted(locale)),
+            topicName = UiText.Dynamic(topic.name.formatted()),
             results = if (performanceType == PerformanceType.OTHER_PERFORMANCE) {
                 performance.grade?.toUiText()
                     ?: performance.progress?.toUiText()
@@ -80,7 +78,6 @@ class StudentOneTypeTopicsResultsViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
         fun create(
-            locale: Locale,
             performanceType: PerformanceType,
             @Assisted("subjectId") subjectId: Int,
             @Assisted("studentId") studentId: Int,

@@ -14,7 +14,8 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetGlobalTopicsBinding
-import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.domain.util.toEpochMillis
+import com.tusur.teacherhelper.domain.util.today
 import com.tusur.teacherhelper.presentation.core.base.TopLevelListViewModel.Event
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.primaryLocale
@@ -26,6 +27,7 @@ import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 
 @AndroidEntryPoint // TODO: was not tested
 class GlobalTopicsToFinalGradeBottomSheet : BottomSheetDialogFragment() {
@@ -91,7 +93,7 @@ class GlobalTopicsToFinalGradeBottomSheet : BottomSheetDialogFragment() {
         val action = GlobalTopicsToFinalGradeBottomSheetDirections.actionToFinalGradeBottomSheet(
             topicId = topicId,
             studentId = args.studentId,
-            datetimeMillis = Date.current().toMillis()
+            datetimeMillis = LocalDate.today().toEpochMillis()
         )
         findNavController().navigate(action)
     }

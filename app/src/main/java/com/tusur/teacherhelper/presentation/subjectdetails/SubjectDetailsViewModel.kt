@@ -3,7 +3,6 @@ package com.tusur.teacherhelper.presentation.subjectdetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Group
 import com.tusur.teacherhelper.domain.model.Subject
 import com.tusur.teacherhelper.domain.model.Topic
@@ -29,13 +28,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Locale
+import kotlinx.datetime.LocalDate
 
 
 @HiltViewModel(assistedFactory = SubjectDetailsViewModel.Factory::class)
 class SubjectDetailsViewModel @AssistedInject constructor(
     @Assisted val subjectId: Int,
-    @Assisted private val primaryLocale: Locale,
     private val getSubjectGroups: GetSubjectGroupsUseCase,
     private val getSubjectTopics: GetSubjectTopicsUseCase,
     private val getGlobalTopics: GetGlobalTopicsUseCase,
@@ -141,10 +139,10 @@ class SubjectDetailsViewModel @AssistedInject constructor(
         subjectTopics: List<Topic>,
         globalTopics: List<Topic>
     ): List<TopicItemUiState> {
-        val uiSubjectTopics = subjectTopics.map { it.toItemUiState(primaryLocale) }
+        val uiSubjectTopics = subjectTopics.map { it.toItemUiState() }
         val uiGlobalTopicsLabel =
             TopicItemUiState.Label(UiText.Resource(R.string.global_topics_label))
-        val uiGlobalTopics = globalTopics.map { it.toItemUiState(primaryLocale) }
+        val uiGlobalTopics = globalTopics.map { it.toItemUiState() }
         return if (uiGlobalTopics.isEmpty()) {
             uiSubjectTopics
         } else {
@@ -165,7 +163,7 @@ class SubjectDetailsViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(subjectId: Int, locale: Locale): SubjectDetailsViewModel
+        fun create(subjectId: Int): SubjectDetailsViewModel
     }
 
     companion object {
@@ -174,10 +172,10 @@ class SubjectDetailsViewModel @AssistedInject constructor(
         const val TOPICS_FRAGMENT_POSITION = 1
     }
 
-    private suspend fun Topic.toItemUiState(locale: Locale): TopicItemUiState =
+    private suspend fun Topic.toItemUiState(): TopicItemUiState =
         TopicItemUiState.Topic(
             id = id,
-            name = name.formatted(locale),
+            name = name.formatted(),
             lastClassDate = getLastClassDatetime(id)?.getDate(),
             isCancelled = isCancelled,
             isFinished = type.isAttendanceAcceptable
@@ -190,7 +188,7 @@ sealed class TopicItemUiState(val itemId: Int) {
     data class Topic(
         val id: Int,
         val name: String,
-        val lastClassDate: Date?,
+        val lastClassDate: LocalDate?,
         val isFinished: Boolean,
         val isCancelled: Boolean
     ) : TopicItemUiState(id)

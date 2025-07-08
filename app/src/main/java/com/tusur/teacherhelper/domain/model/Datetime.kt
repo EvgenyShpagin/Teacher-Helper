@@ -3,7 +3,10 @@ package com.tusur.teacherhelper.domain.model
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import androidx.annotation.IntRange
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
+import kotlinx.datetime.Month
+import kotlinx.datetime.number
 
 data class Datetime(
     @IntRange(from = 2024)
@@ -18,27 +21,27 @@ data class Datetime(
     val minute: Int
 ) {
 
-    constructor(date: Date) : this(
+    constructor(date: LocalDate) : this(
         year = date.year,
-        month = date.month,
-        dayOfMonth = date.dayOfMonth,
+        month = date.month.number - 1,
+        dayOfMonth = date.day,
         hour = 0,
         minute = 0
     )
 
-    constructor(date: Date, time: LocalTime) : this(
+    constructor(date: LocalDate, time: LocalTime) : this(
         year = date.year,
-        month = date.month,
-        dayOfMonth = date.dayOfMonth,
+        month = date.month.number - 1,
+        dayOfMonth = date.day,
         hour = time.hour,
         minute = time.minute
     )
 
-    fun getDate(): Date {
-        return Date(
+    fun getDate(): LocalDate {
+        return LocalDate(
             year = year,
-            month = month,
-            dayOfMonth = dayOfMonth
+            month = Month.entries[month],
+            day = dayOfMonth
         )
     }
 

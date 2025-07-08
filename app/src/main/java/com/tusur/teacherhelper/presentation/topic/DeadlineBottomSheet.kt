@@ -15,7 +15,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetDeadlineBinding
-import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.domain.util.fromEpochMillis
 import com.tusur.teacherhelper.presentation.core.dialog.TopicDeleteErrorDialog
 import com.tusur.teacherhelper.presentation.core.util.SingleChoiceAlertAdapter
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
@@ -25,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 
 
 @AndroidEntryPoint
@@ -122,13 +123,13 @@ class DeadlineBottomSheet : BottomSheetDialogFragment() {
             .show()
     }
 
-    private fun showNewDateDialog(onConfirm: (date: Date) -> Unit) {
+    private fun showNewDateDialog(onConfirm: (date: LocalDate) -> Unit) {
         MaterialDatePicker.Builder.datePicker()
             .setTitleText(R.string.dialog_new_deadline_title)
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build().also { picker ->
                 picker.addOnPositiveButtonClickListener { dateMillis ->
-                    onConfirm(Date.fromMillis(dateMillis, "UTC"))
+                    onConfirm(LocalDate.fromEpochMillis(dateMillis))
                 }
             }.show(childFragmentManager, null)
     }

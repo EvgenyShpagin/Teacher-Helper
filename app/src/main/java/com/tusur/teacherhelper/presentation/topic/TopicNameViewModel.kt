@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.TopicType
 import com.tusur.teacherhelper.domain.model.error.TopicNameError
@@ -19,8 +18,10 @@ import com.tusur.teacherhelper.domain.usecase.UpdateSubjectTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.ValidateTopicNameUseCase
 import com.tusur.teacherhelper.domain.util.NO_ID
 import com.tusur.teacherhelper.domain.util.Result
-import com.tusur.teacherhelper.domain.util.formatted
+import com.tusur.teacherhelper.domain.util.fromEpochMillis
+import com.tusur.teacherhelper.domain.util.toEpochMillis
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.formatted
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -31,13 +32,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Locale
+import kotlinx.datetime.LocalDate
 
 
 @HiltViewModel(assistedFactory = TopicNameViewModel.Factory::class)
 class TopicNameViewModel @AssistedInject constructor(
     private val savedStateHandle: SavedStateHandle,
-    @Assisted private val locale: Locale,
     @Assisted("topicId") private val topicId: Int,
     @Assisted("subjectId") private val subjectId: Int,
     private val createSubjectTopic: CreateSubjectTopicUseCase,
@@ -102,10 +102,10 @@ class TopicNameViewModel @AssistedInject constructor(
         _uiState.update { it.copy(ordinal = null) }
     }
 
-    private fun setDate(date: Date?) {
-        savedStateHandle[KEY_DATE_MS] = date?.toMillis()
+    private fun setDate(date: LocalDate?) {
+        savedStateHandle[KEY_DATE_MS] = date?.toEpochMillis()
         _uiState.update { uiState ->
-            uiState.copy(date = date?.formatted(locale)?.let { UiText.Dynamic(it) })
+            uiState.copy(date = date?.formatted()?.let { UiText.Dynamic(it) })
         }
     }
 
@@ -116,7 +116,7 @@ class TopicNameViewModel @AssistedInject constructor(
             shortTypeName = topicType.shortName,
             addText = savedStateHandle[KEY_ADD_TEXT],
             ordinal = savedStateHandle[KEY_ORDINAL],
-            date = savedStateHandle.get<Long>(KEY_DATE_MS)?.let { Date.fromMillis(it) }
+            date = savedStateHandle.get<Long>(KEY_DATE_MS)?.let { LocalDate.fromEpochMillis(it) }
         )
         _onetimeEvents.send(
             when (val result = validateTopicName(
@@ -187,7 +187,7 @@ class TopicNameViewModel @AssistedInject constructor(
                 addText = savedStateHandle.get<String>(KEY_ADD_TEXT)?.let { UiText.Dynamic(it) },
                 ordinal = savedStateHandle[KEY_ORDINAL],
                 date = savedStateHandle.get<Long>(KEY_DATE_MS)
-                    ?.let { UiText.Dynamic(Date.fromMillis(it).formatted(locale)) }
+                    ?.let { UiText.Dynamic(LocalDate.fromEpochMillis(it).formatted()) }
             )
         }
     }
@@ -228,8 +228,9 @@ class TopicNameViewModel @AssistedInject constructor(
                         ?.let { UiText.Dynamic(it) },
                     ordinal = topic.name.ordinal?.also { savedStateHandle[KEY_ORDINAL] = it }
                         ?.let { UiText.Dynamic(it.toString()) },
-                    date = topic.name.date?.also { savedStateHandle[KEY_DATE_MS] = it.toMillis() }
-                        ?.let { UiText.Dynamic(it.formatted(locale)) }
+                    date = topic.name.date?.also {
+                        savedStateHandle[KEY_DATE_MS] = it.toEpochMillis()
+                    }?.let { UiText.Dynamic(it.formatted()) }
                 )
             }
         }
@@ -370,7 +371,7 @@ class TopicNameViewModel @AssistedInject constructor(
         data object Save : Event
         data class SetAddText(val text: String?) : Event
         data object AddOrRemoveOrdinal : Event
-        data class SetDate(val date: Date?) : Event
+        data class SetDate(val date: LocalDate?) : Event
     }
 
     // To user
@@ -387,7 +388,6 @@ class TopicNameViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
         fun create(
-            locale: Locale,
             @Assisted("subjectId") subjectId: Int,
             @Assisted("topicId") topicId: Int
         ): TopicNameViewModel

@@ -1,5 +1,7 @@
 package com.tusur.teacherhelper.domain.model
 
+import kotlinx.datetime.LocalDate
+
 data class Topic(
     val id: Int,
     val type: TopicType,
@@ -16,7 +18,7 @@ data class Topic(
         val shortTypeName: String,
         val addText: String?,
         val ordinal: Int?,
-        val date: Date?
+        val date: LocalDate?
     )
 }
 

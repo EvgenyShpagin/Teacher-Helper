@@ -30,14 +30,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.OutputStream
-import java.util.Locale
 
 
 @HiltViewModel(assistedFactory = PerformanceTableViewModel.Factory::class)
 class PerformanceTableViewModel @AssistedInject constructor(
     @Assisted("subjectId") private val subjectId: Int,
     @Assisted("groupId") private val groupId: Int,
-    @Assisted private val locale: Locale,
     private val getGroup: GetGroupByIdUseCase,
     private val getSubjectTopics: GetSubjectTopicsUseCase,
     private val getGroupSubjectPerformance: GetGroupSubjectPerformanceUseCase,
@@ -65,7 +63,7 @@ class PerformanceTableViewModel @AssistedInject constructor(
                     subjectId = subjectId,
                     withCancelled = false
                 ).first()
-                val topicsText = topics.map { UiText.Dynamic(it.name.formattedShort(locale)) }
+                val topicsText = topics.map { UiText.Dynamic(it.name.formattedShort()) }
                 topicsIds = topics.map { it.id }
                 val labels =
                     listOf(UiText.Resource(R.string.student_name_abbreviation_label)) + topicsText
@@ -195,8 +193,7 @@ class PerformanceTableViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             @Assisted("subjectId") subjectId: Int,
-            @Assisted("groupId") groupId: Int,
-            locale: Locale
+            @Assisted("groupId") groupId: Int
         ): PerformanceTableViewModel
     }
 }

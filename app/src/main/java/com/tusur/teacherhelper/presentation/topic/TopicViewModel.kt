@@ -14,6 +14,7 @@ import com.tusur.teacherhelper.domain.usecase.GetTopicNameByIdUseCase
 import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.domain.util.formattedShort
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.formatted
 import com.tusur.teacherhelper.presentation.topic.TopicViewModel.OnetimeEvent.FailedToDeleteDeadline
 import com.tusur.teacherhelper.presentation.topic.TopicViewModel.OnetimeEvent.NavigateBack
 import dagger.assisted.Assisted
@@ -26,7 +27,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 
 @HiltViewModel(assistedFactory = TopicViewModel.Factory::class)
@@ -34,7 +34,6 @@ class TopicViewModel @AssistedInject constructor(
     @Assisted("subjectId") private val subjectId: Int,
     @Assisted("topicId") private val topicId: Int,
     @Assisted private val isJustCreated: Boolean,
-    @Assisted private val locale: Locale,
     private val getTopicAsFlow: GetTopicAsFlowUseCase,
     private val getTopicName: GetTopicNameByIdUseCase,
     private val cancelTopic: CancelTopicUseCase,
@@ -58,11 +57,11 @@ class TopicViewModel @AssistedInject constructor(
                 this@TopicViewModel.topic = topic
                 val deadlineText = if (topic.deadline?.owningTopicId != null) {
                     if (topic.deadline.owningTopicId == topicId) {
-                        UiText.Dynamic(getDeadline(topicId)!!.date.formatted(locale))
+                        UiText.Dynamic(getDeadline(topicId)!!.date.formatted())
                     } else {
                         UiText.Resource(
                             R.string.topic_associated_deadline_label,
-                            getTopicName(topic.deadline.owningTopicId).formattedShort(locale)
+                            getTopicName(topic.deadline.owningTopicId).formattedShort()
                         )
                     }
                 } else {
@@ -78,7 +77,7 @@ class TopicViewModel @AssistedInject constructor(
                         supportsProgress = topic.type.isProgressAcceptable,
                         supportsAttendance = topic.type.isAttendanceAcceptable,
                         hasClassDays = doesTopicHaveClassDatetime(topicId),
-                        topicName = topic.name.formatted(locale),
+                        topicName = topic.name.formatted(),
                         deadlineText = deadlineText
                     )
                 }
@@ -130,7 +129,6 @@ class TopicViewModel @AssistedInject constructor(
             @Assisted("subjectId") subjectId: Int,
             @Assisted("topicId") topicId: Int,
             isJustCreated: Boolean,
-            locale: Locale
         ): TopicViewModel
     }
 }

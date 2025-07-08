@@ -15,16 +15,16 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetSubjectClassDatesBinding
-import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.domain.util.fromEpochMillis
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
-import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 
 
 @AndroidEntryPoint
@@ -37,10 +37,7 @@ class TopicClassDatesBottomSheet : BottomSheetDialogFragment() {
 
     private val viewModel: TopicClassDatesViewModel by viewModels(extrasProducer = {
         creationCallback<TopicClassDatesViewModel.Factory> { factory ->
-            factory.create(
-                locale = resources.primaryLocale,
-                topicId = args.topicId
-            )
+            factory.create(topicId = args.topicId)
         }
     })
 
@@ -55,7 +52,7 @@ class TopicClassDatesBottomSheet : BottomSheetDialogFragment() {
         adapter = EditableDateAdapter { datetimeUiState ->
             showDatePickerDialog(datetimeUiState.datetimeMillis) { newDateMillis ->
                 showClassTimeSelectDialog(
-                    newClassDate = Date.fromMillis(newDateMillis)
+                    newClassDate = LocalDate.fromEpochMillis(newDateMillis)
                 ) { newTimeMillis ->
                     viewModel.editClassDay(
                         oldDatetimeMs = datetimeUiState.datetimeMillis,
@@ -121,7 +118,7 @@ class TopicClassDatesBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun showClassTimeSelectDialog(
-        newClassDate: Date,
+        newClassDate: LocalDate,
         onConfirm: (timeMillis: Long) -> Unit
     ) {
         ClassTimeBottomSheet(

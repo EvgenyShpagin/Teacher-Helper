@@ -21,19 +21,20 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentPerformanceTableBinding
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Datetime
+import com.tusur.teacherhelper.domain.util.fromEpochMillis
 import com.tusur.teacherhelper.domain.util.map
+import com.tusur.teacherhelper.domain.util.toEpochMillis
 import com.tusur.teacherhelper.presentation.core.dialog.EmptyGroupDialog
 import com.tusur.teacherhelper.presentation.core.util.EXCEL_FILE_NEW_MIME_TYPE
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
-import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.topic.ClassTimeBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 
 
 @AndroidEntryPoint
@@ -47,8 +48,7 @@ class PerformanceTableFragment : Fragment() {
             creationCallback<PerformanceTableViewModel.Factory> { factory ->
                 factory.create(
                     subjectId = args.subjectId,
-                    groupId = args.groupId,
-                    locale = resources.primaryLocale
+                    groupId = args.groupId
                 )
             }
         })
@@ -132,7 +132,7 @@ class PerformanceTableFragment : Fragment() {
                                         showClassTimeDialog(
                                             topicId = it.topicId,
                                             groupId = it.groupId,
-                                            classDate = Date.fromMillis(dateMillis)
+                                            classDate = LocalDate.fromEpochMillis(dateMillis)
                                         ) { datetimeMillis ->
                                             navigateToStudentTopicPerformance(
                                                 studentId = it.studentId,
@@ -266,7 +266,7 @@ class PerformanceTableFragment : Fragment() {
     private fun showClassTimeDialog(
         topicId: Int,
         groupId: Int,
-        classDate: Date,
+        classDate: LocalDate,
         onSelect: (datetimeMillis: Long) -> Unit
     ) {
         ClassTimeBottomSheet(
@@ -274,7 +274,7 @@ class PerformanceTableFragment : Fragment() {
             groupListIds = listOf(groupId),
             classDate = classDate
         ) { initTimeMs ->
-            onSelect.invoke(classDate.toMillis() + initTimeMs)
+            onSelect.invoke(classDate.toEpochMillis() + initTimeMs)
         }.show(childFragmentManager, null)
     }
 }

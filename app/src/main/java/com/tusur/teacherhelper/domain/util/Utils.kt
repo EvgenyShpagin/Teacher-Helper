@@ -1,30 +1,33 @@
 package com.tusur.teacherhelper.domain.util
 
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.PerformanceItem
 import com.tusur.teacherhelper.domain.model.Student
 import com.tusur.teacherhelper.domain.model.SumProgress
 import com.tusur.teacherhelper.domain.model.TableContent
 import com.tusur.teacherhelper.domain.model.Topic
+import com.tusur.teacherhelper.presentation.core.util.formatted
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
-import java.text.DateFormat
+import kotlinx.datetime.toLocalDateTime
 import java.text.DecimalFormat
-import java.util.Calendar
-import java.util.Locale
-import java.util.TimeZone
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 
-fun Topic.Name.formattedShort(locale: Locale): String {
+fun Topic.Name.formattedShort(): String {
     val stringBuilder = StringBuilder(24)
     stringBuilder.append(shortTypeName)
     stringBuilder.append(' ')
     if (ordinal != null) {
         stringBuilder.append(ordinal)
     } else if (date != null) {
-        stringBuilder.append(date.formatted(locale, withYear = false))
+        stringBuilder.append(date.formatted(withYear = false))
     } else if (addText != null) {
         if (addText.length > 7) {
             stringBuilder.append(addText.substring(0, 5)).append("..")
@@ -35,22 +38,18 @@ fun Topic.Name.formattedShort(locale: Locale): String {
     return stringBuilder.toString()
 }
 
-fun Topic.Name.formatted(locale: Locale): String {
+fun Topic.Name.formatted(): String {
     val stringBuilder = StringBuilder(40)
     stringBuilder.append(typeName)
 
     ordinal?.let { stringBuilder.append(' ').append(it) }
     addText?.let { stringBuilder.append(' ').append(it) }
-    date?.let { stringBuilder.append(' ').append(it.formatted(locale)) }
+    date?.let { stringBuilder.append(' ').append(it.formatted()) }
     return stringBuilder.toString()
 }
 
-fun Datetime.formatted(
-    locale: Locale,
-    withYear: Boolean = true,
-    timezoneId: String = "UTC"
-): String {
-    return "${getDate().formatted(locale, withYear, timezoneId)} ${getTime().formatted()}"
+fun Datetime.formatted(withYear: Boolean = true): String {
+    return "${getDate().formatted(withYear)} ${getTime().formatted()}"
 }
 
 fun LocalTime.formatted(): String {
@@ -61,38 +60,6 @@ fun LocalTime.formatted(): String {
             minute()
         }
     )
-}
-
-fun Date.formatted(locale: Locale, withYear: Boolean = true, timezoneId: String = "UTC"): String {
-    val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, locale)
-
-    val calendar = Calendar.getInstance()
-
-    calendar.set(Calendar.YEAR, year)
-    calendar.set(Calendar.MONTH, month)
-    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-    dateFormat.timeZone = TimeZone.getTimeZone(timezoneId)
-
-    val formattedDate = dateFormat.format(calendar.time)
-
-    if (withYear) {
-        return formattedDate
-    }
-    val yearAsString = year.toString()
-    val yearIsFull = formattedDate.contains(yearAsString)
-    val yearLength = if (yearIsFull) {
-        4
-    } else {
-        2
-    }
-    val yearFromLeft =
-        formattedDate.substring(0, yearLength) == yearAsString.substring(0, yearLength)
-    return if (yearFromLeft) {
-        formattedDate.drop(yearLength + 1)
-    } else {
-        formattedDate.dropLast(yearLength + 1)
-    }
 }
 
 val Student.shortName: String
@@ -160,3 +127,31 @@ fun <S, T> List<S>.applyOrderOf(
         orderedList[index] to pairedTargetOrderList[index]
     }
 }
+
+@OptIn(ExperimentalTime::class)
+fun LocalDate.Companion.fromEpochMillis(
+    epochMillis: Long,
+    zone: TimeZone = TimeZone.currentSystemDefault()
+): LocalDate {
+    val instant = Instant.fromEpochMilliseconds(epochMillis)
+    return instant.toLocalDateTime(zone).date
+}
+
+@OptIn(ExperimentalTime::class)
+fun LocalDate.toEpochMillis(
+    zone: TimeZone = TimeZone.currentSystemDefault()
+): Long {
+    val instant = atStartOfDayIn(zone)
+    return instant.toEpochMilliseconds()
+}
+
+/**
+ * Возвращает «сегодняшнюю» дату без учёта часов, минут, секунд и миллисекунд.
+ *
+ * @param zone часовая зона, в которой следует определить текущую дату
+ * @return LocalDate, соответствующий началу (00:00) текущего дня в указанной зоне
+ */
+@OptIn(ExperimentalTime::class)
+fun LocalDate.Companion.today(
+    zone: TimeZone = TimeZone.currentSystemDefault()
+): LocalDate = Clock.System.now().toLocalDateTime(zone).date

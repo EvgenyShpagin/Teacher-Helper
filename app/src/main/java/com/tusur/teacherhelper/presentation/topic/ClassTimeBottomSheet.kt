@@ -11,12 +11,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetClassTimeBinding
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
 import com.tusur.teacherhelper.presentation.core.util.getGroupListItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 
 /**
  * Dialog with select of time range class.
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 class ClassTimeBottomSheet(
     private var topicId: Int,
     private var groupListIds: List<Int>? = null,
-    private val classDate: Date,
+    private val classDate: LocalDate,
     private val doOnTimeConfirm: (initTimeMs: Long) -> Unit
 ) : BottomSheetDialogFragment() {
 

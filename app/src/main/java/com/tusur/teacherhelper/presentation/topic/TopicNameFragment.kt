@@ -22,13 +22,12 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialSharedAxis
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentTopicNameBinding
-import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.domain.util.fromEpochMillis
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.SingleChoiceAlertAdapter
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
 import com.tusur.teacherhelper.presentation.core.util.getGroupListItemDecoration
-import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.util.setDisabledItems
 import com.tusur.teacherhelper.presentation.core.util.setSingleChoiceItems
 import com.tusur.teacherhelper.presentation.topic.TopicNameViewModel.Event
@@ -38,6 +37,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 
 
 @AndroidEntryPoint
@@ -49,7 +49,6 @@ class TopicNameFragment : Fragment() {
     private val viewModel: TopicNameViewModel by viewModels(extrasProducer = {
         creationCallback<TopicNameViewModel.Factory> { factory ->
             factory.create(
-                locale = resources.primaryLocale,
                 subjectId = args.subjectId,
                 topicId = args.topicId
             )
@@ -231,13 +230,13 @@ class TopicNameFragment : Fragment() {
         binding.editText.setText(uiState.addText?.toString(requireContext()))
     }
 
-    private fun showDateSelectDialog(onConfirm: (date: Date) -> Unit) {
+    private fun showDateSelectDialog(onConfirm: (date: LocalDate) -> Unit) {
         MaterialDatePicker.Builder.datePicker()
             .setTitleText(R.string.dialog_topic_date_title)
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build().also { picker ->
                 picker.addOnPositiveButtonClickListener { dateMillis ->
-                    onConfirm(Date.fromMillis(dateMillis))
+                    onConfirm(LocalDate.fromEpochMillis(dateMillis))
                 }
             }.show(childFragmentManager, null)
     }

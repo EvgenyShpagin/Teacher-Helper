@@ -23,7 +23,6 @@ import com.tusur.teacherhelper.databinding.FragmentStudentSummaryPerformanceBind
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
 import com.tusur.teacherhelper.presentation.core.util.getGroupListItemDecoration
-import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.performance.StudentPerformanceViewModel.Event
 import com.tusur.teacherhelper.presentation.topic.PerformanceType
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,7 +41,6 @@ class StudentSummaryPerformanceFragment : Fragment() {
     private val viewModel: StudentPerformanceViewModel by viewModels(extrasProducer = {
         creationCallback<StudentPerformanceViewModel.Factory> { factory ->
             factory.create(
-                locale = resources.primaryLocale,
                 subjectId = args.subjectId,
                 initStudentId = args.studentId,
                 groupId = args.groupId

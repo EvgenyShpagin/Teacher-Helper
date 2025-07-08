@@ -24,12 +24,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 
 @HiltViewModel(assistedFactory = StudentPerformanceViewModel.Factory::class)
 class StudentPerformanceViewModel @AssistedInject constructor(
-    @Assisted private val locale: Locale,
     @Assisted("subjectId") private val subjectId: Int,
     @Assisted("initStudentId") initStudentId: Int,
     @Assisted("groupId") private val groupId: Int,
@@ -86,7 +84,7 @@ class StudentPerformanceViewModel @AssistedInject constructor(
 
     private fun Topic.toUiItem() = TopicUiItem(
         id = id,
-        name = UiText.Dynamic(name.formattedShort(locale)),
+        name = UiText.Dynamic(name.formattedShort()),
         isTakenInAccount = true,
         onClick = {
             onTopicAccountingChange(this)
@@ -173,7 +171,6 @@ class StudentPerformanceViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
         fun create(
-            locale: Locale,
             @Assisted("subjectId") subjectId: Int,
             @Assisted("initStudentId") initStudentId: Int,
             @Assisted("groupId") groupId: Int

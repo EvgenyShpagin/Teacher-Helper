@@ -12,12 +12,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.domain.util.formatted
-import java.util.Locale
+import com.tusur.teacherhelper.presentation.core.util.formatted
 
 
 class TopicAdapter(
-    private val locale: Locale,
     private val onClickListener: OnClickListener,
 ) : ListAdapter<TopicItemUiState, ViewHolder>(itemCallback) {
 
@@ -103,7 +101,7 @@ class TopicAdapter(
             } else {
                 enable()
                 supportTextView.text = itemView.context.getString(
-                    R.string.class_date_label, topic.lastClassDate!!.formatted(locale)
+                    R.string.class_date_label, topic.lastClassDate!!.formatted()
                 )
             }
         }

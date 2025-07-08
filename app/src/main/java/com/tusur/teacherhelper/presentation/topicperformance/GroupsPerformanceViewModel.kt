@@ -23,12 +23,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 
 @HiltViewModel(assistedFactory = GroupsPerformanceViewModel.Factory::class)
 class GroupsPerformanceViewModel @AssistedInject constructor(
-    @Assisted private val locale: Locale,
     @Assisted private val topicId: Int,
     @Assisted private val performanceType: PerformanceType,
     @Assisted private val groupIdList: List<Int>,
@@ -48,7 +46,7 @@ class GroupsPerformanceViewModel @AssistedInject constructor(
     fun fetch() {
         viewModelScope.launch {
             _uiState.update {
-                it.copy(topicName = getTopicName(topicId).formatted(locale))
+                it.copy(topicName = getTopicName(topicId).formatted())
             }
             getGroupsPerformance(
                 topicId = topicId,
@@ -169,7 +167,6 @@ class GroupsPerformanceViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
         fun create(
-            locale: Locale,
             topicId: Int,
             performanceType: PerformanceType,
             groupIdList: List<Int>,

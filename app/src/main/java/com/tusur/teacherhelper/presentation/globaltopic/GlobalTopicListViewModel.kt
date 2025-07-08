@@ -76,7 +76,7 @@ class GlobalTopicListViewModel @AssistedInject constructor(
 
     private fun Topic.toUiItem() = GlobalTopicUiState(
         topicId = id,
-        name = UiText.Dynamic(name.formatted(locale))
+        name = UiText.Dynamic(name.formatted())
     )
 
 

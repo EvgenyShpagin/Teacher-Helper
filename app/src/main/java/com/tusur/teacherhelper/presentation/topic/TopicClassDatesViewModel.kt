@@ -18,12 +18,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 
 @HiltViewModel(assistedFactory = TopicClassDatesViewModel.Factory::class)
 class TopicClassDatesViewModel @AssistedInject constructor(
-    @Assisted private val locale: Locale,
     @Assisted private val topicId: Int,
     private val getTopicClassDays: GetTopicClassDaysUseCase,
     private val editTopicClassDay: EditTopicClassDayUseCase
@@ -58,7 +56,7 @@ class TopicClassDatesViewModel @AssistedInject constructor(
 
     private fun Datetime.toUiItem() = DatetimeItemUiState(
         toMillis(),
-        UiText.Dynamic(formatted(locale))
+        UiText.Dynamic(formatted())
     )
 
     data class UiState(val classDays: List<DatetimeItemUiState> = emptyList())
@@ -70,7 +68,7 @@ class TopicClassDatesViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(locale: Locale, topicId: Int): TopicClassDatesViewModel
+        fun create(topicId: Int): TopicClassDatesViewModel
     }
 }
 

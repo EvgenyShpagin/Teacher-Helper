@@ -2,9 +2,12 @@ package com.tusur.teacherhelper
 
 import com.tusur.teacherhelper.data.model.ClassDate
 import com.tusur.teacherhelper.data.model.StudentTopicPerformance
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.model.Performance
+import com.tusur.teacherhelper.domain.util.fromEpochMillis
+import com.tusur.teacherhelper.domain.util.toEpochMillis
+import kotlinx.datetime.LocalDate
+import kotlin.time.ExperimentalTime
 import com.tusur.teacherhelper.data.model.Deadline as DataDeadline
 import com.tusur.teacherhelper.data.model.Group as DataGroup
 import com.tusur.teacherhelper.data.model.Student as DataStudent
@@ -22,12 +25,14 @@ fun ClassDate.toDomain(): Datetime {
     return Datetime.fromMillis(datetimeMillis)
 }
 
+@OptIn(ExperimentalTime::class)
 fun DataDeadline.toDomain(): DomainDeadline {
-    return DomainDeadline(id, Date.fromMillis(dateMillis), creatorTopicId)
+    return DomainDeadline(id, LocalDate.fromEpochMillis(dateMillis), creatorTopicId)
 }
 
+@OptIn(ExperimentalTime::class)
 fun DomainDeadline.toData(): DataDeadline {
-    return DataDeadline(id, date.toMillis(), owningTopicId)
+    return DataDeadline(id, date.toEpochMillis(), owningTopicId)
 }
 
 

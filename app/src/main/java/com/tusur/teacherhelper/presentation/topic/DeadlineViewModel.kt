@@ -3,7 +3,6 @@ package com.tusur.teacherhelper.presentation.topic
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Deadline
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.error.DeadlineUpdateError
@@ -23,6 +22,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 import java.util.Locale
 
 
@@ -60,7 +60,7 @@ class DeadlineViewModel @AssistedInject constructor(
         setDeadline(null)
     }
 
-    fun setDeadline(date: Date) {
+    fun setDeadline(date: LocalDate) {
         setDeadline(Deadline(NO_ID, date, topicId))
     }
 
@@ -90,7 +90,7 @@ class DeadlineViewModel @AssistedInject constructor(
         )
         return listOf(noDeadlineItem) + mapIndexed { index, (topic, deadline) ->
             DeadlineUiItem(
-                text = UiText.Dynamic(topic.name.formatted(locale)),
+                text = UiText.Dynamic(topic.name.formatted()),
                 isSelected = selectedIndex == index,
                 select = { setDeadline(deadline) }
             )

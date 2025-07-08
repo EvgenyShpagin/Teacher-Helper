@@ -12,7 +12,6 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tusur.teacherhelper.databinding.BottomSheetStudentOneTypeTopicsSummaryBinding
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
-import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -28,7 +27,6 @@ class StudentOneTypeTopicsSummaryBottomSheet : BottomSheetDialogFragment() {
         extrasProducer = {
             creationCallback<StudentOneTypeTopicsResultsViewModel.Factory> { factory ->
                 factory.create(
-                    locale = resources.primaryLocale,
                     performanceType = args.performanceType,
                     subjectId = args.subjectId,
                     studentId = args.studentId,

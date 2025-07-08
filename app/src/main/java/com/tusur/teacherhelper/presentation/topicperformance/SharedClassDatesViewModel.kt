@@ -2,12 +2,13 @@ package com.tusur.teacherhelper.presentation.topicperformance
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Datetime
 import com.tusur.teacherhelper.domain.usecase.DeletePerformanceUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSharedClassDatetimeUseCase
 import com.tusur.teacherhelper.domain.util.formatted
+import com.tusur.teacherhelper.domain.util.toEpochMillis
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.formatted
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -18,13 +19,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
-import java.util.Locale
 
 @HiltViewModel(assistedFactory = SharedClassDatesViewModel.Factory::class)
 class SharedClassDatesViewModel @AssistedInject constructor(
     @Assisted private val topicId: Int,
-    @Assisted private val locale: Locale,
     @Assisted private val groupListIds: List<Int>,
     private val getSharedClassDays: GetSharedClassDatetimeUseCase,
     private val deletePerformance: DeletePerformanceUseCase
@@ -82,10 +82,10 @@ class SharedClassDatesViewModel @AssistedInject constructor(
         }
     }
 
-    private fun Date.toUiItem(): DateItemUiState {
+    private fun LocalDate.toUiItem(): DateItemUiState {
         return DateItemUiState(
-            dateMillis = toMillis(),
-            dateText = UiText.Dynamic(formatted(locale))
+            dateMillis = toEpochMillis(),
+            dateText = UiText.Dynamic(formatted())
         )
     }
 
@@ -115,7 +115,7 @@ class SharedClassDatesViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(topicId: Int, locale: Locale, groupListIds: List<Int>): SharedClassDatesViewModel
+        fun create(topicId: Int, groupListIds: List<Int>): SharedClassDatesViewModel
     }
 }
 

@@ -25,7 +25,6 @@ import com.tusur.teacherhelper.presentation.core.dialog.TopicDeleteErrorDialog
 import com.tusur.teacherhelper.presentation.core.model.UiText
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
-import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.topic.TopicViewModel.OnetimeEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +46,6 @@ class TopicFragment : Fragment() {
                 subjectId = args.subjectId,
                 topicId = args.topicId,
                 isJustCreated = args.isJustCreated,
-                locale = resources.primaryLocale
             )
         }
     })

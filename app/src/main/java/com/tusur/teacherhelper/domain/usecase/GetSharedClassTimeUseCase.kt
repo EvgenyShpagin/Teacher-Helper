@@ -1,7 +1,7 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.ClassTime
+import kotlinx.datetime.LocalDate
 import javax.inject.Inject
 
 class GetSharedClassTimeUseCase @Inject constructor(
@@ -11,7 +11,7 @@ class GetSharedClassTimeUseCase @Inject constructor(
     suspend operator fun invoke(
         topicId: Int,
         groupsIds: List<Int>,
-        classDate: Date
+        classDate: LocalDate
     ): List<ClassTime> {
         val initTimeList = getSharedClassDatetime(topicId, groupsIds)
             .filter { it.getDate() == classDate }

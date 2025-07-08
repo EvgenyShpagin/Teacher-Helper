@@ -21,7 +21,6 @@ import com.tusur.teacherhelper.databinding.FragmentGroupsPerformanceBinding
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnNavigationRequest
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
-import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.util.toNativeArray
 import com.tusur.teacherhelper.presentation.topic.PerformanceType
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +38,6 @@ class GroupsPerformanceFragment : Fragment(), OnQueryTextListener {
     private val viewModel: GroupsPerformanceViewModel by viewModels(extrasProducer = {
         creationCallback<GroupsPerformanceViewModel.Factory> { factory ->
             factory.create(
-                locale = resources.primaryLocale,
                 topicId = args.topicId,
                 performanceType = args.performanceType,
                 datetimeMillis = args.datetimeMillis,

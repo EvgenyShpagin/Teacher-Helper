@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.domain.model.ClassTime
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.usecase.GetAllClassTimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSharedClassTimeUseCase
 import com.tusur.teacherhelper.domain.usecase.GetSubjectByTopicIdUseCase
@@ -18,13 +17,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 
 
 @HiltViewModel(assistedFactory = ClassTimeViewModel.Factory::class)
 class ClassTimeViewModel @AssistedInject constructor(
     @Assisted private val topicId: Int,
     @Assisted private val groupIds: List<Int>?,
-    @Assisted private val classDate: Date,
+    @Assisted private val classDate: LocalDate,
     private val getAllClassTime: GetAllClassTimeUseCase,
     private val getSharedClassTime: GetSharedClassTimeUseCase,
     private val getSubjectNotEmptyGroups: GetSubjectNotEmptyGroupsUseCase,
@@ -76,7 +76,7 @@ class ClassTimeViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(topicId: Int, groupIds: List<Int>?, classDate: Date): ClassTimeViewModel
+        fun create(topicId: Int, groupIds: List<Int>?, classDate: LocalDate): ClassTimeViewModel
     }
 }
 

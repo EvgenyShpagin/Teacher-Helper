@@ -14,11 +14,11 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.BottomSheetSharedClassDatesBinding
-import com.tusur.teacherhelper.domain.model.Date
+import com.tusur.teacherhelper.domain.util.fromEpochMillis
+import com.tusur.teacherhelper.domain.util.toEpochMillis
 import com.tusur.teacherhelper.presentation.core.util.SingleChoiceAlertAdapter
 import com.tusur.teacherhelper.presentation.core.util.creationCallback
 import com.tusur.teacherhelper.presentation.core.util.doOnBackPressed
-import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.util.setSingleChoiceItems
 import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
@@ -27,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 
 @AndroidEntryPoint
 class SharedClassDatesBottomSheet(
@@ -42,7 +43,6 @@ class SharedClassDatesBottomSheet(
         creationCallback<SharedClassDatesViewModel.Factory> { factory ->
             factory.create(
                 topicId = topicId,
-                locale = resources.primaryLocale,
                 groupListIds = groupListIds
             )
         }
@@ -140,18 +140,18 @@ class SharedClassDatesBottomSheet(
 
     private fun showDateSelectDialogAndNavigate() {
         showDateSelectDialog { selectedDate ->
-            doOnDateConfirm(selectedDate.toMillis())
+            doOnDateConfirm(selectedDate.toEpochMillis())
         }
         dismiss()
     }
 
-    private fun showDateSelectDialog(onConfirm: (date: Date) -> Unit) {
+    private fun showDateSelectDialog(onConfirm: (date: LocalDate) -> Unit) {
         MaterialDatePicker.Builder.datePicker()
             .setTitleText(R.string.dialog_topic_date_title)
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build().also { picker ->
                 picker.addOnPositiveButtonClickListener { dateMillis ->
-                    onConfirm(Date.fromMillis(dateMillis))
+                    onConfirm(LocalDate.fromEpochMillis(dateMillis))
                 }
             }.show(parentFragmentManager, null)
     }

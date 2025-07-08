@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.tusur.teacherhelper.R
 import com.tusur.teacherhelper.databinding.FragmentTopicsTabBinding
 import com.tusur.teacherhelper.presentation.core.util.getDefaultListItemDecoration
-import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -34,7 +33,7 @@ class TopicsTabFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        adapter = TopicAdapter(resources.primaryLocale) { view, topicItem ->
+        adapter = TopicAdapter { view, topicItem ->
             when (topicItem) {
                 is TopicItemUiState.Label -> {}
                 is TopicItemUiState.Topic -> navigateToTopicDetails(view, topicItem.itemId)
@@ -70,8 +69,8 @@ class TopicsTabFragment : Fragment() {
         val extras =
             FragmentNavigatorExtras(view to requireContext().getString(R.string.transition_topic_details))
         val action = SubjectDetailsFragmentDirections.actionToTopicFragment(
-            topicId,
-            viewModel.subjectId,
+            topicId = topicId,
+            subjectId = viewModel.subjectId,
         )
         findNavController().navigate(action, extras)
     }

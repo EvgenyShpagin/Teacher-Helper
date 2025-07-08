@@ -1,6 +1,5 @@
 package com.tusur.teacherhelper.domain.usecase
 
-import com.tusur.teacherhelper.domain.model.Date
 import com.tusur.teacherhelper.domain.model.Deadline
 import com.tusur.teacherhelper.domain.model.Topic
 import com.tusur.teacherhelper.domain.model.error.DeadlineUpdateError
@@ -15,6 +14,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDate
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -42,7 +42,7 @@ class SetTopicDeadlineUseCaseTest {
     @Test
     fun shouldReturnSuccess_whenJustAddExistingDeadline() = runTest {
         val currentDeadline: Deadline? = null
-        val newDeadline = Deadline(1, Date(2024, 10, 15), topicId) // already saved
+        val newDeadline = Deadline(1, LocalDate(2024, 10, 15), topicId) // already saved
 
         every { currentTopic.deadline } returns currentDeadline
 
@@ -57,7 +57,7 @@ class SetTopicDeadlineUseCaseTest {
     @Test
     fun shouldInsertDeadline_whenItIsNotSavedYet() = runTest {
         val currentDeadline: Deadline? = null
-        val newDeadline = Deadline(NO_ID, Date(2024, 10, 15), topicId) // not yet saved
+        val newDeadline = Deadline(NO_ID, LocalDate(2024, 10, 15), topicId) // not yet saved
 
         every { currentTopic.deadline } returns currentDeadline
         coEvery { deadlineRepository.insert(newDeadline) } returns 0
@@ -75,8 +75,8 @@ class SetTopicDeadlineUseCaseTest {
 
     @Test
     fun shouldReturnSuccess_whenReplaceOtherTopicDeadlineWithSomeOther() = runTest {
-        val currentDeadline = Deadline(1, Date(2024, 10, 15), otherTopicId)
-        val otherDeadline = Deadline(2, Date(2024, 10, 16), otherTopicId)
+        val currentDeadline = Deadline(1, LocalDate(2024, 10, 15), otherTopicId)
+        val otherDeadline = Deadline(2, LocalDate(2024, 10, 16), otherTopicId)
 
         every { currentTopic.deadline } returns currentDeadline
 
@@ -90,8 +90,8 @@ class SetTopicDeadlineUseCaseTest {
 
     @Test
     fun shouldReturnError_whenReplacingDeadlineReferencedByOtherTopics() = runTest {
-        val currentDeadline = Deadline(1, Date(2024, 10, 15), topicId)
-        val otherDeadline = Deadline(2, Date(2024, 10, 16), otherTopicId)
+        val currentDeadline = Deadline(1, LocalDate(2024, 10, 15), topicId)
+        val otherDeadline = Deadline(2, LocalDate(2024, 10, 16), otherTopicId)
 
         every { currentTopic.deadline } returns currentDeadline
         coEvery { topicRepository.countSameDeadlineTopics(currentDeadline.id) } returns 2
@@ -105,8 +105,8 @@ class SetTopicDeadlineUseCaseTest {
     @Test
     fun shouldReturnSuccessAndDeleteDeadline_whenRemovingDeadlineNotReferencedByOtherTopics() =
         runTest {
-            val currentDeadline = Deadline(1, Date(2024, 10, 15), topicId)
-            val otherDeadline = Deadline(2, Date(2024, 10, 16), otherTopicId)
+            val currentDeadline = Deadline(1, LocalDate(2024, 10, 15), topicId)
+            val otherDeadline = Deadline(2, LocalDate(2024, 10, 16), otherTopicId)
 
             every { currentTopic.deadline } returns currentDeadline
             coEvery { topicRepository.countSameDeadlineTopics(currentDeadline.id) } returns 1
@@ -122,7 +122,7 @@ class SetTopicDeadlineUseCaseTest {
 
     @Test
     fun shouldReturnError_whenRemovingDeadlineReferencedByOtherTopics() = runTest {
-        val currentDeadline = Deadline(1, Date(2024, 10, 15), topicId)
+        val currentDeadline = Deadline(1, LocalDate(2024, 10, 15), topicId)
         val otherDeadline: Deadline? = null
 
         every { currentTopic.deadline } returns currentDeadline
