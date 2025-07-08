@@ -7,20 +7,16 @@ import com.tusur.teacherhelper.domain.usecase.DeleteTopicUseCase
 import com.tusur.teacherhelper.domain.usecase.GetGlobalTopicsUseCase
 import com.tusur.teacherhelper.domain.usecase.SearchGlobalTopicUseCase
 import com.tusur.teacherhelper.domain.util.GLOBAL_TOPICS_SUBJECT_ID
-import com.tusur.teacherhelper.domain.util.formatted
 import com.tusur.teacherhelper.presentation.core.base.TopLevelListViewModel
 import com.tusur.teacherhelper.presentation.core.model.UiText
+import com.tusur.teacherhelper.presentation.core.util.formatted
 import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicListEffect.FailedToDeleteDeadline
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.Locale
+import javax.inject.Inject
 
-@HiltViewModel(assistedFactory = GlobalTopicListViewModel.Factory::class)
-class GlobalTopicListViewModel @AssistedInject constructor(
-    @Assisted private val locale: Locale,
+@HiltViewModel
+class GlobalTopicListViewModel @Inject constructor(
     private val getGlobalTopics: GetGlobalTopicsUseCase,
     private val searchGlobalTopic: SearchGlobalTopicUseCase,
     private val deleteTopic: DeleteTopicUseCase
@@ -78,10 +74,4 @@ class GlobalTopicListViewModel @AssistedInject constructor(
         topicId = id,
         name = UiText.Dynamic(name.formatted())
     )
-
-
-    @AssistedFactory
-    interface Factory {
-        fun create(locale: Locale): GlobalTopicListViewModel
-    }
 }

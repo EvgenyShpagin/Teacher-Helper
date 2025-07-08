@@ -28,11 +28,7 @@ class GlobalTopicListFragment :
     override lateinit var searchAdapter: BaseDeletableAdapter<GlobalTopicUiState>
 
 
-    override val viewModel: GlobalTopicListViewModel by viewModels(extrasProducer = {
-        creationCallback<GlobalTopicListViewModel.Factory> { factory ->
-            factory.create(resources.primaryLocale)
-        }
-    })
+    override val viewModel: GlobalTopicListViewModel by viewModels()
 
     override fun initCollectors(scope: CoroutineScope) {
         super.initCollectors(scope)

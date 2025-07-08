@@ -17,8 +17,6 @@ import com.tusur.teacherhelper.databinding.BottomSheetGlobalTopicsBinding
 import com.tusur.teacherhelper.domain.util.toEpochMillis
 import com.tusur.teacherhelper.domain.util.today
 import com.tusur.teacherhelper.presentation.core.base.TopLevelListViewModel.Event
-import com.tusur.teacherhelper.presentation.core.util.creationCallback
-import com.tusur.teacherhelper.presentation.core.util.primaryLocale
 import com.tusur.teacherhelper.presentation.core.view.recycler.BaseDeletableAdapter
 import com.tusur.teacherhelper.presentation.core.view.recycler.decorations.MarginItemDecoration
 import com.tusur.teacherhelper.presentation.globaltopic.GlobalTopicAdapter
@@ -33,14 +31,7 @@ import kotlinx.datetime.LocalDate
 class GlobalTopicsToFinalGradeBottomSheet : BottomSheetDialogFragment() {
 
     private val binding get() = _binding!!
-    private var _binding: BottomSheetGlobalTopicsBinding? = null
-    private val viewModel: GlobalTopicListViewModel by viewModels(
-        extrasProducer = {
-            creationCallback<GlobalTopicListViewModel.Factory> { factory ->
-                factory.create(resources.primaryLocale)
-            }
-        }
-    )
+    private val viewModel: GlobalTopicListViewModel by viewModels()
 
     private val args: GlobalTopicsToFinalGradeBottomSheetArgs by navArgs()
 
