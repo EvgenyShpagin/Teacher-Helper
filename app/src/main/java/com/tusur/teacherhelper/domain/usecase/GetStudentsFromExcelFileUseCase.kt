@@ -35,7 +35,7 @@ class GetStudentsFromExcelFileUseCase @Inject constructor(
             student?.let { studentList.add(it) }
         }
 
-        return if (studentList.isEmpty) {
+        return if (studentList.isEmpty()) {
             Result.Error(ExcelStudentImportError.NO_FOUND)
         } else {
             Result.Success(studentList)
